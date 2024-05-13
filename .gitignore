@@ -4,6 +4,7 @@ minishell.pdf
 *.swp
 *.a
 .vscode
+*.gch
 
 # Prerequisites
 *.d
