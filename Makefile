@@ -1,37 +1,47 @@
-NAME=minishell
-CC=cc
-CFLAGS=-Wall -Wextra -Werror
-READLINE_FLAGS=-lreadline
-ALL_FLAGS=$(CFLAGS) $(READLINE_FLAGS)
+RED = \033[0;31m
+GREEN = \033[0;32m
+NC = \033[0m
 
-SRC_DIR=Sources/
-SRC=$(SRC_DIR)main.c
-OBJ=$(SRC:.c=.o)
+NAME = minishell
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+READLINE_FLAGS = -lreadline
+ALL_FLAGS = $(CFLAGS) $(READLINE_FLAGS)
+
+SRC_DIR = Sources
+SRC_FILES = main.c
+SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJ = $(SRC:.c=.o)
 
 $(NAME): $(OBJ)
-	@make -C ./Libft/
-	@cp ./Libft/libft.a .
-	@ar -rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
+	@clear
+	@make -C Libft
+	@cp Libft/libft.a .
+	@$(CC) $(ALL_FLAGS) $(OBJ) -o $(NAME)
+	@echo "$(GREEN)[INFO]${NC} $(NAME) compiled$(NC)\n"
 
-.PHONY: all clean fclean re
+run: $(NAME)
+	@clear
+	@echo "$(GREEN)[INFO]${NC} Executing Minishell...$(NC)\n"
+	@./$(NAME)
+
+$(OBJ): $(SRC)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: all clean fclean re run
 
 all: $(NAME)
-	@echo "[INFO] $(NAME) compiled"
-
-run:
-	@echo "[INFO] Executing Minishell..."
-	$(CC) $(CFLAGS) $(SRC) libft.a -o Minishell
-	@./Minishell
 
 clean:
-	@echo "[INFO] $(NAME) ${OBJ} removed"
-	@rm -rf $(NAME) $(OBJ)
-	@make clean -C ./Libft/
+	@clear
+	@echo "$(RED)[CLEAN]${NC} Removing object files...$(NC)\n"
+	@rm -rf $(OBJ)
+	@make clean -C Libft
 
 fclean: clean
-	@echo "[INFO] Removing '*.a' files..."
-	@rm -rf libft.a
-	@make fclean -C ./Libft/
+	@clear
+	@echo "$(RED)[CLEAN]${NC} Removing $(NAME) and '*.a' files...$(NC)\n"
+	@rm -rf $(NAME) libft.a
+	@make fclean -C Libft
 
 re: fclean all
