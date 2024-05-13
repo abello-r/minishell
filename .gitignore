@@ -1,3 +1,10 @@
+# Extra
+minishell.pdf
+.DS_Store
+*.swp
+*.a
+.vscode
+
 # Prerequisites
 *.d
 
