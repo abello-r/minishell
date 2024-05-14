@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:24 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/14 21:05:50 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/14 21:08:07 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int argc, char **argv, char **envp)
 	(void) envp;
 	(void) argc;
 
-	data_init(envp); // testingalberto
+	data_init(envp); // testing
 
 	if (ft_loop(&data))
 		return (1);
