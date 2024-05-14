@@ -5,7 +5,6 @@ COLOR_RESET = \033[0m
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-READLINE_FLAGS =
 
 SRC_DIR = Sources
 SRC_FILES = main.c error.c parse.c signal_handler.c
@@ -13,8 +12,13 @@ SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
-RLHEADER = -I "/Users/$(USER)/.brew/opt/readline/include"
-LIBS = -L "/Users/$(USER)/.brew/opt/readline/lib" -lreadline
+ifeq ($(shell whoami), abello-r)
+	RLHEADER = -I "/opt/homebrew/opt/readline/include"
+	LIBS = -L "/opt/homebrew/opt/readline/lib" -lreadline
+else
+	RLHEADER = -I "/Users/$(USER)/.brew/opt/readline/include"
+	LIBS = -L "/Users/$(USER)/.brew/opt/readline/lib" -lreadline
+endif
 
 $(NAME): $(OBJ)
 	@clear
