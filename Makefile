@@ -5,7 +5,7 @@ NC = \033[0m
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-READLINE_FLAGS = -lreadline
+READLINE_FLAGS = L/Users/$(USER)/.brew/opt/readline/lib -lreadline -I/Users/$(USER)/.brew/opt/readline/include
 ALL_FLAGS = $(CFLAGS) $(READLINE_FLAGS)
 
 SRC_DIR = Sources
