@@ -17,16 +17,13 @@ $(NAME): $(OBJ)
 	@clear
 	@make -C Libft
 	@cp Libft/libft.a .
-	@$(CC) $(ALL_FLAGS) $(OBJ) -o $(NAME) libft.a
+	@$(CC) $(ALL_FLAGS) ${OBJ} libft.a -o $(NAME)
 	@echo "$(GREEN)[INFO]${NC} $(NAME) compiled$(NC)\n"
 
 run: $(NAME)
 	@clear
 	@echo "$(GREEN)[INFO]${NC} Executing Minishell...$(NC)\n"
 	@./$(NAME)
-
-$(OBJ): $(SRC)
-	@$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: all clean fclean re run
 
