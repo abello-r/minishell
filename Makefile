@@ -5,8 +5,7 @@ NC = \033[0m
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-READLINE_FLAGS = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include
-ALL_FLAGS = $(CFLAGS) $(READLINE_FLAGS)
+READLINE_FLAGS = -lreadline -L /Users/$(USER)/.brew/opt/readline/lib /Users/$(USER)/.brew/opt/readline/include
 
 SRC_DIR = Sources
 SRC_FILES = main.c error.c parse.c signal_handler.c
@@ -17,7 +16,7 @@ $(NAME): $(OBJ)
 	@clear
 	@make -C Libft
 	@cp Libft/libft.a .
-	@$(CC) $(ALL_FLAGS) $(OBJ) -o $(NAME) libft.a
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) libft.a ${READLINE_FLAGS}
 	@echo "$(GREEN)[INFO]${NC} $(NAME) compiled$(NC)\n"
 
 run: $(NAME)

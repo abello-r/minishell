@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/14 16:34:12 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/14 17:16:56 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 # include "../Libft/libft.h"
 
 // System includes
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <unistd.h>
 # include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define SIMPLE_QUOTE "[ERROR] Simple quote not closed\n"
 # define DOUBLE_QUOTE "[ERROR] Double quote not closed\n"
