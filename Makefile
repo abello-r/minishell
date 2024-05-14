@@ -9,7 +9,7 @@ READLINE_FLAGS = -lreadline
 ALL_FLAGS = $(CFLAGS) $(READLINE_FLAGS)
 
 SRC_DIR = Sources
-SRC_FILES = main.c
+SRC_FILES = main.c error.c parse.c
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ = $(SRC:.c=.o)
 
@@ -17,7 +17,7 @@ $(NAME): $(OBJ)
 	@clear
 	@make -C Libft
 	@cp Libft/libft.a .
-	@$(CC) $(ALL_FLAGS) $(OBJ) -o $(NAME)
+	@$(CC) $(ALL_FLAGS) $(OBJ) -o $(NAME) libft.a
 	@echo "$(GREEN)[INFO]${NC} $(NAME) compiled$(NC)\n"
 
 run: $(NAME)
