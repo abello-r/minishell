@@ -9,7 +9,7 @@ void	parser(t_data *data)
 		count++;
 	if (ft_strchr("'\"''\''", data->input[count]))
 	{
-
+		
 	}
 }
 

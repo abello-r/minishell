@@ -19,9 +19,9 @@ void	ft_loop(t_data *data)
 	{
 		data->input = readline("minishell$ ");
 		if (!data->input)
-			//ft_print_exit("exit\n");
+			ft_print_exit("exit\n");
 		if (!ft_pair_quotation_check(data))
-			//ft_print_exit(SIMPLE_QUOTE);
+			ft_print_exit(SIMPLE_QUOTE);
 		printf("%s\n", data->input);
 		free(data->input);
 		// implementar add_history al final del checker

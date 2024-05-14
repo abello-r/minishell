@@ -17,7 +17,7 @@ $(NAME): $(OBJ)
 	@clear
 	@make -C Libft
 	@cp Libft/libft.a .
-	@$(CC) $(ALL_FLAGS) ${OBJ} libft.a -o $(NAME)
+	@$(CC) $(ALL_FLAGS) $(OBJ) -o $(NAME) libft.a
 	@echo "$(GREEN)[INFO]${NC} $(NAME) compiled$(NC)\n"
 
 run: $(NAME)

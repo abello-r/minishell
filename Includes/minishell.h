@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/14 14:59:25 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:22:00 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct s_token
 {
 	char			*content;
 	char			*type;
-	struct	s_token	*prev;
-	struct	s_token	*next;
+	struct s_token	*prev;
+	struct s_token	*next;
 }			t_token;
 
 typedef struct s_data
