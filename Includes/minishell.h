@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/14 15:24:10 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:34:12 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <signal.h>
 
 # define SIMPLE_QUOTE "[ERROR] Simple quote not closed\n"
 # define DOUBLE_QUOTE "[ERROR] Double quote not closed\n"
@@ -41,9 +42,10 @@ typedef struct s_data
 	t_token	*token;
 }			t_data;
 
-int		ft_is_quotation_closed(char *input, char c);
+int		ft_character_counter(char *input, char c);
 int		ft_loop(t_data *data);
 int		ft_pair_quotation_check(t_data *data);
+void	ft_signal_handler(int signum);
 void	ft_print_exit(char *str);
 void	parser(t_data *data);
 

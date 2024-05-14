@@ -9,7 +9,7 @@ READLINE_FLAGS = -lreadline
 ALL_FLAGS = $(CFLAGS) $(READLINE_FLAGS)
 
 SRC_DIR = Sources
-SRC_FILES = main.c error.c parse.c
+SRC_FILES = main.c error.c parse.c signal_handler.c
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ = $(SRC:.c=.o)
 
