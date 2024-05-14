@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/14 19:44:18 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/14 20:55:44 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,21 @@
 
 typedef struct s_token
 {
-	char			*content;
-	char			*type;
-	struct s_token	*prev;
-	struct s_token	*next;
-}			t_token;
+    char            *content;
+    char            *type;
+    struct  s_token *prev;
+    struct  s_token *next;
+}           t_token;
 
 typedef struct s_data
 {
-	char	*input;
-	t_token	*token;
-}			t_data;
+    char    *input;
+    char    **envp;
+    char    **path;
+    int     exit;
+    t_token *token;
+    // s_enum   *env;
+}           t_data;
 
 // Main
 int		ft_loop(t_data *data);
@@ -52,10 +56,16 @@ void	ft_signal_handler(int signum);
 
 // Builtins
 void	ft_pwd(void);
+void	ft_env(void);
 
 // Utils
-int		ft_character_counter(char *input, char c);
-int		ft_pair_quotation_check(t_data *data);
-void	ft_print_exit(char *str);
+int			ft_character_counter(char *input, char c);
+int			ft_pair_quotation_check(t_data *data);
+void		ft_print_exit(char *str);
+void   		data_init(char **envp);
+void   		ft_redirect_parse(t_data *data); //doing
+t_token		*ft_new_token(char *content); //making
+char   		**all_the_path(char **path);
+t_token		*ft_token_last(t_token *token);
 
 #endif

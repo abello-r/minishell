@@ -6,7 +6,7 @@
 #    By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/29 04:49:40 by briveiro          #+#    #+#              #
-#    Updated: 2024/05/13 17:26:09 by abello-r         ###   ########.fr        #
+#    Updated: 2024/05/14 20:56:21 by abello-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC = ft_isalnum.c ft_isalpha.c ft_isascii.c \
 	  ft_strjoin.c ft_strtrim.c ft_strrchr.c ft_itoa.c\
 	  ft_strmapi.c ft_striteri.c ft_putchar_fd.c ft_split.c\
 	  ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
+	  ft_strcmp.c
 	
 
 SRCBONUS =	ft_lstnew.c ft_lstadd_font.c ft_lstsize.c ft_lstlast.c \
