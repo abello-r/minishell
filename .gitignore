@@ -5,6 +5,8 @@ minishell.pdf
 *.a
 .vscode
 *.gch
+minishell
+minishell.dSYM
 
 # Prerequisites
 *.d
