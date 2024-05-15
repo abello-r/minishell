@@ -1,15 +1,69 @@
-
 #include "../Includes/minishell.h"
 
 void	parser(t_data *data)
 {
-	char	**split;
-	// char	*single_line;
-	// int 	count;
+	char	**token_table;
 
-	// count = 0;
-	split = ft_modified_split(data->input);
+	token_table = line_checker(data->input);
+	printf("Ignored line %s\n", token_table[0]);
 }
+
+char	**line_checker(char *input)
+{
+	char	**token_table;
+	char	*token;
+	int		count;
+
+	token_table = ft_get_memory();
+	count = 0;
+	while (input[count] != '\0')
+	{
+		while (input[count] == ' ')
+			count++;
+		if (input[count] == '\"')
+		{
+			token = split_double_quote(input, count);
+			count += (ft_strlen(token));
+			ft_fill_token_table(token_table, token);
+		}
+		// TODO: double quotes
+		count++;
+	}
+	return (token_table);
+}
+
+char **ft_get_memory(void)
+{
+	char	**token_table;
+
+	token_table = malloc(sizeof(char *) * 100); //dejar limpio
+	if (!token_table)
+		ft_print_exit("Error: malloc failed\n");
+	return (token_table);
+}
+
+char	**ft_fill_token_table(char **token_table, char *token)
+{
+	int i;
+	int x;
+
+	i = 0;
+	x = 0;
+
+	while (token_table[i] != NULL)
+		i++;
+	token_table[i] = malloc(sizeof(char *) *ft_strlen(token));
+	if (!token_table[i])
+		ft_print_exit("Error: malloc failed\n");
+	while (token[x] != '\0')
+	{
+		token_table[i][x] = token[x];
+		x++;
+	}
+	token_table[i][x] = '\0';
+	return (token_table);
+}
+
 
 // void ft_redirect_parse(t_data *data, char c, int start, int count)
 // {
@@ -39,41 +93,6 @@ t_token *ft_token_last(t_token *token)
     return (token);
 }
 
-char	**ft_modified_split(char *input)
-{
-	char	**split;
-	char	*single_line;
-	int		count;
-
-	split = ft_allocate_split();
-	count = 0;
-	while (input[count] != '\0')
-	{
-		while (input[count] == ' ')
-			count++;
-		if (input[count] == '\"')
-		{
-			single_line = split_double_quote(input, count);
-			count += (ft_strlen(single_line));
-		}
-		// to do: double quotes
-		split_char_maker(split, single_line);
-		free(single_line);
-		count++;
-	}
-	return (split);
-}
-
-char **ft_allocate_split()
-{
-	char	**split;
-
-	split = malloc(sizeof(char *) * 100); //dejar limpio
-	if (!split)
-		ft_print_exit("Error: malloc failed\n");
-	return (split);
-}
-
 char *split_double_quote(char *input, int count)
 {
 	char	*single_line;
@@ -96,25 +115,4 @@ char *split_double_quote(char *input, int count)
 	single_line[start] = '\"';
 	single_line[start + 1] = '\0';
 	return (single_line);
-}
-
-char	**split_char_maker(char **split, char *splited)
-{
-	int count;
-	int paco;
-
-	count = 0;
-	paco = 0;
-	while (split[count] != NULL)
-		count++;
-	split[count] = malloc(sizeof(char *) *ft_strlen(splited));
-	if (!split[count])
-		ft_print_exit("Error: malloc failed\n");
-	while (splited[paco] != '\0')
-	{
-		split[count][paco] = splited[paco];
-		paco++;
-	}
-	split[count][paco] = '\0';
-	return (split);
 }
