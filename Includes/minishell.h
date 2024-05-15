@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/14 20:55:44 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:13:23 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,9 @@ t_token		*ft_new_token(char *content); //making
 char   		**all_the_path(char **path);
 t_token		*ft_token_last(t_token *token);
 
+// Split
+char		**ft_allocate_split();
+char		*split_double_quote(char *input, int count);
+char		**split_char_maker(char **split, char *splited);
+char		**ft_modified_split(char *input);
 #endif

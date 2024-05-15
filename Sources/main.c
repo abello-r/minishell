@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:24 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/14 21:05:50 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:16:15 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_loop(t_data *data)
 		data->input = readline("minishell$ ");
 		if (!data->input || ft_pair_quotation_check(data))
 			return (1);
-
+		parser(data);
 		fake_executor(data); // Debug de builtins
 		free(data->input);
 
