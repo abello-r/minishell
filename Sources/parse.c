@@ -116,3 +116,37 @@ char *split_double_quote(char *input, int count)
 	single_line[start + 1] = '\0';
 	return (single_line);
 }
+
+char	**parse_envp(char **envp)
+{
+	char **clean_enviroments;
+	int x;
+	int y;
+	int z;
+
+	x = -1;
+	y = 0;
+	z = -1;
+	clean_enviroments = malloc(sizeof(char *) * 100); //dejar limpio
+	while (envp[x])
+	{
+		y = 0;
+		x++;
+		while (envp[x][y])
+		{
+			if (envp[x][y] == '=')
+			{
+				z++;
+				while (envp[x][y])
+				{
+					clean_enviroments[z][y] = envp[x][y];
+					y++;
+				}
+			}
+			y++;
+		}
+		z++;
+		y = 0;
+	}
+	return (clean_enviroments);
+}

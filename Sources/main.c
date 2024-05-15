@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:24 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/15 16:45:49 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:51:05 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ int	main(int argc, char **argv, char **envp)
 	(void) envp;
 	(void) argc;
 
+	// int count = 0;
+	// while (envp[count])
+	// {
+	// 	printf("%s\n", envp[count]);
+	// 	count++;
+	// }
 	data_init(envp); // testing
 
 	if (ft_loop(&data))

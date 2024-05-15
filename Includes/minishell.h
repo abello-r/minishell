@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/15 18:10:41 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:45:44 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ t_token		*ft_token_last(t_token *token);
 char		**line_checker(char *input);
 char		**ft_get_memory(void);
 char		**ft_fill_token_table(char **token_table, char *token);
-
 char		*split_double_quote(char *input, int count);
+
+// ENVP
+
+char		**parse_envp(char **envp);
 #endif
