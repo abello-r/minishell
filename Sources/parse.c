@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 18:41:56 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/15 16:35:22 by briveiro         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../Includes/minishell.h"
 
@@ -16,16 +5,10 @@ void	parser(t_data *data)
 {
 	char	**split;
 	// char	*single_line;
-	int 	count;
+	// int 	count;
 
-	count = 0;
+	// count = 0;
 	split = ft_modified_split(data->input);
-	printf("pacopacoooo");
-	while (split[count] != NULL)
-	{
-		printf("split[%d]: %s\n", count, split[0]);
-		count++;
-	}
 }
 
 // void ft_redirect_parse(t_data *data, char c, int start, int count)
@@ -64,17 +47,18 @@ char	**ft_modified_split(char *input)
 
 	split = ft_allocate_split();
 	count = 0;
-	while (input[count])
+	while (input[count] != '\0')
 	{
 		while (input[count] == ' ')
 			count++;
 		if (input[count] == '\"')
 		{
 			single_line = split_double_quote(input, count);
-			count = (ft_strlen(single_line) - 1);
+			count += (ft_strlen(single_line));
 		}
 		// to do: double quotes
 		split_char_maker(split, single_line);
+		free(single_line);
 		count++;
 	}
 	return (split);
@@ -103,7 +87,6 @@ char *split_double_quote(char *input, int count)
 	single_line[0] = '\"';
 	while (input[count] != '\"' && input[count] != '\0')
 	{
-		printf("input[%d]: %c\n", count, input[count]);
 		single_line[start] = input[count];
 		if (input[count - 1] == '\0')
 			ft_print_exit("Error: missing double quote\n");
@@ -118,10 +101,20 @@ char *split_double_quote(char *input, int count)
 char	**split_char_maker(char **split, char *splited)
 {
 	int count;
+	int paco;
 
 	count = 0;
+	paco = 0;
 	while (split[count] != NULL)
 		count++;
-	split[count] = splited;
+	split[count] = malloc(sizeof(char *) *ft_strlen(splited));
+	if (!split[count])
+		ft_print_exit("Error: malloc failed\n");
+	while (splited[paco] != '\0')
+	{
+		split[count][paco] = splited[paco];
+		paco++;
+	}
+	split[count][paco] = '\0';
 	return (split);
 }
