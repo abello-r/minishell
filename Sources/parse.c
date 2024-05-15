@@ -148,5 +148,7 @@ char	**parse_envp(char **envp)
 		z++;
 		y = 0;
 	}
+	//TODO: Fill envp struct
+	printf("envp[0] %s\n", clean_enviroments[0]);
 	return (clean_enviroments);
 }

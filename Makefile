@@ -12,7 +12,7 @@ SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
-ifeq ($(shell whoami), briamzp)
+ifeq ($(shell whoami), abello-r)
 	RLHEADER = -I "/opt/homebrew/opt/readline/include"
 	LIBS = -L "/opt/homebrew/opt/readline/lib" -lreadline
 else

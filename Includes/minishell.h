@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/15 18:45:44 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:16:05 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_signal_handler(int signum);
 
 // Builtins
 void	ft_pwd(void);
-void	ft_env(void);
+void	ft_env(t_data *data);
 
 // Utils
 int			ft_character_counter(char *input, char c);

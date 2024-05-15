@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:24 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/15 18:51:05 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:18:02 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void fake_executor(t_data *data)
 	if (ft_strncmp(data->input, "pwd", ft_strlen(data->input)) == 0)
 		ft_pwd();
 	else if (ft_strncmp(data->input, "env", ft_strlen(data->input)) == 0)
-		ft_env();
+		ft_env(data);
 	else {
 		printf("%s: command not found\n", data->input);
 	}
@@ -58,7 +58,7 @@ int	ft_loop(t_data *data)
 		data->input = readline("minishell$ ");
 		if (!data->input || ft_pair_quotation_check(data))
 			return (1);
-		parser(data);
+		//parser(data);
 		fake_executor(data); // Debug de builtins
 		free(data->input);
 
