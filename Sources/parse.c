@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:56 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/15 15:19:48 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:35:22 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	parser(t_data *data)
 
 	count = 0;
 	split = ft_modified_split(data->input);
+	printf("pacopacoooo");
 	while (split[count] != NULL)
 	{
-		printf("split[%d]: %s\n", count, split[count]);
+		printf("split[%d]: %s\n", count, split[0]);
 		count++;
 	}
 }
@@ -63,7 +64,7 @@ char	**ft_modified_split(char *input)
 
 	split = ft_allocate_split();
 	count = 0;
-	while (input[count] != '\0')
+	while (input[count])
 	{
 		while (input[count] == ' ')
 			count++;
@@ -74,6 +75,7 @@ char	**ft_modified_split(char *input)
 		}
 		// to do: double quotes
 		split_char_maker(split, single_line);
+		count++;
 	}
 	return (split);
 }
@@ -99,7 +101,7 @@ char *split_double_quote(char *input, int count)
 	if (!single_line)
 		ft_print_exit("Error: malloc failed\n");
 	single_line[0] = '\"';
-	while (input[count] != '\"')
+	while (input[count] != '\"' && input[count] != '\0')
 	{
 		printf("input[%d]: %c\n", count, input[count]);
 		single_line[start] = input[count];
