@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/15 19:16:05 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:21:43 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_data
 {
     char    *input;
     char    **envp;
-    char    **path;
+	char   	**path;
     int     exit;
     t_token *token;
     // s_enum   *env;
@@ -59,10 +59,10 @@ void	ft_pwd(void);
 void	ft_env(t_data *data);
 
 // Utils
+void   		initializer(char **envp, t_data *data);
 int			ft_character_counter(char *input, char c);
 int			ft_pair_quotation_check(t_data *data);
 void		ft_print_exit(char *str);
-void   		data_init(char **envp);
 void   		ft_redirect_parse(t_data *data); //doing
 t_token		*ft_new_token(char *content); //making
 char   		**all_the_path(char **path);
@@ -74,7 +74,7 @@ char		**ft_get_memory(void);
 char		**ft_fill_token_table(char **token_table, char *token);
 char		*split_double_quote(char *input, int count);
 
-// ENVP
-
-char		**parse_envp(char **envp);
+// Environment
+void		fill_data_envp(char **envp, t_data *data);
+void		fill_path(t_data *data);
 #endif

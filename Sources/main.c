@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:24 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/15 19:18:02 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:01:14 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,7 @@ int	main(int argc, char **argv, char **envp)
 	(void) envp;
 	(void) argc;
 
-	// int count = 0;
-	// while (envp[count])
-	// {
-	// 	printf("%s\n", envp[count]);
-	// 	count++;
-	// }
-	data_init(envp); // testing
+	initializer(envp, &data);
 
 	if (ft_loop(&data))
 		return (1);

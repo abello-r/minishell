@@ -64,11 +64,6 @@ char	**ft_fill_token_table(char **token_table, char *token)
 	return (token_table);
 }
 
-
-// void ft_redirect_parse(t_data *data, char c, int start, int count)
-// {
-// }
-
 void	ft_token_add_back(t_token **token, t_token *new)
 {
     t_token *last;
@@ -115,40 +110,4 @@ char *split_double_quote(char *input, int count)
 	single_line[start] = '\"';
 	single_line[start + 1] = '\0';
 	return (single_line);
-}
-
-char	**parse_envp(char **envp)
-{
-	char **clean_enviroments;
-	int x;
-	int y;
-	int z;
-
-	x = -1;
-	y = 0;
-	z = -1;
-	clean_enviroments = malloc(sizeof(char *) * 100); //dejar limpio
-	while (envp[x])
-	{
-		y = 0;
-		x++;
-		while (envp[x][y])
-		{
-			if (envp[x][y] == '=')
-			{
-				z++;
-				while (envp[x][y])
-				{
-					clean_enviroments[z][y] = envp[x][y];
-					y++;
-				}
-			}
-			y++;
-		}
-		z++;
-		y = 0;
-	}
-	//TODO: Fill envp struct
-	printf("envp[0] %s\n", clean_enviroments[0]);
-	return (clean_enviroments);
 }

@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 13:20:26 by briveiro          #+#    #+#             */
-/*   Updated: 2024/05/14 20:54:16 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:08:34 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	*ft_memmove(void *dst, const void *src, size_t len);
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+
+char	*ft_strcpy(char *dst, const char *src);
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 

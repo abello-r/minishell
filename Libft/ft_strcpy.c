@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 18:44:38 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/16 16:12:43 by abello-r         ###   ########.fr       */
+/*   Created: 2024/05/16 16:07:33 by abello-r          #+#    #+#             */
+/*   Updated: 2024/05/16 16:07:59 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Includes/minishell.h"
+#include "libft.h"
 
-void ft_env(t_data *data)
+char *ft_strcpy(char *dst, const char *src)
 {
-	int x;
+	int i;
 
-	x = 0;
-	while (data->envp[x] != NULL)
+	i = 0;
+	while (src[i])
 	{
-		printf("%s\n", data->envp[x]);
-		x++;
+		dst[i] = src[i];
+		i++;
 	}
+	dst[i] = '\0';
+	return (dst);
 }
