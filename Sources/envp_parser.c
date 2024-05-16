@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:59:44 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/16 17:32:31 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:21:16 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,5 @@ void fill_path(t_data *data)
 		}
 		i++;
 	}
+	data->path = path_blocks;
 }

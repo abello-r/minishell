@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:24 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/16 16:01:14 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:23:26 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_loop(t_data *data)
 		data->input = readline("minishell$ ");
 		if (!data->input || ft_pair_quotation_check(data))
 			return (1);
-		//parser(data);
+		parser(data);
 		fake_executor(data); // Debug de builtins
 		free(data->input);
 

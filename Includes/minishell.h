@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/16 16:21:43 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:34:41 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,13 @@ void   		ft_redirect_parse(t_data *data); //doing
 t_token		*ft_new_token(char *content); //making
 char   		**all_the_path(char **path);
 t_token		*ft_token_last(t_token *token);
+char		*get_rest(char *input, int i);
 
 // Split
 char		**line_checker(char *input);
 char		**ft_get_memory(void);
 char		**ft_fill_token_table(char **token_table, char *token);
-char		*split_double_quote(char *input, int count);
+char		*split_quotes(char *input, int count, char flag);
 
 // Environment
 void		fill_data_envp(char **envp, t_data *data);

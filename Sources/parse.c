@@ -22,11 +22,28 @@ char	**line_checker(char *input)
 			count++;
 		if (input[count] == '\"')
 		{
-			token = split_double_quote(input, count);
+			token = split_quotes(input, count, '\"');
 			count += (ft_strlen(token));
 			ft_fill_token_table(token_table, token);
 		}
-		// TODO: double quotes
+		else if (input[count] == '\'')
+		{
+			token = split_quotes(input, count, '\'');
+			count += (ft_strlen(token));
+			ft_fill_token_table(token_table, token);
+		}
+		else
+		{
+			token = get_rest(input, count);
+			count += (ft_strlen(token));
+			ft_fill_token_table(token_table, token);
+		}
+		count++;
+	}
+	count = 0;
+	while (token_table[count] != NULL)
+	{
+		printf("Token %d: %s\n", count, token_table[count]);
 		count++;
 	}
 	return (token_table);
@@ -88,7 +105,7 @@ t_token *ft_token_last(t_token *token)
     return (token);
 }
 
-char *split_double_quote(char *input, int count)
+char *split_quotes(char *input, int count, char flag)
 {
 	char	*single_line;
 	int		start;
@@ -98,8 +115,8 @@ char *split_double_quote(char *input, int count)
 	single_line = malloc(sizeof(char) * 100); //dejar limpio
 	if (!single_line)
 		ft_print_exit("Error: malloc failed\n");
-	single_line[0] = '\"';
-	while (input[count] != '\"' && input[count] != '\0')
+	single_line[0] = flag;
+	while (input[count] != flag && input[count] != '\0')
 	{
 		single_line[start] = input[count];
 		if (input[count - 1] == '\0')
@@ -107,7 +124,24 @@ char *split_double_quote(char *input, int count)
 		start++;
 		count++;
 	}
-	single_line[start] = '\"';
+	single_line[start] = flag;
 	single_line[start + 1] = '\0';
 	return (single_line);
+}
+
+char	*get_rest(char *input, int i)
+{
+	char	*aux;
+	int		j;
+
+	aux = ft_calloc(100, sizeof(char));
+	j = 0;
+	while (input[i] != ' ' && input[i] != '"'
+		&& input[i] != '\'' && input[i] != '\0')
+	{
+		aux[j] = input[i];
+		i++;
+		j++;
+	}
+	return (aux);
 }
