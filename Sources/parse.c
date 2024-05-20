@@ -4,8 +4,10 @@ void	parser(t_data *data)
 {
 	char	**token_table;
 
+	ft_is_empti(data->input); //redundante
 	token_table = line_checker(data->input);
-	printf("Ignored line %s\n", token_table[0]);
+	ft_redirection_check(token_table); // mejorar los return
+	ft_check_type(token_table);
 }
 
 char	**line_checker(char *input)
@@ -26,7 +28,7 @@ char	**line_checker(char *input)
 			count += (ft_strlen(token));
 			ft_fill_token_table(token_table, token);
 		}
-		else if (input[count] == '\'')
+		else if (input[count] == '\'') // esto se acorta en el primer if
 		{
 			token = split_quotes(input, count, '\'');
 			count += (ft_strlen(token));
@@ -144,4 +146,45 @@ char	*get_rest(char *input, int i)
 		count++;
 	}
 	return (temp);
+}
+
+int	ft_is_empti(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void ft_check_type(char **token_table) // now print type
+{
+	int i;
+
+	i = 0;
+	while (token_table[i] != NULL)
+	{
+		if (token_table[i][0] == '|')
+			printf("token: %s %s\n", token_table[i], "type: Pipe");
+		else if (token_table[i][0] == '>' && token_table[i][1] == '>')
+			printf("token: %s %s\n", token_table[i], "type: append Redirection");
+		else if (token_table[i][0] == '>')
+			printf("token: %s %s\n", token_table[i], "type: out");
+		else if (token_table[i][0] == '<' && token_table[i][1] == '<')
+			printf("token: %s %s\n", token_table[i], "type: heredoc");
+		else if (token_table[i][0] == '<')
+			printf("token: %s %s\n", token_table[i], "type: input");
+		else if (token_table[i][0] == '\'' || token_table[i][0] == '\"')
+			printf("token: %s %s\n", token_table[i], "type: Quote");
+		else if (token_table[i][0] == '$')
+			printf("token: %s %s\n", token_table[i], "type: env");
+		else
+			printf("token: %s %s\n", token_table[i], "type: ni idea primo");
+		i++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:24 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/17 14:38:31 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:26:11 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,19 @@ int	main(int argc, char **argv, char **envp)
 // Compare the input line with the builtins to execute them
 void fake_executor(t_data *data)
 {
-	if (ft_strlen(data->input) == 0) // If the input is empty,
-		return ;
-
-	if (ft_strncmp(data->input, "pwd", ft_strlen(data->input)) == 0)
-		ft_pwd();
-	else if (ft_strncmp(data->input, "env", ft_strlen(data->input)) == 0)
-		ft_env(data);
-	else {
-		printf("%s: command not found\n", data->input);
-	}
+    if (ft_strlen(data->input) == 0) // If the input is empty,
+        return ;
+    if (ft_strncmp(data->input, "pwd", ft_strlen(data->input)) == 0)
+        ft_pwd();
+    else if (ft_strncmp(data->input, "env", ft_strlen(data->input)) == 0)
+        ft_env(data);
+    else if (ft_strncmp(data->input, "unset", ft_strlen(data->input)) == 0)
+        ft_unset(data, "COLORTERM="); // Change COLOR_TERM to the variable you want to unset
+    else if (ft_strncmp(data->input, "export", ft_strlen(data->input)) == 0)
+        ft_export(data);
+    else {
+        printf("%s: command not found\n", data->input);
+    }
 }
 
 int	ft_loop(t_data *data)
@@ -53,7 +56,7 @@ int	ft_loop(t_data *data)
 		data->input_len = ft_strlen(data->input);
 		if (!data->input || ft_pair_quotation_check(data))
 			return (1);
-		
+
 		parser(data);
 		add_history(data->input);
 		fake_executor(data); // Debug de builtins
@@ -128,11 +131,9 @@ int	ft_redirection_check(char **token_table)
 		if (token_table[a][0] != '\'' && token_table[a][0] != '\"')
 		{
 			if (ft_redir_conditions_check(token_table[a]))
-			{
-				printf("%s", REDIR);
-				return (1);
-			}
+				ft_print_exit(REDIR);
 		}
 		a++;
 	}
+	return (0);
 }

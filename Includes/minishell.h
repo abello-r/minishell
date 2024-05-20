@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/17 14:38:11 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:18:20 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	ft_signal_handler(int signum);
 // Builtins
 void	ft_pwd(void);
 void	ft_env(t_data *data);
+void    ft_unset(t_data *data, char *str);
+void    ft_export(t_data *data);
 
 // Utils
 void   		initializer(char **envp, t_data *data);
@@ -70,6 +72,7 @@ t_token		*ft_new_token(char *content); //making
 char   		**all_the_path(char **path);
 t_token		*ft_token_last(t_token *token);
 char		*get_rest(char *input, int i);
+int			ft_is_empti(char *str);
 
 // Split
 char		**line_checker(char *input);
@@ -86,4 +89,6 @@ void		fill_path(t_data *data);
 int			ft_redirection_check(char **token_table);
 int			ft_redir_conditions_check(char *token);
 
+// identifiers
+void		ft_check_type(char **token_table);
 #endif

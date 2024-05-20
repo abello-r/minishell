@@ -10,3 +10,15 @@ $ls file* non-existing-file* > my_normal_output.txt 2> my_error_output.txt
 
 echo "Adding stuff to the end of a file" >> my_output.txt
 
+
+
+types:
+
+
+			"" or '' type:quotes
+			| type:pipe
+			>> type: append
+			> type: out
+			<< heredoc
+			< input
+			else type: IDK !!!!!! revisar más opciones
