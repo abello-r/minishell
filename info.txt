@@ -1,0 +1,12 @@
+Types of output
+Commands and scripts in a shell can generate two basic types of outputs:
+
+STDOUT: The normal output from a command/script (file descriptor 1)
+ls file* > my_stdout.txt
+
+STDERR: The error output from a command/script (file descriptor 2)
+$ls file* non-existing-file* > my_normal_output.txt 2> my_error_output.txt
+----------------------------------
+
+echo "Adding stuff to the end of a file" >> my_output.txt
+

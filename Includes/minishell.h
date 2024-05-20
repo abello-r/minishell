@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/16 18:34:41 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:38:11 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 
 # define SIMPLE_QUOTE "[ERROR] Simple quote not closed\n"
 # define DOUBLE_QUOTE "[ERROR] Double quote not closed\n"
+# define REDIR "[ERROR] Redirection not closed\n"
 
 typedef struct s_token
 {
@@ -42,6 +43,7 @@ typedef struct s_data
 	char   	**path;
     int     exit;
     t_token *token;
+	int		input_len;
     // s_enum   *env;
 }           t_data;
 
@@ -78,4 +80,10 @@ char		*split_quotes(char *input, int count, char flag);
 // Environment
 void		fill_data_envp(char **envp, t_data *data);
 void		fill_path(t_data *data);
+
+// Redirections check
+
+int			ft_redirection_check(char **token_table);
+int			ft_redir_conditions_check(char *token);
+
 #endif

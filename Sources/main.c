@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:24 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/16 18:23:26 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:38:31 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,12 @@ int	ft_loop(t_data *data)
 	{
 		signal(SIGINT, ft_signal_handler);
 		data->input = readline("minishell$ ");
+		data->input_len = ft_strlen(data->input);
 		if (!data->input || ft_pair_quotation_check(data))
 			return (1);
+		
 		parser(data);
+		add_history(data->input);
 		fake_executor(data); // Debug de builtins
 		free(data->input);
 
@@ -90,4 +93,46 @@ int	ft_pair_quotation_check(t_data *data)
 		return (1);
 	}
 	return (0);
+}
+
+int ft_redir_conditions_check(char *token)
+{
+	if (token[0] == '>')
+	{
+		if (token[1] == '>' && token[2] == '>')
+			return (1);
+		else if (token[1] == '>' && token[2] == '<')
+			return (1);
+		else if (token[1] == '<')
+			return (1);
+	}
+	else if (token[0] == '<')
+	{
+		if (token[1] == '<' && token[2] == '<')
+			return (1);
+		else if (token[1] == '<' && token[2] == '>')
+			return (1);
+		else if (token[1] == '>')
+			return (1);
+	}
+	return (0);
+}
+
+int	ft_redirection_check(char **token_table)
+{
+	int	a;
+
+	a = 0;
+	while (token_table[a])
+	{
+		if (token_table[a][0] != '\'' && token_table[a][0] != '\"')
+		{
+			if (ft_redir_conditions_check(token_table[a]))
+			{
+				printf("%s", REDIR);
+				return (1);
+			}
+		}
+		a++;
+	}
 }

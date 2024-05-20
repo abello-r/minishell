@@ -131,17 +131,17 @@ char *split_quotes(char *input, int count, char flag)
 
 char	*get_rest(char *input, int i)
 {
-	char	*aux;
-	int		j;
+	char	*temp;
+	int		count;
 
-	aux = ft_calloc(100, sizeof(char));
-	j = 0;
+	temp = ft_calloc(100, sizeof(char));
+	count = 0;
 	while (input[i] != ' ' && input[i] != '"'
 		&& input[i] != '\'' && input[i] != '\0')
 	{
-		aux[j] = input[i];
+		temp[count] = input[i];
 		i++;
-		j++;
+		count++;
 	}
-	return (aux);
+	return (temp);
 }
