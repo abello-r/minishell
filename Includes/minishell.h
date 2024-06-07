@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/20 19:18:20 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/06/07 05:16:26 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char   		**all_the_path(char **path);
 t_token		*ft_token_last(t_token *token);
 char		*get_rest(char *input, int i);
 int			ft_is_empti(char *str);
+t_token		*tokentablemaker(char **token_table, t_data *data);
 
 // Split
 char		**line_checker(char *input);
@@ -90,5 +91,7 @@ int			ft_redirection_check(char **token_table);
 int			ft_redir_conditions_check(char *token);
 
 // identifiers
-void		ft_check_type(char **token_table);
+void		ft_check_type(char **token_table, t_data *data);
+
+
 #endif

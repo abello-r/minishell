@@ -22,3 +22,6 @@ types:
 			<< heredoc
 			< input
 			else type: IDK !!!!!! revisar más opciones
+
+
+--- ¿ Necesito diferenciar doble de simple '" ?

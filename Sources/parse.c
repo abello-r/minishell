@@ -4,10 +4,34 @@ void	parser(t_data *data)
 {
 	char	**token_table;
 
-	ft_is_empti(data->input); //redundante
+	 if (ft_is_empti(data->input) == 1) //redundante
+	 	ft_print_exit("Non empty line");
 	token_table = line_checker(data->input);
+	data->token = malloc(sizeof(t_token));
+	if (!data->token)
+		ft_print_exit("Error: malloc failed\n");
+	tokentablemaker(token_table, data);
 	ft_redirection_check(token_table); // mejorar los return
-	ft_check_type(token_table);
+	ft_check_type(token_table, data);
+}
+
+t_token	*tokentablemaker(char **token_table, t_data *data)
+{
+	int		i;
+	t_token	*temp_token;
+
+	i = 0;
+	temp_token = data->token;
+	while (token_table[i] != NULL)
+	{
+		temp_token->content = token_table[i];
+		temp_token->next = malloc(sizeof(t_token));
+		if (!temp_token->next)
+			ft_print_exit("Error: malloc failed\n");
+		temp_token = temp_token->next;
+		i++;
+	}
+	return (data->token);
 }
 
 char	**line_checker(char *input)
@@ -34,7 +58,7 @@ char	**line_checker(char *input)
 			count += (ft_strlen(token));
 			ft_fill_token_table(token_table, token);
 		}
-		else
+		else // suficiente?
 		{
 			token = get_rest(input, count);
 			count += (ft_strlen(token));
@@ -71,7 +95,7 @@ char	**ft_fill_token_table(char **token_table, char *token)
 
 	while (token_table[i] != NULL)
 		i++;
-	token_table[i] = malloc(sizeof(char *) *ft_strlen(token));
+	token_table[i] = malloc(sizeof(char *) * ft_strlen(token));
 	if (!token_table[i])
 		ft_print_exit("Error: malloc failed\n");
 	while (token[x] != '\0')
@@ -162,29 +186,43 @@ int	ft_is_empti(char *str)
 	return (1);
 }
 
-void ft_check_type(char **token_table) // now print type
+void ft_check_type(char **token_table, t_data *data) // now print type
 {
-	int i;
+	int		i;
+	t_token	*temp_token;
 
 	i = 0;
+	temp_token = data->token;
 	while (token_table[i] != NULL)
 	{
 		if (token_table[i][0] == '|')
-			printf("token: %s %s\n", token_table[i], "type: Pipe");
+		{
+			// printf("token: %s %s\n", token_table[i], "type: Pipe");
+			temp_token->type = "PIPE";
+		}
 		else if (token_table[i][0] == '>' && token_table[i][1] == '>')
-			printf("token: %s %s\n", token_table[i], "type: append Redirection");
+			// printf("token: %s %s\n", token_table[i], "type: append Redirection");
+			temp_token->type = "REDIRECTION";
 		else if (token_table[i][0] == '>')
-			printf("token: %s %s\n", token_table[i], "type: out");
+			// printf("token: %s %s\n", token_table[i], "type: out");
+			temp_token->type = "OUT";
 		else if (token_table[i][0] == '<' && token_table[i][1] == '<')
-			printf("token: %s %s\n", token_table[i], "type: heredoc");
+			// printf("token: %s %s\n", token_table[i], "type: heredoc");
+			temp_token->type = "HEREDOC";
 		else if (token_table[i][0] == '<')
-			printf("token: %s %s\n", token_table[i], "type: input");
+			// printf("token: %s %s\n", token_table[i], "type: input");
+			temp_token->type = "INPUT";
 		else if (token_table[i][0] == '\'' || token_table[i][0] == '\"')
-			printf("token: %s %s\n", token_table[i], "type: Quote");
+			// printf("token: %s %s\n", token_table[i], "type: Quote");
+			temp_token->type = "QUOTE";
 		else if (token_table[i][0] == '$')
-			printf("token: %s %s\n", token_table[i], "type: env");
+			// printf("token: %s %s\n", token_table[i], "type: env");
+			temp_token->type = "ENV";
 		else
-			printf("token: %s %s\n", token_table[i], "type: ni idea primo");
+			// printf("token: %s %s\n", token_table[i], "type: ni idea primo");
+			temp_token->type = "NIIDEA";
 		i++;
+		temp_token = temp_token->next;
 	}
+	temp_token = data->token;
 }
