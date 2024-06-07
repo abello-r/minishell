@@ -222,6 +222,7 @@ void ft_check_type(char **token_table, t_data *data) // now print type
 			// printf("token: %s %s\n", token_table[i], "type: ni idea primo");
 			temp_token->type = "NIIDEA";
 		i++;
+		printf("Token: %s Type: %s\n", temp_token->content, temp_token->type);
 		temp_token = temp_token->next;
 	}
 	temp_token = data->token;
