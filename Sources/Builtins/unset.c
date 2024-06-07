@@ -1,4 +1,5 @@
 #include "../../Includes/minishell.h"
+
 char    *ft_get_key(char *token)
 {
     int     i;
