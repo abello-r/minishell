@@ -22,7 +22,7 @@ USER = $(shell whoami)
 ifeq ($(USER), abello-r)
 	RLHEADER = -I "/opt/homebrew/opt/readline/include"
 	LIBS = -L "/opt/homebrew/opt/readline/lib" -lreadline
-else ifeq ($(USER), briveiro)
+else ifeq ($(USER), briamzp)
 	RLHEADER = -I "/opt/homebrew/opt/readline/include"
 	LIBS = -L "/opt/homebrew/opt/readline/lib" -lreadline
 else

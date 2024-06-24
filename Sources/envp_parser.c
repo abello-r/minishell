@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 15:59:44 by abello-r          #+#    #+#             */
-/*   Updated: 2024/05/16 18:21:16 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:07:54 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ void fill_data_envp(char **envp, t_data *data)
 {
 	int num_env_vars;
 	int max_env_vars;
+	char **clean_environments;
 	int i;
 
 	num_env_vars = 0;
 	max_env_vars = 100;
 	i = 0;
-	char **clean_environments = malloc(max_env_vars * sizeof(char *));
+	clean_environments = malloc(max_env_vars * sizeof(char *));
 	if (!clean_environments)
 		return;
 	while (envp[num_env_vars] != NULL)

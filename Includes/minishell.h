@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/06/07 05:16:26 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/06/24 03:41:37 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ t_token		*ft_token_last(t_token *token);
 char		*get_rest(char *input, int i);
 int			ft_is_empti(char *str);
 t_token		*tokentablemaker(char **token_table, t_data *data);
+void		ft_clean_quotes(t_data *data);
+void		ft_cpy_clean(t_token *token, int start, int end);
 
 // Split
 char		**line_checker(char *input);
@@ -84,6 +86,8 @@ char		*split_quotes(char *input, int count, char flag);
 // Environment
 void		fill_data_envp(char **envp, t_data *data);
 void		fill_path(t_data *data);
+void		ft_check_dollar(t_data *data);
+char		*ft_getenv(char *content, int i, char **envp);
 
 // Redirections check
 

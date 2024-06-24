@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 18:41:24 by abello-r          #+#    #+#             */
-/*   Updated: 2024/06/07 17:51:41 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/06/24 03:56:13 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,9 @@ int	ft_loop(t_data *data)
 		data->input_len = ft_strlen(data->input);
 		if (!data->input || ft_pair_quotation_check(data))
 			return (1);
-
 		parser(data);
 		add_history(data->input);
-		fake_executor(data); // Debug de builtins
+		// fake_executor(data); // Debug de builtins
 		free(data->input);
 
 		// TODO: Implementar [ add_history ] luego de la comprobación de la linea
