@@ -193,33 +193,23 @@ void ft_check_type(char **token_table, t_data *data) // now print type
 	while (token_table[i] != NULL)
 	{
 		if (token_table[i][0] == '|')
-		{
-			// printf("token: %s %s\n", token_table[i], "type: Pipe");
 			temp_token->type = "PIPE";
-		}
 		else if (token_table[i][0] == '>' && token_table[i][1] == '>')
-			// printf("token: %s %s\n", token_table[i], "type: append Redirection");
 			temp_token->type = "REDIRECTION";
 		else if (token_table[i][0] == '>')
-			// printf("token: %s %s\n", token_table[i], "type: out");
 			temp_token->type = "OUT";
 		else if (token_table[i][0] == '<' && token_table[i][1] == '<')
-			// printf("token: %s %s\n", token_table[i], "type: heredoc");
 			temp_token->type = "HEREDOC";
 		else if (token_table[i][0] == '<')
-			// printf("token: %s %s\n", token_table[i], "type: input");
 			temp_token->type = "INPUT";
 		else if (token_table[i][0] == '\'')
-			// printf("token: %s %s\n", token_table[i], "type: Quote");
 			temp_token->type = "SQUOTE";
 		else if (token_table[i][0] == '\"')
 			temp_token->type = "DQUOTE";
 		else if (token_table[i][0] == '$')
-			// printf("token: %s %s\n", token_table[i], "type: env");
 			temp_token->type = "ENV";
 		else
-			// printf("token: %s %s\n", token_table[i], "type: ni idea primo");
-			temp_token->type = "NIIDEA";
+			temp_token->type = "NIIDEA"; // exec y resto
 		i++;
 		temp_token = temp_token->next;
 	}
@@ -227,7 +217,7 @@ void ft_check_type(char **token_table, t_data *data) // now print type
 }
 
 void	ft_check_dollar(t_data *data) // hacer, no está terminado
-{
+{// si el valor no existe?
 	t_token	*token;
 	char 	*temp;
 	int		i;
@@ -252,8 +242,8 @@ void	ft_check_dollar(t_data *data) // hacer, no está terminado
 					}
 					else
 						data->token->content = ft_getenv(data->token->content, i, data->envp);
-						printf("temp: %s\n", temp);
-						printf("token: %s\n", data->token->content);
+						// printf("temp: %s\n", temp);
+						printf("tokenlimpio: %s\n", data->token->content);
 						data->token->content = ft_strjoin(temp, data->token->content);
 						break;
 				}

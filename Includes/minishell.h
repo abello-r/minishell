@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 16:51:19 by abello-r          #+#    #+#             */
-/*   Updated: 2024/06/24 03:41:37 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/06/25 18:36:30 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_data
 	char   	**path;
     int     exit;
     t_token *token;
+	
 	int		input_len;
     // s_enum   *env;
 }           t_data;
