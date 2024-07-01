@@ -29,6 +29,8 @@ void fake_executor(t_data *data)
         ft_unset(data, "COLORTERM="); // Change COLOR_TERM to the variable you want to unset
     else if (ft_strncmp(data->input, "export", ft_strlen(data->input)) == 0)
         ft_export(data);
+	else if (ft_strncmp(data->input, "cd", ft_strlen(data->input)) == 0)
+        ft_cd(data);
     else {
         printf("%s: command not found\n", data->input);
     }

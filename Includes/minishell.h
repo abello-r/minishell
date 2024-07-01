@@ -50,6 +50,7 @@ void	ft_pwd(void);
 void	ft_env(t_data *data);
 void    ft_unset(t_data *data, char *str);
 void    ft_export(t_data *data);
+void	ft_cd(t_data *data);
 
 // Utils
 void   		initializer(char **envp, t_data *data);
