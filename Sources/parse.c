@@ -192,6 +192,7 @@ void ft_check_type(char **token_table, t_data *data) // now print type
 	temp_token = data->token;
 	while (token_table[i] != NULL)
 	{
+		is_builtin(token_table[i], temp_token);
 		if (token_table[i][0] == '|')
 			temp_token->type = "PIPE";
 		else if (token_table[i][0] == '>' && token_table[i][1] == '>')
@@ -208,8 +209,6 @@ void ft_check_type(char **token_table, t_data *data) // now print type
 			temp_token->type = "DQUOTE";
 		else if (token_table[i][0] == '$')
 			temp_token->type = "ENV";
-		else
-			temp_token->type = "NIIDEA"; // exec y resto
 		i++;
 		temp_token = temp_token->next;
 	}

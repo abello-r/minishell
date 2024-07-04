@@ -53,19 +53,20 @@ void    ft_export(t_data *data);
 void	ft_cd(t_data *data);
 
 // Utils
-void   		initializer(char **envp, t_data *data);
+void		initializer(char **envp, t_data *data);
 int			ft_character_counter(char *input, char c);
 int			ft_pair_quotation_check(t_data *data);
 void		ft_print_exit(char *str);
-void   		ft_redirect_parse(t_data *data); //doing
+void		ft_redirect_parse(t_data *data); //doing
 t_token		*ft_new_token(char *content); //making
-char   		**all_the_path(char **path);
+char		**all_the_path(char **path);
 t_token		*ft_token_last(t_token *token);
 char		*get_rest(char *input, int i);
 int			ft_is_empti(char *str);
 t_token		*tokentablemaker(char **token_table, t_data *data);
 void		ft_clean_quotes(t_data *data);
 void		ft_cpy_clean(t_token *token, int start, int end);
+void 		is_builtin(char *token_table, t_token *token);
 
 // Split
 char		**line_checker(char *input);

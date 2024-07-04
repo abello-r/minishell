@@ -126,3 +126,19 @@ int	ft_redirection_check(char **token_table)
 	}
 	return (0);
 }
+
+void is_builtin(char *token_table, t_token *token)
+{
+	if (ft_strlen(token_table) == 0)
+		return ;
+	if (ft_strncmp(token_table, "pwd", ft_strlen(token_table)) == 0)
+		token->type = "PWD";
+	else if (ft_strncmp(token_table, "env", ft_strlen(token_table)) == 0)
+		token->type = "ENV";
+	else if (ft_strncmp(token_table, "unset", ft_strlen(token_table)) == 0)
+		token->type = "UNSET";
+	else if (ft_strncmp(token_table, "export", ft_strlen(token_table)) == 0)
+		token->type = "EXPORT";
+	else if (ft_strncmp(token_table, "cd", ft_strlen(token_table)) == 0)
+		token->type = "CD";
+}
