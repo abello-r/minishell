@@ -72,61 +72,6 @@ int	ft_character_counter(char *str, char c)
 	return (total);
 }
 
-int	ft_pair_quotation_check(t_data *data)
-{
-	if (ft_character_counter(data->input, '\'') % 2 != 0)
-	{
-		printf("%s", SIMPLE_QUOTE);
-		return (1);
-	}
-	else if (ft_character_counter(data->input, '\"') % 2 != 0)
-	{
-		printf("%s", DOUBLE_QUOTE);
-		return (1);
-	}
-	return (0);
-}
-
-int ft_redir_conditions_check(char *token)
-{
-	if (token[0] == '>')
-	{
-		if (token[1] == '>' && token[2] == '>')
-			return (1);
-		else if (token[1] == '>' && token[2] == '<')
-			return (1);
-		else if (token[1] == '<')
-			return (1);
-	}
-	else if (token[0] == '<')
-	{
-		if (token[1] == '<' && token[2] == '<')
-			return (1);
-		else if (token[1] == '<' && token[2] == '>')
-			return (1);
-		else if (token[1] == '>')
-			return (1);
-	}
-	return (0);
-}
-
-int	ft_redirection_check(char **token_table)
-{
-	int	a;
-
-	a = 0;
-	while (token_table[a])
-	{
-		if (token_table[a][0] != '\'' && token_table[a][0] != '\"')
-		{
-			if (ft_redir_conditions_check(token_table[a]))
-				ft_print_exit(REDIR);
-		}
-		a++;
-	}
-	return (0);
-}
-
 void is_builtin(char *token_table, t_token *token)
 {
 	if (ft_strlen(token_table) == 0)

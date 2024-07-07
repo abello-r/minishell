@@ -11,7 +11,8 @@ SRC_DIR = Sources
 SRC_FILES = main.c \
             error.c parse.c envp_parser.c \
             signal_handler.c token.c structs.c \
-            Builtins/pwd.c Builtins/env.c Builtins/unset.c \
+            check.c env_check.c utils.c\
+			Builtins/pwd.c Builtins/env.c Builtins/unset.c \
             Builtins/export.c Builtins/cd.c
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
