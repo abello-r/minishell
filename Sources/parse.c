@@ -3,8 +3,9 @@
 void	parser(t_data *data)
 {
 	char	**token_table;
-	 if (ft_is_empti(data->input) == 1) //redundante
-	 	ft_print_exit("Non empty line");
+
+	if (ft_is_empti(data->input) == 1)
+		ft_print_exit("Non empty line");
 	token_table = line_checker(data->input);
 	data->token = malloc(sizeof(t_token));
 	if (!data->token)
@@ -48,15 +49,9 @@ char	**line_checker(char *input)
 	{
 		while (input[count] == ' ')
 			count++;
-		if (input[count] == '\"')
+		if (input[count] == '\"' || input[count] == '\'')
 		{
-			token = split_quotes(input, count, '\"');
-			count += (ft_strlen(token));
-			ft_fill_token_table(token_table, token);
-		}
-		else if (input[count] == '\'') // esto se acorta en el primer if
-		{
-			token = split_quotes(input, count, '\'');
+			token = split_quotes(input, count, input[count]);
 			count += (ft_strlen(token));
 			ft_fill_token_table(token_table, token);
 		}
@@ -71,7 +66,7 @@ char	**line_checker(char *input)
 	return (token_table);
 }
 
-char **ft_get_memory(void)
+char	**ft_get_memory(void)
 {
 	char	**token_table;
 
@@ -83,8 +78,8 @@ char **ft_get_memory(void)
 
 char	**ft_fill_token_table(char **token_table, char *token)
 {
-	int i;
-	int x;
+	int	i;
+	int	x;
 
 	i = 0;
 	x = 0;
@@ -105,26 +100,27 @@ char	**ft_fill_token_table(char **token_table, char *token)
 
 void	ft_token_add_back(t_token **token, t_token *new)
 {
-    t_token *last;
-    if (!new)
-        return ;
-    if (!*token)
-    {
-        *token = new;
-        return ;
-    }
-    last = ft_token_last(*token);
-    last->next = new;
-    new->prev = last;
+	t_token	*last;
+
+	if (!new)
+		return ;
+	if (!*token)
+	{
+		*token = new;
+		return ;
+	}
+	last = ft_token_last(*token);
+	last->next = new;
+	new->prev = last;
 }
 
 t_token *ft_token_last(t_token *token)
 {
-    if (!token)
-        return (NULL);
-    while (token->next)
-        token = token->next;
-    return (token);
+	if (!token)
+		return (NULL);
+	while (token->next)
+		token = token->next;
+	return (token);
 }
 
 char *split_quotes(char *input, int count, char flag)
@@ -193,28 +189,34 @@ void ft_check_type(char **token_table, t_data *data) // now print type
 	while (token_table[i] != NULL)
 	{
 		is_builtin(token_table[i], temp_token);
-		if (token_table[i][0] == '|')
-			temp_token->type = "PIPE";
-		else if (token_table[i][0] == '>' && token_table[i][1] == '>')
-			temp_token->type = "REDIRECTION";
-		else if (token_table[i][0] == '>')
-			temp_token->type = "OUT";
-		else if (token_table[i][0] == '<' && token_table[i][1] == '<')
-			temp_token->type = "HEREDOC";
-		else if (token_table[i][0] == '<')
-			temp_token->type = "INPUT";
-		else if (token_table[i][0] == '\'')
-			temp_token->type = "SQUOTE";
-		else if (token_table[i][0] == '\"')
-			temp_token->type = "DQUOTE";
-		else if (token_table[i][0] == '$')
-			temp_token->type = "ENV";
+		temp_token->type = ft_assign_type(token_table[i]);
 		i++;
 		temp_token = temp_token->next;
 	}
 	temp_token = data->token;
 }
 
+char	*ft_assign_type(char *type)
+{
+	if (type[0] == '|')
+		return ("PIPE");
+	else if (type[0] == '>' && type[1] == '>')
+		return ("APPEND");
+	else if (type[0] == '>')
+		return ("OUT");
+	else if (type[0] == '<' && type[1] == '<')
+		return ("HEREDOC");
+	else if (type[0] == '<')
+		return ("INPUT");
+	else if (type[0] == '\'')
+		return ("SQUOTE");
+	else if (type[0] == '\"')
+		return ("DQUOTE");
+	else if (type[0] == '$')
+		return ("ENV");
+	else
+		return ("ARG");
+}
 void	ft_check_dollar(t_data *data) // hacer, no está terminado
 {// si el valor no existe?
 	t_token	*token;
@@ -241,9 +243,8 @@ void	ft_check_dollar(t_data *data) // hacer, no está terminado
 					}
 					else
 						data->token->content = ft_getenv(data->token->content, i, data->envp);
-						// printf("temp: %s\n", temp);
-						printf("tokenlimpio: %s\n", data->token->content);
 						data->token->content = ft_strjoin(temp, data->token->content);
+						free(temp);
 						break;
 				}
 				else

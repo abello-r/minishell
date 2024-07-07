@@ -75,5 +75,4 @@ void    ft_cd(t_data *data)
 	{
 		ft_go_to(tmp_desired_args);
 	}
-
 }

@@ -36,21 +36,33 @@ typedef struct s_data
     // s_enum   *env;
 }           t_data;
 
+typedef enum s_enum
+{
+	ENV,
+	PWD,
+	CD,
+	EXPORT,
+	UNSET,
+	EXIT,
+	ECHO,
+	UNKNOWN
+}           t_enum;
+
 // Main
-int		ft_loop(t_data *data);
+int			ft_loop(t_data *data);
 
 // Parser
-void	parser(t_data *data);
+void		parser(t_data *data);
 
 // Signals
-void	ft_signal_handler(int signum);
+void		ft_signal_handler(int signum);
 
 // Builtins
-void	ft_pwd(void);
-void	ft_env(t_data *data);
-void    ft_unset(t_data *data, char *str);
-void    ft_export(t_data *data);
-void	ft_cd(t_data *data);
+void		ft_pwd(void);
+void		ft_env(t_data *data);
+void		ft_unset(t_data *data, char *str);
+void		ft_export(t_data *data);
+void		ft_cd(t_data *data);
 
 // Utils
 void		initializer(char **envp, t_data *data);
@@ -66,7 +78,7 @@ int			ft_is_empti(char *str);
 t_token		*tokentablemaker(char **token_table, t_data *data);
 void		ft_clean_quotes(t_data *data);
 void		ft_cpy_clean(t_token *token, int start, int end);
-void 		is_builtin(char *token_table, t_token *token);
+void		is_builtin(char *token_table, t_token *token);
 
 // Split
 char		**line_checker(char *input);
@@ -87,6 +99,6 @@ int			ft_redir_conditions_check(char *token);
 
 // identifiers
 void		ft_check_type(char **token_table, t_data *data);
-
+char		*ft_assign_type(char *type);
 
 #endif

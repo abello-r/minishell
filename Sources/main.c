@@ -17,12 +17,12 @@ int	main(int argc, char **argv, char **envp)
 }
 
 // Compare the input line with the builtins to execute them
-void fake_executor(t_data *data)
+void	fake_executor(t_data *data)
 {
-    if (ft_strlen(data->input) == 0) // If the input is empty,
-        return ;
-    if (ft_strncmp(data->input, "pwd", ft_strlen(data->input)) == 0)
-        ft_pwd();
+	if (ft_strlen(data->input) == 0)
+		return ;
+	if (ft_strncmp(data->input, "pwd", ft_strlen(data->input)) == 0)
+		ft_pwd();
     else if (ft_strncmp(data->input, "env", ft_strlen(data->input)) == 0)
         ft_env(data);
     else if (ft_strncmp(data->input, "unset", ft_strlen(data->input)) == 0)
