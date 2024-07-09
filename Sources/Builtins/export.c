@@ -2,16 +2,13 @@
 
 // TODO:
 
-// 1. Agregar la variable nueva si no tiene = a export pero no a envp
-// 2. Norminette
+// 1. Norminette
 
 size_t ft_envp_len(char **envp)
 {
 	size_t len = 0;
 	while (envp[len] != NULL)
-	{
 		len++;
-	}
 	return len;
 }
 
@@ -23,9 +20,6 @@ char **ft_add_new_env(char **envp, char *desired_new_env)
 
 	envp_len = ft_envp_len(envp);
 	new_envp = malloc(sizeof(char *) * (envp_len + 2));
-
-	if (ft_strchr(desired_new_env, '=') == NULL)
-		return envp;
 
 	if (!new_envp)
 		ft_print_exit("Error: malloc failed\n");
