@@ -48,23 +48,26 @@ int ft_str_include_equal(char *str)
     return (0);
 }
 
-void    ft_unset(t_data *data, char *str)
+void    ft_unset(t_data *data)
 {
     char    *key;
     char    **copy;
     int     i;
     i = 0;
-    if (data->envp == NULL || str == NULL)
+
+	char    *content;
+	content = data->token->next->content;
+    if (data->envp == NULL || content == NULL)
         return ;
-    if (ft_str_include_equal(str) == 1)
+    if (ft_str_include_equal(content) == 1)
     {
-        printf("minishell: unset: `%s': not a valid identifier\n", str);
+        printf("minishell: unset: `%s': not a valid identifier\n", content);
         return ;
     }
     while (data->envp[i] != NULL)
     {
         key = ft_get_key(data->envp[i]);
-        if (ft_strcmp(key, str) == 0)
+        if (ft_strcmp(key, content) == 0)
         {
             copy = ft_create_copy_without_key(data, key);
             free(data->envp);

@@ -19,18 +19,27 @@ int	main(int argc, char **argv, char **envp)
 // Compare the input line with the builtins to execute them
 void	fake_executor(t_data *data)
 {
+	/*
+		DEBUG
+		while(data->token->content != NULL) {
+			printf("Input: %s\n", data->token->content);
+			if (ft_strlen(data->token->content) == 0)
+				return ;
+			data->token = data->token->next;
+	}*/
+
 	if (ft_strlen(data->input) == 0)
 		return ;
 	if (ft_strncmp(data->input, "pwd", ft_strlen(data->input)) == 0)
-		ft_pwd();
+		ft_pwd(); // OK
     else if (ft_strncmp(data->input, "env", ft_strlen(data->input)) == 0)
-        ft_env(data);
-    else if (ft_strncmp(data->input, "unset", ft_strlen(data->input)) == 0)
-        ft_unset(data, "COLORTERM="); // Change COLOR_TERM to the variable you want to unset
-    else if (ft_strncmp(data->input, "export", ft_strlen(data->input)) == 0)
-        ft_export(data);
-	else if (ft_strncmp(data->input, "cd", ft_strlen(data->input)) == 0)
-        ft_cd(data);
+        ft_env(data); // OK
+    else if (ft_strncmp(data->token->content, "unset", ft_strlen(data->token->content)) == 0)
+        ft_unset(data); // OK
+    else if (ft_strncmp(data->token->content, "export", ft_strlen(data->token->content)) == 0)
+        ft_export(data); // TODO
+	else if (ft_strncmp(data->token->content, "cd", ft_strlen(data->token->content)) == 0)
+        ft_cd(data); // On Doing
     else {
         printf("%s: command not found\n", data->input);
     }
@@ -48,7 +57,7 @@ int	ft_loop(t_data *data)
 			return (1);
 		parser(data);
 		// add_history(data->input);
-		fake_executor(data); // Debug de builtins
+		fake_executor(data);
 		free(data->input);
 
 		// TODO: Implementar [ add_history ] luego de la comprobación de la linea

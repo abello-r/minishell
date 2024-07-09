@@ -1,26 +1,30 @@
 #include "../../Includes/minishell.h"
 #include <limits.h>
 
+int countTokens(t_data *data) {
+    int count = 0;
+
+    t_token *current = data->token;
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    return count - 1;
+}
+
 char	*ft_go_to(char *directory_path)
 {
 	char	*current_dir;
 	char	buff[PATH_MAX];
 
 	current_dir = getcwd(buff, PATH_MAX); // Get the current directory [OK]
-	printf("Current Directory [OLD]: %s\n", current_dir); // Debug
-
 	if (chdir(directory_path) == -1) // Change the directory to the desired directory [OK]
-	{
-		ft_print_exit("minishell: cd: No such file or directory\n");
-	}
+		printf("minishell: cd: %s: No such file or directory\n", directory_path);
 	else {
 		// TODO: Set the OLDPWD variable to the current directory into data->envp
 		// EXTRA: We can use access to check if the route is available or not
 	}
-
 	current_dir = getcwd(buff, PATH_MAX); // Get the current directory [OK]
-	printf("Current Directory [NEW]: %s\n", current_dir); // Debug
-
 	return (current_dir);
 }
 
@@ -34,7 +38,6 @@ char	*ft_get_env_dir(t_data *data, char *d_dir) // d_dir == Desired Directory [O
 		if (!ft_strncmp(data->envp[i], d_dir, ft_strlen(d_dir)))
 		{
 			tmp_dir = ft_strdup(data->envp[i] + ft_strlen(d_dir) + 1);
-			printf("tmp_dir: %s\n", tmp_dir); // Debug
 			return (tmp_dir);
 		}
 		i++;
@@ -44,35 +47,24 @@ char	*ft_get_env_dir(t_data *data, char *d_dir) // d_dir == Desired Directory [O
 
 void    ft_cd(t_data *data)
 {
-	int tmp_argc = 0; // Replace with data->argc [Should be the number of arguments]
+	int token_counter;
+	char *desired_path;
+	char *home_dir;
 
-	char *tmp_desired_input; // Replace with data->input [Should be a "cd" as type command]
-	tmp_desired_input = "cd"; 
+	token_counter = countTokens(data); // Get the number of arguments [OK]
+	desired_path = data->token->next->content; // Get the desired path [OK]
+	home_dir = ft_get_env_dir(data, "HOME"); // Get the home directory [OK]
 
-	char *tmp_desired_args; // Replace with data->args [Should be a path to a directory]
-	tmp_desired_args = NULL;
+	//printf("TokenCounter: %d\n", token_counter); // Debug
+	//printf("DesiredPath: %s\n", desired_path); // Debug
+	//printf("HomeDir: %s\n", home_dir); // Debug
 
-	char *home_dir; // [OK]
-	home_dir = ft_get_env_dir(data, "HOME");
-
-	printf("Input: %s\n", tmp_desired_input); // Debug
-	printf("Args: %s\n", tmp_desired_args); // Debug
-
-	if (tmp_argc > 1) // If there are more than one argument, print an error [OK]
-	{
+	if (token_counter > 2) // If there are more than one argument, print an error [OK]
 		ft_print_exit("minishell: cd: too many arguments\n");
-	}
-
-	if (!tmp_desired_args) // If there is no argument, go to the home directory [OK]
-	{
+	if (!desired_path) // If there is no argument, go to the home directory [OK]
 		ft_go_to(home_dir);
-	}
-	else if (ft_strncmp(&tmp_desired_args[0], "-", 1)) // If the argument is "-", go to the previous directory [CHECK]
-	{
+	else if (desired_path[0] == '-' && !desired_path[1]) // If the argument is "-", go to the previous directory [OnDoing]
 		ft_go_to("OLDPWD");
-	}
-	else // If there is an argument, go to the desired directory [CHECK]
-	{
-		ft_go_to(tmp_desired_args);
-	}
+	else // If there is an argument, go to the desired directory [OK]
+		ft_go_to(desired_path);
 }

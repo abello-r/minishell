@@ -35,7 +35,7 @@ void	ft_check_dollar(t_data *data)
 				i++;
 			}
 		}
-		printf("Token: %s   Type; %s\n", data->token->content, data->token->type);
+		// printf("Token: %s   Type; %s\n", data->token->content, data->token->type); // Debug
 		data->token = data->token->next;
 	}
 	data->token = token;

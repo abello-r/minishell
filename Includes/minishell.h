@@ -60,7 +60,7 @@ void		ft_signal_handler(int signum);
 // Builtins
 void		ft_pwd(void);
 void		ft_env(t_data *data);
-void		ft_unset(t_data *data, char *str);
+void		ft_unset(t_data *data);
 void		ft_export(t_data *data);
 void		ft_cd(t_data *data);
 
