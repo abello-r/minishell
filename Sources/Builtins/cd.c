@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/10 02:45:22 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:47:05 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_count_tokens(t_data *data)
 	return (count - 1);
 }
 
-int	find_oldpwd(char **envp)
+static int	find_oldpwd(char **envp)
 {
 	int	i;
 
@@ -38,7 +38,7 @@ int	find_oldpwd(char **envp)
 	return (i);
 }
 
-char	*ft_go_to(char *directory_path, t_data *data)
+static char	*ft_go_to(char *directory_path, t_data *data)
 {
 	char	*current_dir;
 	char	buff[PATH_MAX];
@@ -62,7 +62,7 @@ char	*ft_go_to(char *directory_path, t_data *data)
 	return (current_dir);
 }
 
-char	*ft_get_env_dir(t_data *data, char *d_dir)
+static char	*ft_get_env_dir(t_data *data, char *d_dir)
 {
 	int		i;
 	char	*tmp_dir;

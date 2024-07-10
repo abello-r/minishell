@@ -63,6 +63,7 @@ void		ft_env(t_data *data);
 void		ft_unset(t_data *data);
 void		ft_export(t_data *data);
 void		ft_cd(t_data *data);
+void		ft_echo(t_data *data);
 
 // Utils
 void		initializer(char **envp, t_data *data);
@@ -81,6 +82,7 @@ void		ft_cpy_clean(t_token *token, int start, int end);
 int			is_builtin(char *token_table, t_token *token);
 size_t		ft_envp_len(char **envp);
 char		*ft_get_env(t_data *data, char *env);
+int			ft_count_tokens(t_data *data);
 
 // Split
 char		**line_checker(char *input);

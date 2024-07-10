@@ -6,13 +6,13 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/10 02:10:22 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:26:48 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-char	**ft_add_new_env(char **envp, char *d_new_env, int i)
+static char	**ft_add_new_env(char **envp, char *d_new_env, int i)
 {
 	int		repeated;
 	char	*key;
@@ -41,7 +41,7 @@ char	**ft_add_new_env(char **envp, char *d_new_env, int i)
 	return (new_envp);
 }
 
-void	ft_add_quotes(int i, char **envp_copy)
+static void	ft_add_quotes(int i, char **envp_copy)
 {
 	int	j;
 	int	k;
@@ -64,7 +64,7 @@ void	ft_add_quotes(int i, char **envp_copy)
 	}
 }
 
-char	**ft_copy_env(char **envp)
+static char	**ft_copy_env(char **envp)
 {
 	int		i;
 	int		envp_len;
@@ -91,7 +91,7 @@ char	**ft_copy_env(char **envp)
 	return (envp_copy);
 }
 
-void	ft_args_iterator(t_data *data, char *desired_new_env)
+static void	ft_args_iterator(t_data *data, char *desired_new_env)
 {
 	desired_new_env = data->token->next->content;
 	if (ft_isalpha(desired_new_env[0]) == 0)

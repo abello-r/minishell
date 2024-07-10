@@ -5,7 +5,7 @@ void	parser(t_data *data)
 	char	**token_table;
 
 	if (ft_is_empti(data->input) == 1)
-		ft_print_exit("Non empty line");
+		printf("");
 	token_table = line_checker(data->input);
 	data->token = malloc(sizeof(t_token));
 	if (!data->token)

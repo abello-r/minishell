@@ -6,13 +6,13 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:01 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/10 02:52:01 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:57:24 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-char    *ft_get_key(char *token)
+static char    *ft_get_key(char *token)
 {
     int     i;
     char    *key;
@@ -23,7 +23,7 @@ char    *ft_get_key(char *token)
     return (key);
 }
 
-char    **ft_create_copy_without_key(t_data *data, char *key)
+static char    **ft_create_copy_without_key(t_data *data, char *key)
 {
     char    **copy;
     int     i;
@@ -47,7 +47,7 @@ char    **ft_create_copy_without_key(t_data *data, char *key)
     return (copy);
 }
 
-int ft_str_include_equal(char *str)
+static int ft_str_include_equal(char *str)
 {
     int i;
     i = 0;

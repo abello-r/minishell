@@ -30,16 +30,18 @@ void	fake_executor(t_data *data)
 
 	if (ft_strlen(data->input) == 0)
 		return ;
-	if (ft_strncmp(data->input, "pwd", ft_strlen(data->input)) == 0)
+	if (ft_strncmp(data->token->content, "pwd", ft_strlen("pwd")) == 0)
 		ft_pwd(); // OK
-    else if (ft_strncmp(data->input, "env", ft_strlen(data->input)) == 0)
+    else if (ft_strncmp(data->token->content, "env", ft_strlen("env")) == 0)
         ft_env(data); // OK
-    else if (ft_strncmp(data->token->content, "unset", ft_strlen(data->token->content)) == 0)
+    else if (ft_strncmp(data->token->content, "unset", ft_strlen("unset")) == 0)
         ft_unset(data); // OK
-    else if (ft_strncmp(data->token->content, "export", ft_strlen(data->token->content)) == 0)
-        ft_export(data); // TODO
-	else if (ft_strncmp(data->token->content, "cd", ft_strlen(data->token->content)) == 0)
-        ft_cd(data); // On Doing
+    else if (ft_strncmp(data->token->content, "export", ft_strlen("export")) == 0)
+        ft_export(data); // OK
+	else if (ft_strncmp(data->token->content, "cd", ft_strlen("cd")) == 0)
+        ft_cd(data); // OK
+	else if (ft_strncmp(data->token->content, "echo", ft_strlen("echo")) == 0)
+        ft_echo(data); // On Doing
     else {
         printf("%s: command not found\n", data->input);
     }
