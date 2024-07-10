@@ -87,7 +87,8 @@ char	*ft_getenv(char *content, int i, char **envp)
 	y = 0;
 	while (envp[y] != NULL)
 	{
-		if (ft_strncmp(envp[y], temp, ft_strlen(temp)) == 0)
+		if (ft_strncmp(envp[y], temp, ft_strlen(temp)) == 0
+			&& envp[y][ft_strlen(temp)] == '=')
 		{
 			x = 0;
 			while (envp[y][x] != '=')
