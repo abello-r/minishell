@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/10 14:26:48 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:19:49 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ static void	ft_args_iterator(t_data *data, char *desired_new_env)
 	desired_new_env = data->token->next->content;
 	if (ft_isalpha(desired_new_env[0]) == 0)
 	{
-		printf("minishell: export: `%s': \
-			not a valid identifier\n", desired_new_env);
+		printf(\
+		"minishell: export: `%s': not a valid identifier\n", desired_new_env);
 		return ;
 	}
 	else

@@ -6,11 +6,13 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:01 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/10 14:57:24 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:23:33 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
+
+// TODO: Why the cannot unset "c=3"
 
 static char    *ft_get_key(char *token)
 {
@@ -60,32 +62,41 @@ static int ft_str_include_equal(char *str)
     return (0);
 }
 
+static void	ft_args_iterator(t_data *data)
+{
+	int		i;
+	char    *key;
+	char    **copy;
+
+	i = 0;
+	while (data->envp[i] != NULL)
+	{
+		key = ft_get_key(data->envp[i]);
+		if (ft_strcmp(key, data->token->next->content) == 0)
+		{
+			copy = ft_create_copy_without_key(data, key);
+			free(data->envp);
+			free(key);
+			data->envp = copy;
+			break ;
+		}
+		i++;
+	}
+}
+
 void    ft_unset(t_data *data)
 {
-    char    *key;
-    char    **copy;
-    int     i;
-    i = 0;
-
-	char    *content;
-	content = data->token->next->content;
-    if (data->envp == NULL || content == NULL)
-        return ;
-    if (ft_str_include_equal(content) == 1)
-    {
-        printf("minishell: unset: `%s': not a valid identifier\n", content);
-        return ;
-    }
-    while (data->envp[i] != NULL)
-    {
-        key = ft_get_key(data->envp[i]);
-        if (ft_strcmp(key, content) == 0)
-        {
-            copy = ft_create_copy_without_key(data, key);
-            free(data->envp);
-            data->envp = copy;
-            break ;
-        }
-        i++;
-    }
+	while (data->token->next->content != NULL && \
+			ft_strcmp(data->token->next->type, "ARG") == 0)
+	{
+		if (data->envp == NULL || data->token->next->content == NULL)
+        	return ;
+    	if (ft_str_include_equal(data->token->next->content) == 1) // TODO: Use ft_isalpha instead of str_include_equal
+    	{
+        	printf("minishell: unset: `%s': not a valid identifier\n", data->token->next->content);
+        	return ;
+    	}
+		ft_args_iterator(data);
+		data->token = data->token->next;
+	}
 }
