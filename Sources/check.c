@@ -94,6 +94,7 @@ void	ft_check_type(char **token_table, t_data *data)
 	temp_token = data->token;
 	while (token_table[i] != NULL)
 	{
+		// aqui
 		isbuilt = is_builtin(token_table[i], temp_token);
 		if (isbuilt == 0)
 			temp_token->type = ft_assign_type(token_table[i]);
