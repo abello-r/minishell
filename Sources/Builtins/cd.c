@@ -1,38 +1,73 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
+/*   Updated: 2024/07/10 02:45:22 by abello-r         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../Includes/minishell.h"
 #include <limits.h>
 
-int countTokens(t_data *data) {
-    int count = 0;
+int	ft_count_tokens(t_data *data)
+{
+	int		count;
+	t_token	*current;
 
-    t_token *current = data->token;
-    while (current != NULL) {
-        count++;
-        current = current->next;
-    }
-    return count - 1;
+	current = data->token;
+	count = 0;
+	while (current != NULL)
+	{
+		count++;
+		current = current->next;
+	}
+	return (count - 1);
 }
 
-char	*ft_go_to(char *directory_path)
+int	find_oldpwd(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (ft_strncmp(envp[i], "OLDPWD", 6) != 0)
+		i++;
+	return (i);
+}
+
+char	*ft_go_to(char *directory_path, t_data *data)
 {
 	char	*current_dir;
 	char	buff[PATH_MAX];
 
-	current_dir = getcwd(buff, PATH_MAX); // Get the current directory [OK]
-	if (chdir(directory_path) == -1) // Change the directory to the desired directory [OK]
-		printf("minishell: cd: %s: No such file or directory\n", directory_path);
-	else {
-		// TODO: Set the OLDPWD variable to the current directory into data->envp
-		// EXTRA: We can use access to check if the route is available or not
+	if (ft_strncmp(directory_path, "OLDPWD", 6) == 0)
+	{
+		directory_path = ft_get_env(data, "OLDPWD");
+		if (!directory_path)
+			return (NULL);
 	}
-	current_dir = getcwd(buff, PATH_MAX); // Get the current directory [OK]
+	current_dir = getcwd(buff, PATH_MAX);
+	if (chdir(directory_path) == -1)
+		printf("minishell: cd: %s: No such file or directory\n", \
+			directory_path);
+	else
+	{
+		data->envp[find_oldpwd(data->envp)] = \
+		ft_strjoin("OLDPWD=", current_dir);
+	}
+	current_dir = getcwd(buff, PATH_MAX);
 	return (current_dir);
 }
 
-char	*ft_get_env_dir(t_data *data, char *d_dir) // d_dir == Desired Directory [OK]
+char	*ft_get_env_dir(t_data *data, char *d_dir)
 {
-	int i = 0;
-	char *tmp_dir;
+	int		i;
+	char	*tmp_dir;
 
+	i = 0;
 	while (data->envp[i])
 	{
 		if (!ft_strncmp(data->envp[i], d_dir, ft_strlen(d_dir)))
@@ -45,26 +80,21 @@ char	*ft_get_env_dir(t_data *data, char *d_dir) // d_dir == Desired Directory [O
 	return (NULL);
 }
 
-void    ft_cd(t_data *data)
+void	ft_cd(t_data *data)
 {
-	int token_counter;
-	char *desired_path;
-	char *home_dir;
+	int		token_counter;
+	char	*desired_path;
+	char	*home_dir;
 
-	token_counter = countTokens(data); // Get the number of arguments [OK]
-	desired_path = data->token->next->content; // Get the desired path [OK]
-	home_dir = ft_get_env_dir(data, "HOME"); // Get the home directory [OK]
-
-	//printf("TokenCounter: %d\n", token_counter); // Debug
-	//printf("DesiredPath: %s\n", desired_path); // Debug
-	//printf("HomeDir: %s\n", home_dir); // Debug
-
-	if (token_counter > 2) // If there are more than one argument, print an error [OK]
+	token_counter = ft_count_tokens(data);
+	desired_path = data->token->next->content;
+	home_dir = ft_get_env_dir(data, "HOME");
+	if (token_counter > 2)
 		ft_print_exit("minishell: cd: too many arguments\n");
-	if (!desired_path) // If there is no argument, go to the home directory [OK]
-		ft_go_to(home_dir);
-	else if (desired_path[0] == '-' && !desired_path[1]) // If the argument is "-", go to the previous directory [OnDoing]
-		ft_go_to("OLDPWD");
-	else // If there is an argument, go to the desired directory [OK]
-		ft_go_to(desired_path);
+	if (!desired_path)
+		ft_go_to(home_dir, data);
+	else if (desired_path[0] == '-' && !desired_path[1])
+		ft_go_to("OLDPWD", data);
+	else
+		ft_go_to(desired_path, data);
 }

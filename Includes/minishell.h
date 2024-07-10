@@ -80,6 +80,7 @@ void		ft_clean_quotes(t_data *data);
 void		ft_cpy_clean(t_token *token, int start, int end);
 int			is_builtin(char *token_table, t_token *token);
 size_t		ft_envp_len(char **envp);
+char		*ft_get_env(t_data *data, char *env);
 
 // Split
 char		**line_checker(char *input);

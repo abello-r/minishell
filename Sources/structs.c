@@ -17,3 +17,16 @@ size_t	ft_envp_len(char **envp)
 		len++;
 	return (len);
 }
+
+char	*ft_get_env(t_data *data, char *env)
+{
+	int i = 0;
+
+	while (data->envp[i])
+	{
+		if (!ft_strncmp(data->envp[i], env, ft_strlen(env)))
+			return (data->envp[i] + ft_strlen(env) + 1);
+		i++;
+	}
+	return (NULL);
+}
