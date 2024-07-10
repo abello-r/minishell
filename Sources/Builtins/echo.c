@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:22 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/10 21:06:13 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/07/10 22:36:06 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static void	ft_print_echo_args(t_data *data, int dash_flag)
 	if (dash_flag == 1)
 	{
 		data->token = data->token->next;
-		tokens_count -= 1; // -1 because of the -n flag
+		tokens_count -= 1;
 	}
 	while (data->token->next->content != NULL && \
 		(ft_strcmp(data->token->next->type, "ARG") == 0 \
 		|| ft_strcmp(data->token->next->type, "DQUOTE") == 0 \
-		|| ft_strcmp(data->token->next->type, "SQUOTE") == 0
+		|| ft_strcmp(data->token->next->type, "SQUOTE") == 0 \
 		|| ft_strcmp(data->token->next->type, "ENV") == 0))
 	{
 		if (tokens_count > 1)
