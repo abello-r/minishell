@@ -78,7 +78,8 @@ int			ft_is_empti(char *str);
 t_token		*tokentablemaker(char **token_table, t_data *data);
 void		ft_clean_quotes(t_data *data);
 void		ft_cpy_clean(t_token *token, int start, int end);
-void		is_builtin(char *token_table, t_token *token);
+int			is_builtin(char *token_table, t_token *token);
+size_t		ft_envp_len(char **envp);
 
 // Split
 char		**line_checker(char *input);

@@ -81,18 +81,19 @@ int	ft_character_counter(char *str, char c)
 	return (total);
 }
 
-void is_builtin(char *token_table, t_token *token)
+int is_builtin(char *token_table, t_token *token)
 {
-	if (ft_strlen(token_table) == 0)
-		return ;
 	if (ft_strncmp(token_table, "pwd", ft_strlen(token_table)) == 0)
-		token->type = "PWD";
+			token->type = "PWD";
 	else if (ft_strncmp(token_table, "env", ft_strlen(token_table)) == 0)
-		token->type = "ENV";
+			token->type = "ENV";
 	else if (ft_strncmp(token_table, "unset", ft_strlen(token_table)) == 0)
-		token->type = "UNSET";
+			token->type = "UNSET";
 	else if (ft_strncmp(token_table, "export", ft_strlen(token_table)) == 0)
-		token->type = "EXPORT";
+			token->type = "EXPORT";
 	else if (ft_strncmp(token_table, "cd", ft_strlen(token_table)) == 0)
-		token->type = "CD";
+			token->type = "CD";
+	else
+		return (0);
+	return (1);
 }

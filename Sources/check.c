@@ -87,14 +87,16 @@ char	**line_checker(char *input)
 void	ft_check_type(char **token_table, t_data *data)
 {
 	int		i;
+	int		isbuilt;
 	t_token	*temp_token;
 
 	i = 0;
 	temp_token = data->token;
 	while (token_table[i] != NULL)
 	{
-		is_builtin(token_table[i], temp_token);
-		temp_token->type = ft_assign_type(token_table[i]);
+		isbuilt = is_builtin(token_table[i], temp_token);
+		if (isbuilt == 0)
+			temp_token->type = ft_assign_type(token_table[i]);
 		i++;
 		temp_token = temp_token->next;
 	}
