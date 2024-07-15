@@ -26,7 +26,8 @@ void	ft_check_dollar(t_data *data)
 					}
 					else
 						data->token->content = ft_getenv(data->token->content, i, data->envp);
-						data->token->content = ft_strjoin(temp, data->token->content);
+						printf("Temp: %s\n", temp);
+						data->token->content = ft_strjoin(temp, data->token->content); // aquí falla echo $USER por ej
 						free(temp);
 						break;
 				}
