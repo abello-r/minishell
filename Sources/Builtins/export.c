@@ -12,6 +12,8 @@
 
 #include "../../Includes/minishell.h"
 
+// TODO: Fix the double quoutes case, and check what happen when the user add some weird symbols like ^ or $/
+
 static char	**ft_add_new_env(char **envp, char *d_new_env, int i)
 {
 	int		repeated;
