@@ -35,17 +35,15 @@ void	fake_executor(t_data *data)
     else if (ft_strncmp(data->token->content, "env", ft_strlen("env")) == 0)
         ft_env(data); // OK
     else if (ft_strncmp(data->token->content, "unset", ft_strlen("unset")) == 0)
-        ft_unset(data); // OK
+        ft_unset(data); // TODO: Fix unset c
     else if (ft_strncmp(data->token->content, "export", ft_strlen("export")) == 0)
-        ft_export(data); // OK
+        ft_export(data); // TODO: Fix export a=1 b=2 c=3
 	else if (ft_strncmp(data->token->content, "cd", ft_strlen("cd")) == 0)
         ft_cd(data); // OK
 	else if (ft_strncmp(data->token->content, "echo", ft_strlen("echo")) == 0)
-        ft_echo(data); // On Doing
-    else {
-		ft_check_cmd_on_path(data);
-        //printf("%s: command not found\n", data->input);
-    }
+        ft_echo(data); // TODO: Fix $USER
+    else
+		ft_check_cmd_on_path(data);;
 }
 
 int	ft_loop(t_data *data)

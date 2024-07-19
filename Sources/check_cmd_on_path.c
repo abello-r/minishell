@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:46:25 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/19 15:42:31 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/19 15:53:03 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int ft_execute_cmd(t_data *data, char *command)
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
-	free(argv); // Free the argv array in case of fork failure
+	free(argv);
 	return (0);
 }
 
