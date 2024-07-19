@@ -6,19 +6,19 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/10 15:19:49 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/19 13:52:05 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-// TODO: Fix the double quoutes case, and check what happen when the user add some weird symbols like ^ or $/
+// TODO: Solucionar join en caso de a=1 b=2 c=3
 
-static char	**ft_add_new_env(char **envp, char *d_new_env, int i)
+static char **ft_add_new_env(char **envp, char *d_new_env, int i)
 {
-	int		repeated;
-	char	*key;
-	char	**new_envp;
+	int repeated;
+	char *key;
+	char **new_envp;
 
 	i = -1;
 	repeated = 0;
@@ -43,10 +43,10 @@ static char	**ft_add_new_env(char **envp, char *d_new_env, int i)
 	return (new_envp);
 }
 
-static void	ft_add_quotes(int i, char **envp_copy)
+static void ft_add_quotes(int i, char **envp_copy)
 {
-	int	j;
-	int	k;
+	int j;
+	int k;
 
 	j = 0;
 	while (envp_copy[i][j] != '\0')
@@ -60,17 +60,17 @@ static void	ft_add_quotes(int i, char **envp_copy)
 				k--;
 			}
 			envp_copy[i][j + 1] = '"';
-			break ;
+			break;
 		}
 		j++;
 	}
 }
 
-static char	**ft_copy_env(char **envp)
+static char **ft_copy_env(char **envp)
 {
-	int		i;
-	int		envp_len;
-	char	**envp_copy;
+	int i;
+	int envp_len;
+	char **envp_copy;
 
 	envp_len = ft_envp_len(envp);
 	envp_copy = malloc(sizeof(char *) * (envp_len + 1));
@@ -93,24 +93,29 @@ static char	**ft_copy_env(char **envp)
 	return (envp_copy);
 }
 
-static void	ft_args_iterator(t_data *data, char *desired_new_env)
+static void ft_args_iterator(t_data *data, char *desired_new_env)
 {
-	desired_new_env = data->token->next->content;
+	if (desired_new_env == NULL)
+	{
+		printf("Desired new env is NULL\n");
+		return;
+	}
+	printf("desired_new_env: %s\n", desired_new_env);
 	if (ft_isalpha(desired_new_env[0]) == 0)
 	{
-		printf(\
-		"minishell: export: `%s': not a valid identifier\n", desired_new_env);
-		return ;
+		printf(
+			"minishell: export: `%s': not a valid identifier\n", desired_new_env);
+		return;
 	}
 	else
 		data->envp = ft_add_new_env(data->envp, desired_new_env, 0);
 }
 
-void	ft_export(t_data *data)
+void ft_export(t_data *data)
 {
-	int		i;
-	char	*desired_new_env;
-	char	**envp_copy;
+	int i;
+	char *desired_new_env;
+	char **envp_copy;
 
 	i = 0;
 	desired_new_env = NULL;
@@ -119,15 +124,27 @@ void	ft_export(t_data *data)
 	{
 		while (envp_copy[++i] != NULL)
 			printf("%s\n", envp_copy[i]);
-		return ;
+		return;
 	}
 	else
 	{
-		while (data->token->next->content != NULL && \
-			ft_strcmp(data->token->next->type, "ARG") == 0)
+		while (data->token->next->content != NULL &&
+			   ft_strcmp(data->token->next->type, "ARG") == 0)
 		{
+			if (data->token->next && data->token->next->content &&
+					 ft_strchr(data->token->next->content, '=') &&
+					 data->token->next->next && data->token->next->next->type &&
+					 ft_strcmp(data->token->next->next->type, "ARG") == 0)
+			{
+				desired_new_env = ft_strjoin(data->token->next->content, data->token->next->next->content);
+			}
+			else if (data->token->next || data->token->next->content)
+			{
+				desired_new_env = ft_strdup(data->token->next->content);
+			}
 			ft_args_iterator(data, desired_new_env);
 			data->token = data->token->next;
+			free(desired_new_env);
 		}
 	}
 }

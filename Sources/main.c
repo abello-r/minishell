@@ -43,7 +43,8 @@ void	fake_executor(t_data *data)
 	else if (ft_strncmp(data->token->content, "echo", ft_strlen("echo")) == 0)
         ft_echo(data); // On Doing
     else {
-        printf("%s: command not found\n", data->input);
+		ft_check_cmd_on_path(data);
+        //printf("%s: command not found\n", data->input);
     }
 }
 
@@ -58,11 +59,9 @@ int	ft_loop(t_data *data)
 		if (!data->input || ft_pair_quotation_check(data))
 			return (1);
 		parser(data);
-		// add_history(data->input);
+		add_history(data->input);
 		fake_executor(data);
 		free(data->input);
-
-		// TODO: Implementar [ add_history ] luego de la comprobación de la linea
 	}
 }
 

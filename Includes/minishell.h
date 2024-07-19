@@ -11,6 +11,7 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <sys/wait.h>
 
 # define SIMPLE_QUOTE "[ERROR] Simple quote not closed\n"
 # define DOUBLE_QUOTE "[ERROR] Double quote not closed\n"
@@ -83,6 +84,7 @@ int			is_builtin(char *token_table, t_token *token);
 size_t		ft_envp_len(char **envp);
 char		*ft_get_env(t_data *data, char *env);
 int			ft_count_tokens(t_data *data);
+void		ft_check_cmd_on_path(t_data *data);
 
 // Split
 char		**line_checker(char *input);
