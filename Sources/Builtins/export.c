@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/21 22:40:39 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/07/21 22:56:05 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static char	**ft_copy_env(char **envp)
 
 void	ft_args_export_iterator(t_data *data, char *desired_new_env)
 {
-	printf("desired_new_env: %s\n", desired_new_env);
+	// printf("desired_new_env: %s\n", desired_new_env);
 	if (desired_new_env == NULL)
 	{
 		//printf("Desired new env is NULL\n");

@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:45:33 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 21:29:54 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/07/21 22:56:19 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	ft_clean_quotes(t_data *data)
 		{
 			ft_cpy_clean(data->token, 1, ft_strlen(data->token->content) - 1);
 		}
-		printf("content: %s\n", data->token->content);
 		data->token = data->token->next;
 	}
 	data->token = token;

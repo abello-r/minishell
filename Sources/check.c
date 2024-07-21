@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:39:53 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 21:23:08 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/07/21 22:56:30 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ char	**line_checker(char *input)
 		else
 		{
 			token = get_rest(input, count);
-			printf("tokenaso: %s\n", token);
 			count += (ft_strlen(token));
 			ft_fill_token_table(token_table, token);
 		}
