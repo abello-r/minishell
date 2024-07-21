@@ -28,7 +28,7 @@ Pruebas (En orden de importancia):
 	este caso da segfault y deberia dar un mensaje de error 
 	[cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory])
 
-4- En el EXPORT, gestionar multiples cargas con o sin comillas [TODO]
+4- En el EXPORT, gestionar multiples cargas con o sin comillas [OK??]
 	* export a=1 b=2 c=3
 	* export a="1" b="2" c="3"
 

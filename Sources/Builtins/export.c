@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/21 12:41:39 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 22:40:39 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static char	**ft_add_new_env(char **envp, char *d_new_env, int i)
 		else
 			new_envp[i] = ft_strdup(envp[i]);
 	}
+	clean_quotes_from_env(d_new_env);
 	if (repeated == 0)
 		new_envp[i] = ft_strdup(d_new_env);
 	new_envp[i + 1] = NULL;
@@ -95,6 +96,7 @@ static char	**ft_copy_env(char **envp)
 
 void	ft_args_export_iterator(t_data *data, char *desired_new_env)
 {
+	printf("desired_new_env: %s\n", desired_new_env);
 	if (desired_new_env == NULL)
 	{
 		//printf("Desired new env is NULL\n");
@@ -129,4 +131,22 @@ void	ft_export(t_data *data)
 	{
 		ft_process_export_args(data);
 	}
+}
+
+void clean_quotes_from_env(char *line)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '\"' || line[i] == '\'')
+			i++;
+		line[j] = line[i];
+		i++;
+		j++;
+	}
+	line[j] = '\0';
 }

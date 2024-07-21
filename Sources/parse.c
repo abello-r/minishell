@@ -6,7 +6,7 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:34:15 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 04:34:16 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/07/21 21:31:15 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_token	*tokentablemaker(char **token_table, t_data *data)
 		if (!temp_token->next)
 			ft_print_exit("Error: malloc failed\n");
 		temp_token = temp_token->next;
+		printf("token_table[%d]: %s\n", i, token_table[i]);
 		i++;
 	}
 	return (data->token);
@@ -60,6 +61,7 @@ char	**ft_get_memory(void)
 
 char	*ft_assign_type(char *type)
 {
+	printf("typelolo: %s\n", type);
 	if (type[0] == '|')
 		return ("PIPE");
 	else if (type[0] == '>' && type[1] == '>')

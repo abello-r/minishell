@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:45:33 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 12:41:18 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 21:29:54 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ char	*get_rest(char *input, int i)
 
 	temp = ft_calloc(100, sizeof(char));
 	count = 0;
-	while (input[i] != ' ' && input[i] != '"'
-		&& input[i] != '\'' && input[i] != '\0')
+	while (input[i] != ' ' && input[i] != '\0')
 	{
 		temp[count] = input[i];
 		i++;
@@ -74,11 +73,12 @@ void	ft_clean_quotes(t_data *data)
 	token = data->token;
 	while (data->token->content)
 	{
-		if (ft_strchr(data->token->content, '\'')
-			|| ft_strchr(data->token->content, '\"'))
+		if (data->token->content[0] == '\''
+			|| data->token->content[0] == '\"')
 		{
 			ft_cpy_clean(data->token, 1, ft_strlen(data->token->content) - 1);
 		}
+		printf("content: %s\n", data->token->content);
 		data->token = data->token->next;
 	}
 	data->token = token;

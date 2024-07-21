@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:27 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 20:02:45 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 22:40:51 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void		ft_process_export_args(t_data *data);
 void		ft_args_export_iterator(t_data *data, char *desired_new_env);
 char		*ft_strtolower(char *str);
 void		ft_check_allocation(void *mem);
+void		clean_quotes_from_env(char *line);
 
 
 // Split

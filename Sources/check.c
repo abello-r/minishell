@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:39:53 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 12:41:06 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 21:23:08 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ char	**line_checker(char *input)
 		else
 		{
 			token = get_rest(input, count);
+			printf("tokenaso: %s\n", token);
 			count += (ft_strlen(token));
 			ft_fill_token_table(token_table, token);
 		}
