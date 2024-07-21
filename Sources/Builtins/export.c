@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/19 13:52:05 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 03:54:00 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 // TODO: Solucionar join en caso de a=1 b=2 c=3
 
-static char **ft_add_new_env(char **envp, char *d_new_env, int i)
+static char	**ft_add_new_env(char **envp, char *d_new_env, int i)
 {
-	int repeated;
-	char *key;
-	char **new_envp;
+	int		repeated;
+	char	*key;
+	char	**new_envp;
 
 	i = -1;
 	repeated = 0;
 	key = ft_substr(d_new_env, 0, ft_strchr(d_new_env, '=') - d_new_env);
 	new_envp = malloc(sizeof(char *) * (ft_envp_len(envp) + 2));
-	if (!new_envp)
-		ft_print_exit("Error: malloc failed\n");
+	ft_check_allocation(new_envp);
 	while (envp[++i] != NULL)
 	{
 		if (ft_strncmp(envp[i], key, ft_strlen(key)) == 0)
 		{
-			repeated = 1 && i + 1;
+			repeated = 1;
+			i++;
 			free(envp[i]);
 			new_envp[i] = ft_strdup(d_new_env);
 		}
@@ -43,10 +43,10 @@ static char **ft_add_new_env(char **envp, char *d_new_env, int i)
 	return (new_envp);
 }
 
-static void ft_add_quotes(int i, char **envp_copy)
+static void	ft_add_quotes(int i, char **envp_copy)
 {
-	int j;
-	int k;
+	int	j;
+	int	k;
 
 	j = 0;
 	while (envp_copy[i][j] != '\0')
@@ -60,17 +60,17 @@ static void ft_add_quotes(int i, char **envp_copy)
 				k--;
 			}
 			envp_copy[i][j + 1] = '"';
-			break;
+			break ;
 		}
 		j++;
 	}
 }
 
-static char **ft_copy_env(char **envp)
+static char	**ft_copy_env(char **envp)
 {
-	int i;
-	int envp_len;
-	char **envp_copy;
+	int		i;
+	int		envp_len;
+	char	**envp_copy;
 
 	envp_len = ft_envp_len(envp);
 	envp_copy = malloc(sizeof(char *) * (envp_len + 1));
@@ -93,58 +93,40 @@ static char **ft_copy_env(char **envp)
 	return (envp_copy);
 }
 
-static void ft_args_iterator(t_data *data, char *desired_new_env)
+void	ft_args_export_iterator(t_data *data, char *desired_new_env)
 {
 	if (desired_new_env == NULL)
 	{
 		printf("Desired new env is NULL\n");
-		return;
+		return ;
 	}
 	printf("desired_new_env: %s\n", desired_new_env);
 	if (ft_isalpha(desired_new_env[0]) == 0)
 	{
 		printf(
-			"minishell: export: `%s': not a valid identifier\n", desired_new_env);
-		return;
+			"minishell: export: `%s': not a valid identifier\n",
+			desired_new_env);
+		return ;
 	}
 	else
 		data->envp = ft_add_new_env(data->envp, desired_new_env, 0);
 }
 
-void ft_export(t_data *data)
+void	ft_export(t_data *data)
 {
-	int i;
-	char *desired_new_env;
-	char **envp_copy;
+	int		i;
+	char	**envp_copy;
 
 	i = 0;
-	desired_new_env = NULL;
 	envp_copy = ft_copy_env(data->envp);
 	if (data->token->next->content == NULL)
 	{
 		while (envp_copy[++i] != NULL)
 			printf("%s\n", envp_copy[i]);
-		return;
+		return ;
 	}
 	else
 	{
-		while (data->token->next->content != NULL &&
-			   ft_strcmp(data->token->next->type, "ARG") == 0)
-		{
-			if (data->token->next && data->token->next->content &&
-					 ft_strchr(data->token->next->content, '=') &&
-					 data->token->next->next && data->token->next->next->type &&
-					 ft_strcmp(data->token->next->next->type, "ARG") == 0)
-			{
-				desired_new_env = ft_strjoin(data->token->next->content, data->token->next->next->content);
-			}
-			else if (data->token->next || data->token->next->content)
-			{
-				desired_new_env = ft_strdup(data->token->next->content);
-			}
-			ft_args_iterator(data, desired_new_env);
-			data->token = data->token->next;
-			free(desired_new_env);
-		}
+		ft_process_export_args(data);
 	}
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/21 03:45:33 by briveiro          #+#    #+#             */
+/*   Updated: 2024/07/21 04:02:01 by briveiro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/minishell.h"
 
 char	*get_rest(char *input, int i)
@@ -31,7 +43,7 @@ int	ft_is_empti(char *str)
 	return (1);
 }
 
-char *split_quotes(char *input, int count, char flag)
+char	*split_quotes(char *input, int count, char flag)
 {
 	char	*single_line;
 	int		start;

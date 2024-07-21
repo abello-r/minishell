@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/21 04:34:15 by briveiro          #+#    #+#             */
+/*   Updated: 2024/07/21 04:34:16 by briveiro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/minishell.h"
 
 void	parser(t_data *data)
@@ -68,43 +80,77 @@ char	*ft_assign_type(char *type)
 		return ("ARG");
 }
 
+// char	*ft_getenv(char *content, int i, char **envp)
+// {
+// 	int		x;
+// 	int		y;
+// 	char	*temp;
+
+// 	x = i + 1;
+// 	y = 0;
+// 	temp = ft_calloc(100, sizeof(char));
+// 	while (content[x] != '\0' && content[x] != ' ')
+// 	{
+// 		temp[y] = content[x];
+// 		x++;
+// 		y++;
+// 	}
+// 	temp[y] = '\0';
+// 	y = 0;
+// 	while (envp[y] != NULL)
+// 	{
+// 		if (ft_strncmp(envp[y], temp, ft_strlen(temp)) == 0
+// 			&& envp[y][ft_strlen(temp)] == '=')
+// 		{
+// 			x = 0;
+// 			while (envp[y][x] != '=')
+// 				x++;
+// 			x++;
+// 			i = 0;
+// 			while (envp[y][x] != '\0')
+// 			{
+// 				content[i] = envp[y][x];
+// 				x++;
+// 				i++;
+// 			}
+// 			content[i] = '\0';
+// 			return (content);
+// 		}
+// 		y++;
+// 	}
+// 	return (content);
+// }
+
 char	*ft_getenv(char *content, int i, char **envp)
 {
 	int		x;
 	int		y;
-	char	*temp;
+	int		start;
+	int		end;
+	char	*var_name;
+	char	*value;
+	char	*result;
 
-	x = i + 1;
-	y = 0;
-	temp = ft_calloc(100, sizeof(char));
-	while (content[x] != '\0' && content[x] != ' ')
-	{
-		temp[y] = content[x];
-		x++;
-		y++;
-	}
-	temp[y] = '\0';
+	start = i + 1;
+	end = start;
+	while (content[end] && content[end] != ' ')
+		end++;
+	var_name = ft_substr(content, start, end - start);
 	y = 0;
 	while (envp[y] != NULL)
 	{
-		if (ft_strncmp(envp[y], temp, ft_strlen(temp)) == 0
-			&& envp[y][ft_strlen(temp)] == '=')
+		if (ft_strncmp(envp[y], var_name, ft_strlen(var_name)) == 0
+			&& envp[y][ft_strlen(var_name)] == '=')
 		{
-			x = 0;
-			while (envp[y][x] != '=')
-				x++;
-			x++;
-			i = 0;
-			while (envp[y][x] != '\0')
-			{
-				content[i] = envp[y][x];
-				x++;
-				i++;
-			}
-			content[i] = '\0';
-			return (content);
+			x = ft_strlen(var_name) + 1;
+			value = ft_strdup(&envp[y][x]);
+			result = ft_strjoin(value, &content[end]);
+			free(var_name);
+			free(value);
+			return (result);
 		}
 		y++;
 	}
-	return (content);
+	free(var_name);
+	return (ft_strdup(&content[i]));
 }

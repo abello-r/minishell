@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/21 03:39:53 by briveiro          #+#    #+#             */
+/*   Updated: 2024/07/21 04:00:15 by briveiro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/minishell.h"
 
 int	ft_redirection_check(char **token_table)
@@ -17,7 +29,7 @@ int	ft_redirection_check(char **token_table)
 	return (0);
 }
 
-int ft_redir_conditions_check(char *token)
+int	ft_redir_conditions_check(char *token)
 {
 	if (token[0] == '>')
 	{
@@ -73,7 +85,7 @@ char	**line_checker(char *input)
 			count += (ft_strlen(token));
 			ft_fill_token_table(token_table, token);
 		}
-		else // suficiente?
+		else
 		{
 			token = get_rest(input, count);
 			count += (ft_strlen(token));
@@ -94,9 +106,13 @@ void	ft_check_type(char **token_table, t_data *data)
 	temp_token = data->token;
 	while (token_table[i] != NULL)
 	{
-		// aqui
 		isbuilt = is_builtin(token_table[i], temp_token);
-		if (isbuilt == 0)
+		if (isbuilt == 1)
+		{
+			printf("builtin\n");
+			temp_token->type = "BUILTIN";
+		}
+		else
 			temp_token->type = ft_assign_type(token_table[i]);
 		i++;
 		temp_token = temp_token->next;

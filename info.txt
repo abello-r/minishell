@@ -25,3 +25,34 @@ types:
 
 
 --- ¿ Necesito diferenciar doble de simple '" ?
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------
+
+Arreglos:
+
+Export funcionando OK, fallaba la lógica de concatenación ⬇️
+&& data->token->next->next && data->token->next->next->type \
+&& ft_strcmp(data->token->next->next->type, "ARG") == 0
+
+Se ha cambiado por 
+desired_new_env = ft_strjoin(data->token->next->content, \
+data->token->next->next->content);
+
+-------
+
+norminete OK falta:
+ENV_CHECK.c --> Locura de función que estoy arreglando, quiero obtener el resto de la cadena a partir de un $
+MAIN.c    --> Fake executor, comentarios para arreglar
+CHECK_CMD_ON_PATH.c  -> linea 107 en check cmd on path hace falta? si se quita dan las 25 lineas ya
+PARSE.c

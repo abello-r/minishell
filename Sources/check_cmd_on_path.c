@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd_on_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:46:25 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/19 15:53:03 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 04:19:37 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/minishell.h"
 
-static int ft_count_cmd_tokens(t_token *token)
+static int	ft_count_cmd_tokens(t_token *token)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (token)
@@ -22,14 +22,14 @@ static int ft_count_cmd_tokens(t_token *token)
 		count++;
 		token = token->next;
 	}
-	return count;
+	return (count);
 }
 
-static char **ft_build_argv(t_token *token)
+static char	**ft_build_argv(t_token *token)
 {
-	int i;
-	int count;
-	char **cmd_argv;
+	int		i;
+	int		count;
+	char	**cmd_argv;
 
 	i = 0;
 	count = ft_count_cmd_tokens(token);
@@ -40,47 +40,44 @@ static char **ft_build_argv(t_token *token)
 		token = token->next;
 	}
 	cmd_argv[i] = NULL;
-	return cmd_argv;
+	return (cmd_argv);
 }
 
-int ft_execute_cmd(t_data *data, char *command)
+int	ft_execute_cmd(t_data *data, char *command)
 {
-	pid_t pid;
-	int status;
-	char **argv;
+	pid_t	pid;
+	int		status;
+	int		exit_status;
+	char	**argv;
 
 	argv = ft_build_argv(data->token);
 	pid = fork();
 	if (pid == 0)
 	{
 		execve(command, argv, data->envp);
-		perror("execve");
-		exit(EXIT_FAILURE);
+		ft_print_exit("EXECVE");
 	}
 	else if (pid > 0)
 	{
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 		{
-			int exit_status = WEXITSTATUS(status);
+			exit_status = WEXITSTATUS(status);
 			free(argv);
-			return exit_status;
+			return (exit_status);
 		}
 	}
 	else
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	free(argv);
-	return (0);
+		ft_print_exit("FORK");
+	return (free(argv), 0);
 }
 
-void ft_check_cmd_on_path(t_data *data)
+void	ft_check_cmd_on_path(t_data *data)
 {
-	int i;
-	char *tmp;
-	char *tmp2;
+	int		i;
+	char	*tmp;
+	char	*tmp2;
+	int		exit_status;
 
 	i = 0;
 	while (data->path[i])
@@ -88,16 +85,14 @@ void ft_check_cmd_on_path(t_data *data)
 		tmp = ft_strjoin(data->path[i], "/");
 		tmp2 = ft_strjoin(tmp, data->token->content);
 		free(tmp);
-
 		if (access(tmp2, F_OK) == 0)
 		{
-			int exit_status = ft_execute_cmd(data, tmp2);
+			exit_status = ft_execute_cmd(data, tmp2);
 			if (exit_status == 0)
 			{
 				free(data->token->content);
 				data->token->content = ft_strdup(tmp2);
-				free(tmp2);
-				return;
+				return (free(tmp2));
 			}
 		}
 		free(tmp2);

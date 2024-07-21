@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/21 03:46:27 by briveiro          #+#    #+#             */
+/*   Updated: 2024/07/21 03:52:00 by briveiro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -5,13 +17,13 @@
 # include "../Libft/libft.h"
 
 // System includes
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <signal.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-#include <sys/wait.h>
+# include	<stdio.h>
+# include	<unistd.h>
+# include	<stdlib.h>
+# include	<signal.h>
+# include	<readline/readline.h>
+# include	<readline/history.h>
+# include	<sys/wait.h>
 
 # define SIMPLE_QUOTE "[ERROR] Simple quote not closed\n"
 # define DOUBLE_QUOTE "[ERROR] Double quote not closed\n"
@@ -19,23 +31,21 @@
 
 typedef struct s_token
 {
-    char            *content;
-    char            *type;
-    struct  s_token *prev;
-    struct  s_token *next;
-}           t_token;
+	char			*content;
+	char			*type;
+	struct s_token	*prev;
+	struct s_token	*next;
+}			t_token;
 
 typedef struct s_data
 {
-    char    *input;
-    char    **envp;
-	char   	**path;
-    int     exit;
-    t_token *token;
-	
+	char	*input;
+	char	**envp;
+	char	**path;
+	int		exit;
+	t_token	*token;
 	int		input_len;
-    // s_enum   *env;
-}           t_data;
+}			t_data;
 
 typedef enum s_enum
 {
@@ -47,7 +57,7 @@ typedef enum s_enum
 	EXIT,
 	ECHO,
 	UNKNOWN
-}           t_enum;
+}	t_enum;
 
 // Main
 int			ft_loop(t_data *data);
@@ -85,6 +95,10 @@ size_t		ft_envp_len(char **envp);
 char		*ft_get_env(t_data *data, char *env);
 int			ft_count_tokens(t_data *data);
 void		ft_check_cmd_on_path(t_data *data);
+void		ft_process_export_args(t_data *data);
+void		ft_args_export_iterator(t_data *data, char *desired_new_env);
+char		*ft_strtolower(char *str);
+void		ft_check_allocation(void *mem);
 
 // Split
 char		**line_checker(char *input);

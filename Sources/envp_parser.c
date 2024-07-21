@@ -1,28 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   envp_parser.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/21 03:42:34 by briveiro          #+#    #+#             */
+/*   Updated: 2024/07/21 03:58:32 by briveiro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/minishell.h"
 
-char *ft_allocate_string(const char *str)
+char	*ft_allocate_string(const char *str)
 {
-	size_t len = ft_strlen(str) + 1;
-	char *new_str = malloc(len * sizeof(char));
+	size_t	len;
+	char	*new_str;
+
+	len = ft_strlen(str) + 1;
+	new_str = malloc(len * sizeof(char));
 	if (!new_str)
-		return NULL;
+		return (NULL);
 	ft_memcpy(new_str, str, len);
-	return new_str;
+	return (new_str);
 }
 
-void fill_data_envp(char **envp, t_data *data)
+void	fill_data_envp(char **envp, t_data *data)
 {
-	int num_env_vars;
-	int max_env_vars;
-	char **clean_environments;
-	int i;
+	int		num_env_vars;
+	int		max_env_vars;
+	char	**clean_environments;
+	int		i;
 
 	num_env_vars = 0;
 	max_env_vars = 100;
 	i = 0;
 	clean_environments = malloc(max_env_vars * sizeof(char *));
 	if (!clean_environments)
-		return;
+		return ;
 	while (envp[num_env_vars] != NULL)
 		num_env_vars++;
 	while (envp[i] != NULL)
@@ -37,18 +52,16 @@ void fill_data_envp(char **envp, t_data *data)
 	data->envp = clean_environments;
 }
 
-void fill_path(t_data *data)
+void	fill_path(t_data *data)
 {
-	int i;
-	char **path_blocks;
+	int		i;
+	char	**path_blocks;
 
 	i = 0;
-
 	while (data->envp[i])
 	{
-		if (ft_strncmp(data->envp[i], "PATH=", 5) == 0) {
+		if (ft_strncmp(data->envp[i], "PATH=", 5) == 0)
 			path_blocks = ft_split(&data->envp[i][5], ':');
-		}
 		i++;
 	}
 	data->path = path_blocks;
