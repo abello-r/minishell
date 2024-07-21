@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 12:57:15 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 19:47:11 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	fake_executor(t_data *data)
 {
 	if (ft_strlen(data->input) == 0)
 		return ;
+	ft_handle_redirections_and_pipes(data);
 	if (ft_strncmp(data->token->content, "pwd", ft_strlen("pwd")) == 0)
 		ft_pwd();
     else if (ft_strncmp(data->token->content, "env", ft_strlen("env")) == 0)

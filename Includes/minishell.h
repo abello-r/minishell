@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:27 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 12:55:21 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 20:02:45 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void		ft_args_export_iterator(t_data *data, char *desired_new_env);
 char		*ft_strtolower(char *str);
 void		ft_check_allocation(void *mem);
 
+
 // Split
 char		**line_checker(char *input);
 char		**ft_get_memory(void);
@@ -123,5 +124,6 @@ int			ft_redir_conditions_check(char *token);
 // identifiers
 void		ft_check_type(char **token_table, t_data *data);
 char		*ft_assign_type(char *type);
+int			ft_handle_redirections_and_pipes(t_data *data);
 
 #endif
