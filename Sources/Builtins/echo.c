@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:22 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/10 22:36:06 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 12:43:39 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	ft_print_echo_args(t_data *data, int dash_flag)
 		|| ft_strcmp(data->token->next->type, "ENV") == 0))
 	{
 		if (tokens_count > 1)
-			printf("hola %s ", data->token->next->content);
+			printf("%s ", data->token->next->content);
 		else
 			printf("%s", data->token->next->content);
 		data->token = data->token->next;

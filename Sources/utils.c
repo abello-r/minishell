@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:45:33 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 04:02:01 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/07/21 12:41:18 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char	*split_quotes(char *input, int count, char flag)
 	}
 	single_line[start] = flag;
 	single_line[start + 1] = '\0';
-	printf("Single line: %s\n", single_line);
 	return (single_line);
 }
 

@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/10 14:47:05 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 13:44:40 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ void	ft_cd(t_data *data)
 		ft_go_to(home_dir, data);
 	else if (desired_path[0] == '-' && !desired_path[1])
 		ft_go_to("OLDPWD", data);
+	else if (desired_path[0] == '~' && !desired_path[1])
+		ft_go_to(home_dir, data);
 	else
 		ft_go_to(desired_path, data);
 }

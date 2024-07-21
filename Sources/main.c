@@ -6,11 +6,13 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 12:38:49 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 12:57:15 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/minishell.h"
+
+int g_status = 0;
 
 int	main(int argc, char **argv, char **envp)
 {

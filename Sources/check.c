@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:39:53 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 04:00:15 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/07/21 12:41:06 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ void	ft_check_type(char **token_table, t_data *data)
 		isbuilt = is_builtin(token_table[i], temp_token);
 		if (isbuilt == 1)
 		{
-			printf("builtin\n");
 			temp_token->type = "BUILTIN";
 		}
 		else

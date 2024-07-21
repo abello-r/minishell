@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:27 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 11:59:38 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 12:55:21 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define SIMPLE_QUOTE "[ERROR] Simple quote not closed\n"
 # define DOUBLE_QUOTE "[ERROR] Double quote not closed\n"
 # define REDIR "[ERROR] Redirection not closed\n"
+
+extern int g_status;
 
 typedef struct s_token
 {
