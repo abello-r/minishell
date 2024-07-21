@@ -22,7 +22,7 @@ Pruebas (En orden de importancia):
 	este caso da segfault y deberia dar un mensaje de error 
 	[cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory])
 
-4- En el EXPORT, gestionar multiples cargas con o sin comillas:
+4- En el EXPORT, gestionar multiples cargas con o sin comillas [TODO]
 	* export a=1 b=2 c=3
 	* export a="1" b="2" c="3"
 
@@ -41,3 +41,23 @@ Pruebas (En orden de importancia):
 	Por ejemplo, 137 indica que el proceso fue terminado por la señal 9 (SIGKILL).
 
 7- Comprobar LEAKS [TODO]
+
+8- Redirecciones y Pipes [Ondoing]
+	Testcases:
+		# Using pwd with redirection
+		pwd > current_directory.txt
+		
+		# Using pwd with a pipe
+		pwd | grep home
+		
+		# Using env with redirection
+		env > environment_variables.txt
+		
+		# Using env with a pipe
+		env | grep PATH
+
+		# Using echo with redirection
+		echo "This is a test" > test.txt
+
+		# Using echo with a pipe
+		echo "This is a test" | grep test
