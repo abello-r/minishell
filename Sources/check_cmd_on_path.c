@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:46:25 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/21 12:58:26 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 22:59:11 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,4 @@ void	ft_check_cmd_on_path(t_data *data)
 		i++;
 	}
 	printf("%s: command not found\n", data->token->content);
-	g_status = 127;
 }
