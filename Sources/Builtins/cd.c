@@ -6,7 +6,7 @@
 /*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/21 13:44:40 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/21 19:23:36 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ static char	*ft_go_to(char *directory_path, t_data *data)
 		if (!directory_path)
 			return (NULL);
 	}
+    if (access(directory_path, F_OK) != 0)
+    {
+        printf("minishell: cd: %s: No such file or directory\n", directory_path);
+        return (NULL);
+    }
 	current_dir = getcwd(buff, PATH_MAX);
 	if (chdir(directory_path) == -1)
 		printf("minishell: cd: %s: No such file or directory\n", \
