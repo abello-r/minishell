@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:27 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 03:52:00 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/07/21 11:59:38 by abello-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void		ft_unset(t_data *data);
 void		ft_export(t_data *data);
 void		ft_cd(t_data *data);
 void		ft_echo(t_data *data);
+void		ft_exit(t_data *data);
 
 // Utils
 void		initializer(char **envp, t_data *data);

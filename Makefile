@@ -7,14 +7,13 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SRC_DIR = Sources
-# SRC_FILES = main.c error.c parse.c envp_parser.c signal_handler.c token.c structs.c Builtins/pwd.c Builtins/env.c
 SRC_FILES = main.c \
             error.c parse.c envp_parser.c \
             signal_handler.c token.c structs.c \
             check.c env_check.c utils.c\
 			Builtins/pwd.c Builtins/env.c Builtins/unset.c \
             Builtins/export.c Builtins/cd.c Builtins/echo.c \
-			check_cmd_on_path.c utils2.c
+			Builtins/exit.c check_cmd_on_path.c utils2.c
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

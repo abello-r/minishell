@@ -1,0 +1,43 @@
+En orden de prioridad los errores que quedan pendiente y a su lado pruebas que hacer para comprobar que esten OK:
+
+1- La señal de CTRL + D da un segfault [OK]
+	* CTRL + D
+
+2- En el ECHO, Expansion del $USER [TODO]
+Pruebas (En orden de importancia):
+	* echo $USER
+	* echo "$USER"
+	* echo "Hola $USER"
+	* echo -n $USER
+	* echo -n "$USER"
+	* echo "Hola" "soy" una 'prueba' $USER
+
+3- En el CD, comprobar que la ruta a la que quiere acceder el cd, exista, en caso contrario deberia mostrar un error [TODO]
+Pruebas (En orden de importancia):
+	* mkdir test ; cd test ; mkdir test2 ; cd test2 ; rm -rf ../../test ; cd .. 
+	* cd rutaInventada
+	NOTA:
+	(El uso de ; no es obligatorio, 
+	pero es para poder mostrar la serie de comandos en una linea... 
+	este caso da segfault y deberia dar un mensaje de error 
+	[cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory])
+
+4- En el EXPORT, gestionar multiples cargas con o sin comillas:
+	* export a=1 b=2 c=3
+	* export a="1" b="2" c="3"
+
+5- En el UNSET, cuando creas una variable con nombre "c" no es posible unsetearla [TODO]
+	* export a=1 b=2 c=3 ; unset a b c
+	* export c=10 ; unset c
+
+6- En el EXIT debería retornar el valor del proceso que ha salido [TODO]
+	0 - Éxito: Indica que el comando o el script se ejecutó correctamente sin errores.
+	1 - Error genérico: Se usa para indicar que ocurrió un error genérico. No especifica un tipo de error en particular.
+	2 - Uso incorrecto del comando: Indica que el comando fue llamado con argumentos incorrectos.
+	126 - No se puede ejecutar: El comando fue encontrado, pero no se puede ejecutar. Esto podría deberse a permisos insuficientes.
+	127 - Comando no encontrado: El comando no fue encontrado. Es común cuando se intenta ejecutar un programa o script que no existe en el sistema.
+	128 - Error en la salida del shell: Un error en la salida del shell. Indica que el shell fue terminado de manera incorrecta.
+	128 + N - Terminación por señal: Indica que el proceso fue terminado por una señal (signal). Aquí, N es el número de la señal que terminó el proceso. 
+	Por ejemplo, 137 indica que el proceso fue terminado por la señal 9 (SIGKILL).
+
+7- Comprobar LEAKS [TODO]
