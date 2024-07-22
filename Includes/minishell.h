@@ -89,7 +89,7 @@ char		**all_the_path(char **path);
 t_token		*ft_token_last(t_token *token);
 char		*get_rest(char *input, int i);
 int			ft_is_empti(char *str);
-t_token		*tokentablemaker(char **token_table, t_data *data);
+void		ft_token_table_maker(char **token_table, t_data *data);
 void		ft_clean_quotes(t_data *data);
 void		ft_cpy_clean(t_token *token, int start, int end);
 int			is_builtin(char *token_table, t_token *token);

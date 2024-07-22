@@ -18,32 +18,43 @@ void	parser(t_data *data)
 
 	if (ft_is_empti(data->input) == 1)
 		printf("");
-	token_table = line_checker(data->input);
 
-	tokentablemaker(token_table, data);
-	ft_redirection_check(token_table);
+	token_table = line_checker(data->input); // OK
+	ft_token_table_maker(token_table, data); // OK
+	ft_redirection_check(token_table); // OK
+
+	// while (data->token != NULL)
+	// {
+	// 	printf("%s\n", data->token->content);
+	// 	data->token = data->token->next;
+	// }
+
 	ft_check_type(token_table, data);
 	ft_clean_quotes(data);
 	ft_check_dollar(data);
 }
 
-t_token	*tokentablemaker(char **token_table, t_data *data)
+void	ft_token_table_maker(char **token_table, t_data *data)
 {
 	int		i;
-	t_token	*temp_token;
 
 	i = 0;
-	temp_token = data->token;
+	data->head = data->token;
 	while (token_table[i] != NULL)
 	{
-		temp_token->content = token_table[i];
-		temp_token->next = malloc(sizeof(t_token));
-		if (!temp_token->next)
-			ft_print_exit("Error: malloc failed\n");
-		temp_token = temp_token->next;
+		data->token->content = malloc(sizeof(char) * (ft_strlen(token_table[i]) + 1));
+		data->token->content = token_table[i];
 		i++;
+		if (token_table[i])
+		{
+			data->token->next = malloc(sizeof(t_token));
+			if (!data->token->next)
+				ft_print_exit("Error: malloc failed\n");
+			data->token = data->token->next;
+		}
 	}
-	return (data->token);
+	data->token = data->head;
+	return ;
 }
 
 char    **ft_get_memory(char *input)
@@ -82,47 +93,6 @@ char	*ft_assign_type(char *type)
 	else
 		return ("ARG");
 }
-
-// char	*ft_getenv(char *content, int i, char **envp)
-// {
-// 	int		x;
-// 	int		y;
-// 	char	*temp;
-
-// 	x = i + 1;
-// 	y = 0;
-// 	temp = ft_calloc(100, sizeof(char));
-// 	while (content[x] != '\0' && content[x] != ' ')
-// 	{
-// 		temp[y] = content[x];
-// 		x++;
-// 		y++;
-// 	}
-// 	temp[y] = '\0';
-// 	y = 0;
-// 	while (envp[y] != NULL)
-// 	{
-// 		if (ft_strncmp(envp[y], temp, ft_strlen(temp)) == 0
-// 			&& envp[y][ft_strlen(temp)] == '=')
-// 		{
-// 			x = 0;
-// 			while (envp[y][x] != '=')
-// 				x++;
-// 			x++;
-// 			i = 0;
-// 			while (envp[y][x] != '\0')
-// 			{
-// 				content[i] = envp[y][x];
-// 				x++;
-// 				i++;
-// 			}
-// 			content[i] = '\0';
-// 			return (content);
-// 		}
-// 		y++;
-// 	}
-// 	return (content);
-// }
 
 char	*ft_getenv(char *content, int i, char **envp)
 {

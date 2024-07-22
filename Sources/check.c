@@ -97,14 +97,6 @@ char	**line_checker(char *input)
 		}
 	}
 	token_table[token_counter] = NULL;
-
-	//token_counter = 0;
-	// while (token_table[token_counter] != NULL)
-	// {
-	// 	printf("token_table: %s\n", token_table[token_counter]);
-	// 	token_counter++;
-	// }
-
 	return (token_table);
 }
 
