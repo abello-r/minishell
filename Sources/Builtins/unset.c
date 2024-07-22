@@ -6,13 +6,11 @@
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:01 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/21 03:30:34 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/07/22 02:00:16 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
-
-// TODO: Why the cannot unset "c=3"
 
 static char	*ft_get_key(char *token)
 {

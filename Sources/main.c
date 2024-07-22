@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 22:59:17 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/07/22 01:22:04 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,19 @@ int	is_builtin(char *token_table, t_token *token)
 	temp = ft_calloc(100, sizeof(char));
 	temp = ft_strcpy(temp, token_table);
 	temp = ft_strtolower(temp);
-	if (ft_strncmp(temp, "pwd", ft_strlen(temp)) == 0 \
-		|| ft_strncmp(temp, "env", ft_strlen(temp)) == 0 \
-		|| ft_strncmp(temp, "unset", ft_strlen(temp)) == 0 \
-		|| ft_strncmp(temp, "export", ft_strlen(temp)) == 0 \
-		|| ft_strncmp(temp, "cd", ft_strlen(temp)) == 0 \
-		|| ft_strncmp(temp, "echo", ft_strlen(temp)) == 0)
+	if ((temp[0] == 'c' && ft_strlen(temp) == 2)
+		|| ft_strlen(temp) >= 3)
 	{
-		token->type = "BUILTIN";
-		return (1);
+		if (ft_strncmp(temp, "pwd", ft_strlen(temp)) == 0 \
+			|| ft_strncmp(temp, "env", ft_strlen(temp)) == 0 \
+			|| ft_strncmp(temp, "unset", ft_strlen(temp)) == 0 \
+			|| ft_strncmp(temp, "export", ft_strlen(temp)) == 0 \
+			|| ft_strncmp(temp, "cd", ft_strlen(temp)) == 0 \
+			|| ft_strncmp(temp, "echo", ft_strlen(temp)) == 0)
+		{
+			token->type = "BUILTIN";
+			return (1);
+		}
 	}
 	return (0);
 }

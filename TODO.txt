@@ -32,7 +32,7 @@ Pruebas (En orden de importancia):
 	* export a=1 b=2 c=3
 	* export a="1" b="2" c="3"
 
-5- En el UNSET, cuando creas una variable con nombre "c" no es posible unsetearla [TODO]
+5- En el UNSET, cuando creas una variable con nombre "c" no es posible unsetearla [OK??]
 	* export a=1 b=2 c=3 ; unset a b c
 	* export c=10 ; unset c
 
