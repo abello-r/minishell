@@ -17,7 +17,14 @@ void	initializer(char **envp, t_data *data)
 	fill_data_envp(envp, data);
 	fill_path(data);
 	data->input = NULL;
-	data->token = NULL;
+	data->token = malloc(sizeof(t_token));
+	data->head = data->token;
+	if (!data->token)
+		ft_print_exit("Error: malloc failed\n");
+	data->token->content = NULL;
+	data->token->type = NULL;
+	data->token->prev = NULL;
+	data->token->next = NULL;
 	data->exit = 0;
 }
 

@@ -12,21 +12,28 @@
 
 #include "../Includes/minishell.h"
 
-char	*get_rest(char *input, int i)
+char *get_rest(char *input, int i)
 {
-	char	*temp;
-	int		count;
+    int count;
+    int start;
+    char *temp;
 
-	temp = ft_calloc(100, sizeof(char));
 	count = 0;
-	while (input[i] != ' ' && input[i] != '\0')
-	{
-		temp[count] = input[i];
-		i++;
-		count++;
-	}
-	return (temp);
+	start = i;
+    while (input[i] != ' ' && input[i] != '\0') {
+        i++;
+        count++;
+    }
+    temp = malloc(sizeof(char) * (count + 1));
+    if (!temp) {
+        ft_print_exit("Error: malloc failed\n");
+    }
+	temp = ft_substr(input, start, count);
+    temp[count] = '\0';
+    return temp;
 }
+
+
 
 int	ft_is_empti(char *str)
 {
@@ -49,7 +56,7 @@ char	*split_quotes(char *input, int count, char flag)
 
 	start = 1;
 	count++;
-	single_line = malloc(sizeof(char) * 100);
+	single_line = malloc(sizeof(char) * (ft_strlen(input) + 1));
 	single_line[0] = flag;
 	if (!single_line)
 		ft_print_exit("Error: malloc failed\n");

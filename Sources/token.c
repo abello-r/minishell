@@ -12,25 +12,21 @@
 
 #include "../Includes/minishell.h"
 
-char	**ft_fill_token_table(char **token_table, char *token)
+void	ft_fill_token_table(char **token_table, char *token, int token_counter)
 {
-	int	i;
 	int	x;
 
-	i = 0;
 	x = 0;
-	while (token_table[i] != NULL)
-		i++;
-	token_table[i] = malloc(sizeof(char *) * ft_strlen(token));
-	if (!token_table[i])
+	token_table[token_counter] = malloc(sizeof(char *) * ft_strlen(token));
+	if (!token_table[token_counter])
 		ft_print_exit("Error: malloc failed\n");
 	while (token[x] != '\0')
 	{
-		token_table[i][x] = token[x];
+		token_table[token_counter][x] = token[x];
 		x++;
 	}
-	token_table[i][x] = '\0';
-	return (token_table);
+	token_table[token_counter][x] = '\0';
+	return ;
 }
 
 t_token	*ft_token_new(int start, int count, char *input, t_data *data)

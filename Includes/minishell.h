@@ -44,6 +44,7 @@ typedef struct s_data
 	char	**path;
 	int		exit;
 	t_token	*token;
+	t_token	*head;
 	int		input_len;
 }			t_data;
 
@@ -105,8 +106,8 @@ void		clean_quotes_from_env(char *line);
 
 // Split
 char		**line_checker(char *input);
-char		**ft_get_memory(void);
-char		**ft_fill_token_table(char **token_table, char *token);
+char		**ft_get_memory(char *input);
+void		ft_fill_token_table(char **token_table, char *token, int token_counter);
 char		*split_quotes(char *input, int count, char flag);
 
 // Environment

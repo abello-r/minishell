@@ -19,9 +19,7 @@ void	parser(t_data *data)
 	if (ft_is_empti(data->input) == 1)
 		printf("");
 	token_table = line_checker(data->input);
-	data->token = malloc(sizeof(t_token));
-	if (!data->token)
-		ft_print_exit("Error: malloc failed\n");
+
 	tokentablemaker(token_table, data);
 	ft_redirection_check(token_table);
 	ft_check_type(token_table, data);
@@ -48,14 +46,19 @@ t_token	*tokentablemaker(char **token_table, t_data *data)
 	return (data->token);
 }
 
-char	**ft_get_memory(void)
+char    **ft_get_memory(char *input)
 {
-	char	**token_table;
+    char    **token_table;
+    int     count;
+    int     i;
 
-	token_table = malloc(sizeof(char *) * 100);
-	if (!token_table)
+	i = 0;
+    count = ft_character_counter(input, ' ');
+    token_table = malloc(sizeof(char *) * (count + 2));
+    if (!token_table)
 		ft_print_exit("Error: malloc failed\n");
-	return (token_table);
+    token_table[count + 1] = NULL;
+    return (token_table);
 }
 
 char	*ft_assign_type(char *type)

@@ -72,8 +72,10 @@ char	**line_checker(char *input)
 	char	**token_table;
 	char	*token;
 	int		count;
+	int 	token_counter;
 
-	token_table = ft_get_memory();
+	token_table = ft_get_memory(input);
+	token_counter = 0;
 	count = 0;
 	while (input[count] != '\0')
 	{
@@ -82,17 +84,25 @@ char	**line_checker(char *input)
 		if (input[count] == '\"' || input[count] == '\'')
 		{
 			token = split_quotes(input, count, input[count]);
-			count += (ft_strlen(token));
-			ft_fill_token_table(token_table, token);
+			ft_fill_token_table(token_table, token, token_counter);
+			count += ft_strlen(token);
+			token_counter++;
 		}
 		else
 		{
 			token = get_rest(input, count);
-			count += (ft_strlen(token));
-			ft_fill_token_table(token_table, token);
+			ft_fill_token_table(token_table, token, token_counter);
+			count += ft_strlen(token);
+			token_counter++;
 		}
 		count++;
 	}
+	printf("token_table. %s", token_table[0]);
+		int i = 0;
+		while (token_table[i] != NULL) {
+			printf("tokentable. %s", token_table[i]);
+			i++;
+		}
 	return (token_table);
 }
 
