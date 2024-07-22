@@ -4,7 +4,7 @@ COLOR_RESET = \033[0m
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 SRC_DIR = Sources
 SRC_FILES = main.c \
@@ -21,7 +21,7 @@ OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
 # Readline flags based on the OS
 USER = $(shell whoami)
-ifeq ($(USER), abello-r)
+ifeq ($(USER), abello-r2)
 	RLHEADER = -I "/opt/homebrew/opt/readline/include"
 	LIBS = -L "/opt/homebrew/opt/readline/lib" -lreadline
 else ifeq ($(USER), briamzp)
