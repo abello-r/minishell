@@ -84,25 +84,27 @@ char	**line_checker(char *input)
 		if (input[count] == '\"' || input[count] == '\'')
 		{
 			token = split_quotes(input, count, input[count]);
-			ft_fill_token_table(token_table, token, token_counter);
+			token_table[token_counter] = ft_fill_token_table(token);
 			count += ft_strlen(token);
 			token_counter++;
 		}
 		else
 		{
 			token = get_rest(input, count);
-			ft_fill_token_table(token_table, token, token_counter);
+			token_table[token_counter] = ft_fill_token_table(token);
 			count += ft_strlen(token);
 			token_counter++;
 		}
-		count++;
 	}
-	printf("token_table. %s", token_table[0]);
-		int i = 0;
-		while (token_table[i] != NULL) {
-			printf("tokentable. %s", token_table[i]);
-			i++;
-		}
+	token_table[token_counter] = NULL;
+
+	//token_counter = 0;
+	// while (token_table[token_counter] != NULL)
+	// {
+	// 	printf("token_table: %s\n", token_table[token_counter]);
+	// 	token_counter++;
+	// }
+
 	return (token_table);
 }
 

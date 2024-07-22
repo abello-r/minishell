@@ -107,7 +107,7 @@ void		clean_quotes_from_env(char *line);
 // Split
 char		**line_checker(char *input);
 char		**ft_get_memory(char *input);
-void		ft_fill_token_table(char **token_table, char *token, int token_counter);
+char		*ft_fill_token_table(char *token);
 char		*split_quotes(char *input, int count, char flag);
 
 // Environment
