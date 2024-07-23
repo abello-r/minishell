@@ -87,7 +87,7 @@ static void	ft_args_iterator(t_data *data)
 
 void	ft_unset(t_data *data)
 {
-	while (data->token->next->content != NULL && \
+	while (data->token->next != NULL && \
 			ft_strcmp(data->token->next->type, "ARG") == 0)
 	{
 		if (data->envp == NULL || data->token->next->content == NULL)

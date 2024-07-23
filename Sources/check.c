@@ -101,17 +101,24 @@ char	**line_checker(char *input)
 	return (token_table);
 }
 
-void	ft_check_type(t_data *data)
+void    ft_check_type(t_data *data)
 {
-	while (data->token != NULL)
-	{
-		if (is_builtin(data->token->content) == 1)
-		{
-			data->token->type = "BUILTIN";
-		}
-		else
-			data->token->type = ft_assign_type(data->token->content);
-		data->token = data->token->next;
-	}
-	data->token = data->head;
+    int i;
+    i = 0;
+    while (data->token != NULL)
+    {
+        if (ft_strncmp(data->token->content, "/bin/", 5) == 0)
+        {
+            data->token->content = ft_substr(data->token->content, 5, \
+            ft_strlen(data->token->content));
+        }
+        if (is_builtin(data->token->content) == 1)
+        {
+            data->token->type = "BUILTIN";
+        }
+        else
+            data->token->type = ft_assign_type(data->token->content);
+        data->token = data->token->next;
+    }
+    data->token = data->head;
 }
