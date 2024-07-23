@@ -92,8 +92,10 @@ void	ft_cd(t_data *data)
 	char	*home_dir;
 
 	token_counter = ft_count_tokens(data);
-	desired_path = data->token->next->content;
 	home_dir = ft_get_env_dir(data, "HOME");
+	desired_path = NULL;
+	if (data->token->next)
+		desired_path = data->token->next->content;
 	if (token_counter > 2)
 		ft_print_exit("minishell: cd: too many arguments\n");
 	if (!desired_path)
