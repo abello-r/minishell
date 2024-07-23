@@ -16,45 +16,41 @@ void	parser(t_data *data)
 {
 	char	**token_table;
 
-	if (ft_is_empti(data->input) == 1)
+	if (ft_is_empty(data->input) == 1)
 		printf("");
 
 	token_table = line_checker(data->input); // OK
 	ft_token_table_maker(token_table, data); // OK
-	ft_redirection_check(token_table); // OK
+	ft_redirection_check(data); // OK
+	ft_check_type(data); // OK
+	ft_clean_quotes(data); // OK
 
-	// while (data->token != NULL)
-	// {
-	// 	printf("%s\n", data->token->content);
-	// 	data->token = data->token->next;
-	// }
-
-	ft_check_type(token_table, data);
-	ft_clean_quotes(data);
-	ft_check_dollar(data);
+	//ft_check_dollar(data); // OnDoing
 }
 
 void	ft_token_table_maker(char **token_table, t_data *data)
 {
 	int		i;
+	t_token *current_node;
 
 	i = 0;
-	data->head = data->token;
+	current_node = NULL;
 	while (token_table[i] != NULL)
 	{
-		data->token->content = malloc(sizeof(char) * (ft_strlen(token_table[i]) + 1));
-		data->token->content = token_table[i];
-		i++;
-		if (token_table[i])
+		t_token *new_node = ft_add_node(token_table[i], ft_assign_type(token_table[i]));
+		if (i == 0)
 		{
-			data->token->next = malloc(sizeof(t_token));
-			if (!data->token->next)
-				ft_print_exit("Error: malloc failed\n");
-			data->token = data->token->next;
+			data->head = new_node;
 		}
+		else
+		{
+			current_node->next = new_node;
+			new_node->prev = current_node;
+		}
+		current_node = new_node;
+		i++;
 	}
 	data->token = data->head;
-	return ;
 }
 
 char    **ft_get_memory(char *input)

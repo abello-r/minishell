@@ -12,20 +12,21 @@
 
 #include "../Includes/minishell.h"
 
-int	ft_redirection_check(char **token_table)
+int	ft_redirection_check(t_data *data)
 {
-	int	a;
+	int	i;
 
-	a = 0;
-	while (token_table[a])
+	i = 0;
+	while (data->token != NULL)
 	{
-		if (token_table[a][0] != '\'' && token_table[a][0] != '\"')
+		if (data->token->content[0] != '\'' && data->token->content[0] != '\"')
 		{
-			if (ft_redir_conditions_check(token_table[a]))
+			if (ft_redir_conditions_check(data->token->content))
 				ft_print_exit(REDIR);
 		}
-		a++;
+		data->token = data->token->next;
 	}
+	data->token = data->head;
 	return (0);
 }
 
@@ -100,25 +101,17 @@ char	**line_checker(char *input)
 	return (token_table);
 }
 
-void	ft_check_type(char **token_table, t_data *data)
+void	ft_check_type(t_data *data)
 {
-	int		i;
-	int		isbuilt;
-	t_token	*temp_token;
-
-	i = 0;
-	temp_token = data->token;
-	while (token_table[i] != NULL)
+	while (data->token != NULL)
 	{
-		isbuilt = is_builtin(token_table[i], temp_token);
-		if (isbuilt == 1)
+		if (is_builtin(data->token->content) == 1)
 		{
-			temp_token->type = "BUILTIN";
+			data->token->type = "BUILTIN";
 		}
 		else
-			temp_token->type = ft_assign_type(token_table[i]);
-		i++;
-		temp_token = temp_token->next;
+			data->token->type = ft_assign_type(data->token->content);
+		data->token = data->token->next;
 	}
-	temp_token = data->token;
+	data->token = data->head;
 }

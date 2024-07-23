@@ -35,7 +35,7 @@ char *get_rest(char *input, int i)
 
 
 
-int	ft_is_empti(char *str)
+int	ft_is_empty(char *str)
 {
 	int	i;
 
@@ -75,10 +75,7 @@ char	*split_quotes(char *input, int count, char flag)
 
 void	ft_clean_quotes(t_data *data)
 {
-	t_token	*token;
-
-	token = data->token;
-	while (data->token->content)
+	while (data->token != NULL)
 	{
 		if (data->token->content[0] == '\''
 			|| data->token->content[0] == '\"')
@@ -87,7 +84,7 @@ void	ft_clean_quotes(t_data *data)
 		}
 		data->token = data->token->next;
 	}
-	data->token = token;
+	data->token = data->head;
 }
 
 void	ft_cpy_clean(t_token *token, int start, int end)

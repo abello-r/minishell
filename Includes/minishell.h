@@ -86,13 +86,12 @@ void		ft_print_exit(char *str);
 void		ft_redirect_parse(t_data *data); //doing
 t_token		*ft_new_token(char *content); //making
 char		**all_the_path(char **path);
-t_token		*ft_token_last(t_token *token);
 char		*get_rest(char *input, int i);
-int			ft_is_empti(char *str);
+int			ft_is_empty(char *str);
 void		ft_token_table_maker(char **token_table, t_data *data);
 void		ft_clean_quotes(t_data *data);
 void		ft_cpy_clean(t_token *token, int start, int end);
-int			is_builtin(char *token_table, t_token *token);
+int			is_builtin(char *content);
 size_t		ft_envp_len(char **envp);
 char		*ft_get_env(t_data *data, char *env);
 int			ft_count_tokens(t_data *data);
@@ -102,6 +101,7 @@ void		ft_args_export_iterator(t_data *data, char *desired_new_env);
 char		*ft_strtolower(char *str);
 void		ft_check_allocation(void *mem);
 void		clean_quotes_from_env(char *line);
+t_token		*ft_add_node(char *content, char *type);
 
 
 // Split
@@ -118,11 +118,11 @@ char		*ft_getenv(char *content, int i, char **envp);
 
 // Redirections check
 
-int			ft_redirection_check(char **token_table);
+int			ft_redirection_check(t_data *data);
 int			ft_redir_conditions_check(char *token);
 
 // identifiers
-void		ft_check_type(char **token_table, t_data *data);
+void		ft_check_type(t_data *data);
 char		*ft_assign_type(char *type);
 int			ft_handle_redirections_and_pipes(t_data *data);
 

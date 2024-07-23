@@ -53,3 +53,17 @@ void	ft_check_allocation(void *mem)
 	if (!mem)
 		ft_print_exit("Error: malloc failed\n");
 }
+
+t_token		*ft_add_node(char *content, char *type)
+{
+	t_token	*new_node;
+
+	new_node = malloc(sizeof(t_token));
+	if (!new_node)
+		ft_print_exit("Error: malloc failed\n");
+	new_node->content = content;
+	new_node->type = type;
+	new_node->prev = NULL;
+	new_node->next = NULL;
+	return (new_node);
+}

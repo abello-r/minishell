@@ -17,7 +17,6 @@ int	main(int argc, char **argv, char **envp)
 	t_data	data;
 
 	(void) argv;
-	(void) envp;
 	(void) argc;
 
 	initializer(envp, &data);
@@ -94,24 +93,22 @@ int	ft_character_counter(char *str, char c)
 	return (total);
 }
 
-int	is_builtin(char *token_table, t_token *token)
+int	is_builtin(char *content)
 {
-	char	*temp;
+	int i;
 
-	temp = ft_calloc(100, sizeof(char));
-	temp = ft_strcpy(temp, token_table);
-	temp = ft_strtolower(temp);
-	if ((temp[0] == 'c' && ft_strlen(temp) == 2)
-		|| ft_strlen(temp) >= 3)
+	i = ft_strlen(content);
+	if ((content[0] == 'c' && ft_strlen(content) == 2)
+		|| ft_strlen(content) >= 3)
 	{
-		if (ft_strncmp(temp, "pwd", ft_strlen(temp)) == 0 \
-			|| ft_strncmp(temp, "env", ft_strlen(temp)) == 0 \
-			|| ft_strncmp(temp, "unset", ft_strlen(temp)) == 0 \
-			|| ft_strncmp(temp, "export", ft_strlen(temp)) == 0 \
-			|| ft_strncmp(temp, "cd", ft_strlen(temp)) == 0 \
-			|| ft_strncmp(temp, "echo", ft_strlen(temp)) == 0)
+		if (ft_strncmp(content, "pwd", i) == 0 \
+			|| ft_strncmp(content, "env", i) == 0 \
+			|| ft_strncmp(content, "unset", i) == 0 \
+			|| ft_strncmp(content, "export", i) == 0 \
+			|| ft_strncmp(content, "cd", i) == 0 \
+			|| ft_strncmp(content, "echo", i) == 0 \
+			|| ft_strncmp(content, "exit", i) == 0)
 		{
-			token->type = "BUILTIN";
 			return (1);
 		}
 	}
