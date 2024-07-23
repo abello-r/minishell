@@ -22,13 +22,13 @@ static void	ft_print_echo_args(t_data *data, int dash_flag)
 		data->token = data->token->next;
 		tokens_count -= 1;
 	}
-	while (data->token->next->content != NULL && \
+	while (data->token->next != NULL && \
 		(ft_strcmp(data->token->next->type, "ARG") == 0 \
 		|| ft_strcmp(data->token->next->type, "DQUOTE") == 0 \
 		|| ft_strcmp(data->token->next->type, "SQUOTE") == 0 \
 		|| ft_strcmp(data->token->next->type, "ENV") == 0))
 	{
-		if (tokens_count > 1)
+		if (tokens_count >= 1)
 			printf("%s ", data->token->next->content);
 		else
 			printf("%s", data->token->next->content);
@@ -44,6 +44,8 @@ static int	check_dash_flag(t_data *data)
 	int	i;
 
 	i = 0;
+	if (ft_strcmp(data->token->next->type, "ARG") != 0)
+		return (0);
 	while (data->token->next->content[i] == '-')
 	{
 		if (data->token->next->content[i] == '-' && \
@@ -56,7 +58,8 @@ static int	check_dash_flag(t_data *data)
 
 void	ft_echo(t_data *data)
 {
-	if (data->token->next->content == NULL)
+	data->token = data->head;
+	if (data->token->next == NULL)
 		printf("\n");
 	else
 	{

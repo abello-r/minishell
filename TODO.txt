@@ -4,7 +4,7 @@ En orden de prioridad los errores que quedan pendiente y a su lado pruebas que h
 	fichero utils.c
 	fichero utils2.c
 	---
-	función ft_is_empti (empti está mal escrito, es con y > empty)
+	función ft_is_empti (empti está mal escrito, es con y > empty) [OK]
 
 1- La señal de CTRL + D da un segfault [OK]
 	* CTRL + D
