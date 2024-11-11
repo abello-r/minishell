@@ -1,9 +1,6 @@
 En orden de prioridad los errores que quedan pendiente y a su lado pruebas que hacer para comprobar que esten OK:
 
-1- La señal de CTRL + D da un segfault [OK]
-	* CTRL + D
-
-2- En el ECHO, Expansion del $USER [TODO]
+2- En el ECHO, Expansion del $USER [OK]
 Pruebas (En orden de importancia):
 	* echo $USER
 	* echo "$USER"
@@ -17,7 +14,7 @@ Pruebas (En orden de importancia):
 	* mkdir test ; cd test ; mkdir test2 ; cd test2 ; rm -rf ../../test ; cd .. 
 	* cd rutaInventada
 	NOTA:
-	(El uso de ; no es obligatorio, 
+	(El uso de ; no es obligatorio,
 	pero es para poder mostrar la serie de comandos en una linea... 
 	este caso da segfault y deberia dar un mensaje de error 
 	[cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory])

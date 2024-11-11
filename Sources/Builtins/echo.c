@@ -12,9 +12,42 @@
 
 #include "../../Includes/minishell.h"
 
+char	*ft_strncmp_turbo(const char *s1, const char *s2, size_t n)
+{
+	size_t	c;
+
+	c = 0;
+	if (n == 0)
+		return (NULL);
+	while (s1[c] && s2[c] && s1[c] == s2[c] && s1[c] != '=' && s2[c] != '=')
+		c++;
+	if (s2[c] == '\0' && s1[c] == '=')
+		return (ft_strdup(s1 + c + 1));
+	return (NULL);
+}
+
+static char	*ft_expand_env(t_data *data, char *env)
+{
+	int		i;
+	char	*expanded_value;
+
+	i = 0;
+	if (env[0] == '$')
+		env = env + 1;
+	while (data->envp[i])
+	{
+		expanded_value = ft_strncmp_turbo(data->envp[i], env, ft_strlen(env));
+		if (expanded_value != NULL)
+			return (expanded_value);
+		i++;
+	}
+	return (ft_strdup(""));
+}
+
 static void	ft_print_echo_args(t_data *data, int dash_flag)
 {
-	int	tokens_count;
+	int		tokens_count;
+	char	*expanded_var;
 
 	tokens_count = ft_count_tokens(data) - 1;
 	if (dash_flag == 1)
@@ -24,11 +57,20 @@ static void	ft_print_echo_args(t_data *data, int dash_flag)
 	}
 	while (data->token->next != NULL && \
 		(ft_strcmp(data->token->next->type, "ARG") == 0 \
-		|| ft_strcmp(data->token->next->type, "DQUOTE") == 0 \
-		|| ft_strcmp(data->token->next->type, "SQUOTE") == 0 \
-		|| ft_strcmp(data->token->next->type, "ENV") == 0))
+			|| ft_strcmp(data->token->next->type, "DQUOTE") == 0 \
+			|| ft_strcmp(data->token->next->type, "SQUOTE") == 0 \
+			|| ft_strcmp(data->token->next->type, "ENV") == 0))
 	{
-		if (tokens_count >= 1)
+		if (ft_strcmp(data->token->next->type, "ENV") == 0)
+		{
+			expanded_var = ft_expand_env(data, data->token->next->content);
+			if (expanded_var)
+			{
+				printf("%s", expanded_var);
+				free(expanded_var);
+			}
+		}
+		else if (tokens_count >= 1)
 			printf("%s ", data->token->next->content);
 		else
 			printf("%s", data->token->next->content);
