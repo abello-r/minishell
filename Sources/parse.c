@@ -57,9 +57,7 @@ char    **ft_get_memory(char *input)
 {
     char    **token_table;
     int     count;
-    int     i;
 
-	i = 0;
     count = ft_character_counter(input, ' ');
     token_table = malloc(sizeof(char *) * (count + 2));
     if (!token_table)
