@@ -48,7 +48,7 @@ Pruebas (En orden de importancia):
 
 7- Comprobar LEAKS [TODO]
 
-8- Redirecciones y Pipes [Ondoing]
+8- Redirecciones y Pipes [Ondoing] -> Paula
 	Testcases:
 		# Using pwd with redirection
 		pwd > current_directory.txt
