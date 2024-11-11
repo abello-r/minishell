@@ -10,10 +10,10 @@ SRC_DIR = Sources
 SRC_FILES = main.c \
             error.c parse.c envp_parser.c \
             signal_handler.c token.c structs.c \
-            check.c env_check.c utils.c\
+            check.c env_check.c quote_utils.c\
 			Builtins/pwd.c Builtins/env.c Builtins/unset.c \
             Builtins/export.c Builtins/cd.c Builtins/echo.c \
-			Builtins/exit.c check_cmd_on_path.c utils2.c \
+			Builtins/exit.c check_cmd_on_path.c utils.c \
 			Redirections_and_pipes/identifier.c
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
@@ -21,7 +21,7 @@ OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
 # Readline flags based on the OS
 USER = $(shell whoami)
-ifeq ($(USER), abello-r2)
+ifeq ($(USER), abello-r)
 	RLHEADER = -I "/opt/homebrew/opt/readline/include"
 	LIBS = -L "/opt/homebrew/opt/readline/lib" -lreadline
 else ifeq ($(USER), briamzp)

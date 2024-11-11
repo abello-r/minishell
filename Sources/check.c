@@ -14,9 +14,6 @@
 
 int	ft_redirection_check(t_data *data)
 {
-	int	i;
-
-	i = 0;
 	while (data->token != NULL)
 	{
 		if (data->token->content[0] != '\'' && data->token->content[0] != '\"')
@@ -103,8 +100,6 @@ char	**line_checker(char *input)
 
 void    ft_check_type(t_data *data)
 {
-    int i;
-    i = 0;
     while (data->token != NULL)
     {
         if (ft_strncmp(data->token->content, "/bin/", 5) == 0)

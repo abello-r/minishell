@@ -1,111 +1,69 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 03:45:33 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 22:56:19 by briveiro         ###   ########.fr       */
+/*   Created: 2024/07/21 03:46:15 by briveiro          #+#    #+#             */
+/*   Updated: 2024/07/21 20:46:17 by briveiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/minishell.h"
 
-char *get_rest(char *input, int i)
+void	ft_process_export_args(t_data *data)
 {
-    int count;
-    int start;
-    char *temp;
+	char	*desired_new_env;
 
-	count = 0;
-	start = i;
-    while (input[i] != ' ' && input[i] != '\0') {
-        i++;
-        count++;
-    }
-    temp = malloc(sizeof(char) * (count + 1));
-    if (!temp) {
-        ft_print_exit("Error: malloc failed\n");
-    }
-	temp = ft_substr(input, start, count);
-    temp[count] = '\0';
-    return temp;
+	desired_new_env = NULL;
+	while (data->token->next != NULL && data->token->next->content != NULL \
+		&& ft_strcmp(data->token->next->type, "ARG") == 0)
+	{
+		if (data->token->next && data->token->next->content \
+			&& ft_strchr(data->token->next->content, '='))
+		{
+			desired_new_env = ft_strdup(data->token->next->content);
+		}
+		else if (data->token->next && data->token->next->content)
+		{
+			desired_new_env = ft_strdup(data->token->next->content);
+		}
+		ft_args_export_iterator(data, desired_new_env);
+		free(desired_new_env);
+		data->token = data->token->next;
+	}
 }
 
-
-
-int	ft_is_empty(char *str)
+char	*ft_strtolower(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] != '\0')
+	while (str[i])
 	{
-		if (str[i] != ' ')
-			return (0);
+		str[i] = ft_tolower(str[i]);
 		i++;
 	}
-	return (1);
+	return (str);
 }
 
-char	*split_quotes(char *input, int count, char flag)
+void	ft_check_allocation(void *mem)
 {
-	char	*single_line;
-	int		start;
-
-	start = 1;
-	count++;
-	single_line = malloc(sizeof(char) * (ft_strlen(input) + 1));
-	single_line[0] = flag;
-	if (!single_line)
+	if (!mem)
 		ft_print_exit("Error: malloc failed\n");
-	while (input[count] != flag && input[count] != '\0')
-	{
-		single_line[start] = input[count];
-		if (input[count - 1] == '\0')
-			ft_print_exit("Error: missing double quote\n");
-		start++;
-		count++;
-	}
-	single_line[start] = flag;
-	single_line[start + 1] = '\0';
-	return (single_line);
 }
 
-void	ft_clean_quotes(t_data *data)
+t_token		*ft_add_node(char *content, char *type)
 {
-	while (data->token != NULL)
-	{
-		if (data->token->content[0] == '\''
-			|| data->token->content[0] == '\"')
-		{
-			ft_cpy_clean(data->token, 1, ft_strlen(data->token->content) - 1);
-		}
-		data->token = data->token->next;
-	}
-	data->token = data->head;
-}
+	t_token	*new_node;
 
-void	ft_cpy_clean(t_token *token, int start, int end)
-{
-	int		i;
-	char	*temp;
-
-	i = 0;
-	temp = ft_calloc(100, sizeof(char));
-	if (!temp)
+	new_node = malloc(sizeof(t_token));
+	if (!new_node)
 		ft_print_exit("Error: malloc failed\n");
-	if (token->content[0] == '\'')
-		token->type = "SQUOTE";
-	else if (token->content[0] == '\"')
-		token->type = "DQUOTE";
-	while (token->content[start] != '\0' && start < end)
-	{
-		temp[i] = token->content[start];
-		i++;
-		start++;
-	}
-	temp[i] = '\0';
-	token->content = temp;
+	new_node->content = content;
+	new_node->type = type;
+	new_node->prev = NULL;
+	new_node->next = NULL;
+	return (new_node);
 }
