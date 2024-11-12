@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/22 01:22:04 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/11/12 12:34:33 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,6 @@ void	fake_executor(t_data *data)
 	if (ft_strlen(data->input) == 0)
 		return ;
 	ft_handle_redirections_and_pipes(data);
-	if (ft_strncmp(data->token->content, "pwd", ft_strlen("pwd")) == 0)
-		ft_pwd();
-    else if (ft_strncmp(data->token->content, "env", ft_strlen("env")) == 0)
-        ft_env(data);
-    else if (ft_strncmp(data->token->content, "unset", ft_strlen("unset")) == 0)
-        ft_unset(data);
-    else if (ft_strncmp(data->token->content, "export", ft_strlen("export")) == 0)
-        ft_export(data);
-	else if (ft_strncmp(data->token->content, "cd", ft_strlen("cd")) == 0)
-        ft_cd(data);
-	else if (ft_strncmp(data->token->content, "echo", ft_strlen("echo")) == 0)
-        ft_echo(data);
-	else if (ft_strncmp(data->token->content, "exit", ft_strlen("exit")) == 0)
-		ft_exit(data);
-	else
-		ft_check_cmd_on_path(data);
 }
 
 int	ft_loop(t_data *data)
