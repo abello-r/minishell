@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:46:25 by abello-r          #+#    #+#             */
-/*   Updated: 2024/11/15 16:22:20 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/11/22 10:52:56 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,10 @@ void	ft_check_cmd_on_path(t_data *data)
 				data->token->content = ft_strdup(tmp2);
 				return (free(tmp2));
 			}
-		}
+		}	
 		free(tmp2);
 		i++;
 	}
 	printf("%s: command not found\n", data->token->content);
 }
+	

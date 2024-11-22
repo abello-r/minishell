@@ -6,11 +6,13 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:48:35 by abello-r          #+#    #+#             */
-/*   Updated: 2024/11/15 17:16:55 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:14:11 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
+
+int g_status = 0;
 
 void ft_execute_builtin(t_data *data)
 {
@@ -36,7 +38,7 @@ void child_process(t_data *data, t_token *current_token, int in_fd, int out_fd)
 {
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
-	(void)current_token;
+    (void)current_token;
 
     if (in_fd != STDIN_FILENO) {
         if (dup2(in_fd, STDIN_FILENO) == -1) {
@@ -52,28 +54,30 @@ void child_process(t_data *data, t_token *current_token, int in_fd, int out_fd)
         }
         close(out_fd);
     }
-	ft_execute_builtin(data);
+    ft_execute_builtin(data);
     exit(1);
 }
 
 int exec_fork(t_data *data, t_token *current_token, int in_fd, int out_fd)
 {
     pid_t pid;
-    int status;
 
     pid = fork();
     if (pid < 0) {
         perror("fork");
+        g_status = 1;
         return -1;
     } else if (pid == 0) {
         child_process(data, current_token, in_fd, out_fd);
     } else {
-        waitpid(pid, &status, 0);
-        if (WIFEXITED(status)) {
-            return WEXITSTATUS(status);
+        waitpid(pid, &g_status, 0);
+        if (WIFEXITED(g_status)) {
+            g_status = WEXITSTATUS(g_status);
+        } else {
+            g_status = 1; // Default error code for abnormal exit
         }
     }
-    return 1;
+    return g_status;
 }
 
 int handle_redirections(t_data *data, int *in_fd, int *out_fd)
@@ -91,6 +95,7 @@ int handle_redirections(t_data *data, int *in_fd, int *out_fd)
 
         if (*out_fd < 0 || *in_fd < 0) {
             perror("open");
+            g_status = 1;
             return -1;
         }
 
@@ -112,6 +117,7 @@ int handle_pipes(t_data *data, int *pipe_fds, int *has_pipe)
 
     if (*has_pipe && pipe(pipe_fds) < 0) {
         perror("pipe");
+        g_status = 1;
         return -1;
     }
 
@@ -120,26 +126,26 @@ int handle_pipes(t_data *data, int *pipe_fds, int *has_pipe)
 
 int ft_handle_redirections_and_pipes(t_data *data)
 {
-    int in_fd;
-    int out_fd;
+    int in_fd = STDIN_FILENO;
+    int out_fd = STDOUT_FILENO;
     int pipe_fds[2];
-    int has_pipe;
-    int exit_status;
+    int has_pipe = 0;
 
-	in_fd = STDIN_FILENO;
-	out_fd = STDOUT_FILENO;
-	has_pipe = 0;
     if (is_builtin(data->token->content) && !strcmp(data->token->content, "exit")) {
         ft_exit(data);
-        return 0;
+        return g_status;
     }
     if (handle_redirections(data, &in_fd, &out_fd) < 0)
-        return -1;
+        return g_status;
     if (handle_pipes(data, pipe_fds, &has_pipe) < 0)
-        return -1;
-    exit_status = exec_fork(data, data->token, in_fd, out_fd);
+        return g_status;
+
+    g_status = exec_fork(data, data->token, in_fd, out_fd);
+
     if (in_fd != STDIN_FILENO) close(in_fd);
     if (out_fd != STDOUT_FILENO) close(out_fd);
     if (has_pipe) close(pipe_fds[0]);
-    return exit_status;
+
+    return g_status;
 }
+
