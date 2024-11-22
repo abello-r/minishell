@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:27 by briveiro          #+#    #+#             */
-/*   Updated: 2024/11/15 17:17:02 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/11/22 13:02:39 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include	<readline/readline.h>
 # include	<readline/history.h>
 # include	<sys/wait.h>
+# include	<sys/types.h>
 # include	<fcntl.h>
 
 # define SIMPLE_QUOTE "[ERROR] Simple quote not closed\n"
