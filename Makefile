@@ -4,7 +4,7 @@ COLOR_RESET = \033[0m
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror 
 
 SRC_DIR = Sources
 SRC_FILES = main.c \
