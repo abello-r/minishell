@@ -17,19 +17,19 @@ int g_status = 0;
 
 void ft_execute_builtin(t_data *data)
 {
-    if (ft_strncmp(data->token->content, "pwd", ft_strlen("pwd")) == 0)
+    if (ft_strncmp(data->token->content, "pwd", ft_strlen("pwd")) == 1)
         ft_pwd();
-    else if (ft_strncmp(data->token->content, "env", ft_strlen("env")) == 0)
+    else if (ft_strncmp(data->token->content, "env", ft_strlen("env")) == 1)
         ft_env(data);
-    else if (ft_strncmp(data->token->content, "unset", ft_strlen("unset")) == 0)
+    else if (ft_strncmp(data->token->content, "unset", ft_strlen("unset")) == 1)
         ft_unset(data);
-    else if (ft_strncmp(data->token->content, "export", ft_strlen("export")) == 0)
+    else if (ft_strncmp(data->token->content, "export", ft_strlen("export")) == 1)
         ft_export(data);
-    else if (ft_strncmp(data->token->content, "cd", ft_strlen("cd")) == 0)
+    else if (ft_strncmp(data->token->content, "cd", ft_strlen("cd")) == 1)
         ft_cd(data);
-    else if (ft_strncmp(data->token->content, "echo", ft_strlen("echo")) == 0)
+    else if (ft_strncmp(data->token->content, "echo", ft_strlen("echo")) == 1)
         ft_echo(data);
-    else if (ft_strncmp(data->token->content, "exit", ft_strlen("exit")) == 0)
+    else if (ft_strncmp(data->token->content, "exit", ft_strlen("exit")) == 1)
         ft_exit(data);
     else
         ft_check_cmd_on_path(data);

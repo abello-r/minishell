@@ -1,14 +1,5 @@
 En orden de prioridad los errores que quedan pendiente y a su lado pruebas que hacer para comprobar que esten OK:
 
-2- En el ECHO, Expansion del $USER [OK]
-Pruebas (En orden de importancia):
-	* echo $USER
-	* echo "$USER"
-	* echo "Hola $USER"
-	* echo -n $USER
-	* echo -n "$USER"
-	* echo "Hola" "soy" una 'prueba' $USER
-
 3- En el CD, comprobar que la ruta a la que quiere acceder el cd, exista, en caso contrario deberia mostrar un error [TODO]
 Pruebas (En orden de importancia):
 	* mkdir test ; cd test ; mkdir test2 ; cd test2 ; rm -rf ../../test ; cd .. 
@@ -19,7 +10,7 @@ Pruebas (En orden de importancia):
 	este caso da segfault y deberia dar un mensaje de error 
 	[cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory])
 
-4- En el EXPORT, gestionar multiples cargas con o sin comillas [OK??]
+4- En el EXPORT, gestionar multiples cargas con o sin comillas [OK??] - Al mover el executor del main falla, probablemente por como se refiere a data.
 	* export a=1 b=2 c=3
 	* export a="1" b="2" c="3"
 
