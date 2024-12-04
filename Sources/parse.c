@@ -37,7 +37,7 @@ void	ft_token_table_maker(char **token_table, t_data *data)
 	current_node = NULL;
 	while (token_table[i] != NULL)
 	{
-		t_token *new_node = ft_add_node(token_table[i], ft_assign_type(token_table[i]));
+		t_token *new_node = ft_add_node(token_table[i], ft_assign_type(token_table[i], data));
 		if (i == 0)
 		{
 			data->head = new_node;
@@ -66,8 +66,13 @@ char    **ft_get_memory(char *input)
     return (token_table);
 }
 
-char	*ft_assign_type(char *type)
+char	*ft_assign_type(char *type, t_data *data)
 {
+	int 	i;
+	char	*tmp;
+	char	*tmp2;
+
+	i = 0;
 	if (type[0] == '|')
 		return ("PIPE");
 	else if (type[0] == '>' && type[1] == '>')
@@ -84,8 +89,22 @@ char	*ft_assign_type(char *type)
 		return ("DQUOTE");
 	else if (type[0] == '$')
 		return ("ENV");
-	else
-		return ("ARG");
+	else {
+		while (data->path[i])
+		{
+			tmp = ft_strjoin(data->path[i], "/");
+			tmp2 = ft_strjoin(tmp, data->token->content);
+			free(tmp);
+			if (access(tmp2, F_OK) == 0)
+			{
+				printf("Command found: %s\n", tmp2);
+				free(tmp2);
+				return ("CMD");
+			}
+			i++;
+		}
+	}
+	return ("ARG");
 }
 
 char	*ft_getenv(char *content, int i, char **envp)

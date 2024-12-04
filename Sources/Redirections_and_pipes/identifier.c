@@ -55,7 +55,7 @@ void child_process(t_data *data, t_token *current_token, int in_fd, int out_fd)
         }
         close(out_fd);
     }
-    ft_execute_builtin(data);
+	ft_check_cmd_on_path(data);
     exit(1);
 }
 
@@ -71,13 +71,8 @@ int exec_fork(t_data *data, t_token *current_token, int in_fd, int out_fd)
     } else if (pid == 0) {
         child_process(data, current_token, in_fd, out_fd);
     } else {
-        waitpid(pid, &g_status, 0);
-        if (WIFEXITED(g_status)) {
-            g_status = WEXITSTATUS(g_status);
-        } else {
-            g_status = 1; // Default error code for abnormal exit
-        }
-    }
+    	waitpid(pid, &g_status, 0);
+	}
     return g_status;
 }
 
@@ -141,7 +136,18 @@ int ft_handle_redirections_and_pipes(t_data *data)
     if (handle_pipes(data, pipe_fds, &has_pipe) < 0)
         return g_status;
 
-    g_status = exec_fork(data, data->token, in_fd, out_fd);
+	while(data->token)
+	{
+		if (ft_strcmp(data->token->type, "BUILTIN") == 0) {
+			printf("Builtin command found: %s\n", data->token->content);
+			ft_execute_builtin(data);
+		}
+		else if (ft_strcmp(data->token->type, "CMD") == 0) {
+			g_status = exec_fork(data, data->token, in_fd, out_fd);
+		}
+		if (data->token->next)
+			data->token = data->token->next;
+	}
 
     if (in_fd != STDIN_FILENO) close(in_fd);
     if (out_fd != STDOUT_FILENO) close(out_fd);

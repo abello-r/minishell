@@ -36,6 +36,10 @@ static char	**ft_build_argv(t_token *token)
 	cmd_argv = malloc((count + 1) * sizeof(char *));
 	while (token)
 	{
+		if (ft_strcmp(token->type, "PIPE") == 0) {
+			printf("Argument building stoped by %s\n", token->type);
+			break ;
+		}
 		cmd_argv[i++] = token->content;
 		token = token->next;
 	}
@@ -100,4 +104,3 @@ void	ft_check_cmd_on_path(t_data *data)
 	}
 	printf("%s: command not found\n", data->token->content);
 }
-	
