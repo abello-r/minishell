@@ -49,3 +49,12 @@ Pruebas (En orden de importancia):
 
 		# Using echo with a pipe
 		echo "This is a test" | grep test
+
+
+
+COSAS QUE HAY QUE HACER
+1) Comprobar antes de ejecutar un comando si es tipo builtin
+2) Verificar comillas dobles y simples -> OK
+3) Limpiar codigo
+4) Hacer pruebas
+5) Tener en cuenta que una PIPE o redirecc. puede ir pegada al ARG (parseo)
