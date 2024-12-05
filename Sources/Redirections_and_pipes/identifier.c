@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/11/22 13:04:01 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:11:23 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,4 +155,101 @@ int ft_handle_redirections_and_pipes(t_data *data)
 
     return g_status;
 }
+void execute_commands(t_cmd *cmds)
+{
+    t_cmd *current = cmds;
+    int pipe_fd[2];    // Descriptores del pipe
+    int input_fd = -1; // Entrada para el siguiente comando
 
+    while (current)
+    {
+        // Crear un pipe si hay un próximo comando
+        if (current->next)
+        {
+            if (pipe(pipe_fd) == -1)
+            {
+                perror("Error creando pipe");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        pid_t pid = fork(); // Crear un proceso hijo
+
+        if (pid == 0) // Código del hijo
+        {
+            // Redirección de entrada
+            if (input_fd != -1)
+            {
+                dup2(input_fd, STDIN_FILENO); // Usar input_fd como entrada estándar
+                close(input_fd);
+            }
+
+            // Redirección de salida
+            if (current->next)
+            {
+                dup2(pipe_fd[1], STDOUT_FILENO); // Redirigir salida al pipe
+                close(pipe_fd[0]);              // Cerrar extremo de lectura del pipe
+            }
+
+            // Redirección de archivos
+            if (current->input_file)
+            {
+                int fd_in = open(current->input_file, O_RDONLY);
+                if (fd_in < 0)
+                {
+                    perror("Error al abrir archivo de entrada");
+                    exit(EXIT_FAILURE);
+                }
+                dup2(fd_in, STDIN_FILENO); // Redirigir entrada estándar
+                close(fd_in);
+            }
+
+            if (current->output_file)
+            {
+                int fd_out;
+                if (current->append)
+                    fd_out = open(current->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+                else
+                    fd_out = open(current->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+                if (fd_out < 0)
+                {
+                    perror("Error al abrir archivo de salida");
+                    exit(EXIT_FAILURE);
+                }
+                dup2(fd_out, STDOUT_FILENO); // Redirigir salida estándar
+                close(fd_out);
+            }
+
+            // Ejecutar el comando
+            if (execvp(current->argv[0], current->argv) == -1)
+            {
+                perror("Error ejecutando comando");
+                exit(EXIT_FAILURE);
+            }
+        }
+        else if (pid > 0) // Código del padre
+        {
+            int status;
+            waitpid(pid, &status, 0); // Esperar al proceso hijo
+
+            // Manejo de pipes
+            if (input_fd != -1)
+                close(input_fd); // Cerrar la entrada usada por el proceso anterior
+
+            if (current->next)
+            {
+                close(pipe_fd[1]);     // Cerrar extremo de escritura del pipe
+                input_fd = pipe_fd[0]; // Usar extremo de lectura como entrada para el próximo comando
+            }
+        }
+        else // Error en fork
+        {
+            perror("Error creando proceso hijo");
+            exit(EXIT_FAILURE);
+        }
+
+        // Avanzar al siguiente comando
+        current = current->next;
+    }
+}
