@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:57:33 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/05 15:08:40 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:39:11 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ char **extract_arguments(t_token *tokens)
     int count = 0;
     t_token *temp = tokens;
 
-    // Contar los argumentos del comando actual (sin operadores)
+    
     while (temp && strcmp(temp->type, "PIPE") != 0)
     {
-        if (strcmp(temp->type, "ARG") == 0 || strcmp(temp->type, "BULTIN") == 0)
-            count++;
+        if (strcmp(temp->type, "ARG") == 0 || strcmp(temp->type, "BUILTIN") == 0)
+			count++;
         temp = temp->next;
     }
 
@@ -110,7 +110,7 @@ char **extract_arguments(t_token *tokens)
     int i = 0;
     while (tokens && strcmp(tokens->type, "PIPE") != 0)
     {
-        if (strcmp(tokens->type, "ARG") == 0)
+        if (strcmp(tokens->type, "ARG") == 0 || strcmp(tokens->type, "BUILTIN") == 0)
             argv[i++] = strdup(tokens->content);
         tokens = tokens->next;
     }

@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/05 16:11:23 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:45:37 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int handle_pipes(t_data *data, int *pipe_fds, int *has_pipe)
     return 0;
 }
 
-int ft_handle_redirections_and_pipes(t_data *data)
+/* int ft_handle_redirections_and_pipes(t_data *data)
 {
     int in_fd = STDIN_FILENO;
     int out_fd = STDOUT_FILENO;
@@ -154,7 +154,7 @@ int ft_handle_redirections_and_pipes(t_data *data)
     if (has_pipe) close(pipe_fds[0]);
 
     return g_status;
-}
+} */
 
 void ft_execute_commands(t_cmd *cmds)
 {
@@ -162,7 +162,6 @@ void ft_execute_commands(t_cmd *cmds)
     int pipe_fd[2];    // Descriptores del pipe
     int input_fd = -1; // Entrada para el siguiente comando
 
-	print_commands(cmds);
 
     while (current)
     {
