@@ -14,7 +14,7 @@ SRC_FILES = main.c \
 			Builtins/pwd.c Builtins/env.c Builtins/unset.c \
             Builtins/export.c Builtins/cd.c Builtins/echo.c \
 			Builtins/exit.c check_cmd_on_path.c utils.c \
-			Redirections_and_pipes/identifier.c
+			Redirections_and_pipes/identifier.c Redirections_and_pipes/cmds.c 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
