@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:27 by briveiro          #+#    #+#             */
-/*   Updated: 2024/11/22 13:02:39 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:08:54 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,15 @@ typedef struct s_token
 	struct s_token	*next;
 }			t_token;
 
+typedef struct s_cmd 
+{
+	char			**argv;
+	char			*input_file;
+	char			*output_file;
+	int				append;
+	struct s_cmd	*next;
+}	t_cmd;
+
 typedef struct s_data
 {
 	char	*input;
@@ -48,6 +57,7 @@ typedef struct s_data
 	t_token	*token;
 	t_token	*head;
 	int		input_len;
+	t_cmd	*cmds;
 }			t_data;
 
 typedef enum s_enum
@@ -127,5 +137,9 @@ int			ft_redir_conditions_check(char *token);
 void		ft_check_type(t_data *data);
 char		*ft_assign_type(char *type);
 int			ft_handle_redirections_and_pipes(t_data *data);
+
+
+t_cmd *parse_tokens_to_commands(t_token *tokens);
+void print_commands(t_cmd *commands);
 
 #endif
