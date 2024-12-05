@@ -58,3 +58,4 @@ COSAS QUE HAY QUE HACER
 3) Limpiar codigo
 4) Hacer pruebas
 5) Tener en cuenta que una PIPE o redirecc. puede ir pegada al ARG (parseo)
+6) En la función void ft_execute_commands(t_cmd *cmds) se usa execvp para ejecutar los comandos, no se puede usar, hay que usar execve por lo que hay que modificar un poco el código
