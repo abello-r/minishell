@@ -70,9 +70,8 @@ int	ft_loop(t_data *data)
 		}
 		parser(data);
 		add_history(data->input);
-		parse_tokens_to_commands(data->token);
-		print_commands(data->cmds);
-		/* fake_executor(data); */
+		data->cmds = parse_tokens_to_commands(data->token);
+		fake_executor(data);
 		free(data->input);
 	}
 	return (0);

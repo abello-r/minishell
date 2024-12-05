@@ -135,7 +135,7 @@ int			ft_redir_conditions_check(char *token);
 
 // identifiers
 void		ft_check_type(t_data *data);
-char		*ft_assign_type(char *type, t_data *data);
+char		*ft_assign_type(char *type);
 int			ft_handle_redirections_and_pipes(t_data *data);
 
 
