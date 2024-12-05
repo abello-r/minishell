@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by briveiro          #+#    #+#             */
-/*   Updated: 2024/12/05 16:45:09 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:08:12 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	ft_loop(t_data *data)
 		parser(data);
 		add_history(data->input);
 		data->cmds = parse_tokens_to_commands(data->token);
-		//print_commands(data->cmds);
 		fake_executor(data);
 		free(data->input);
 	}

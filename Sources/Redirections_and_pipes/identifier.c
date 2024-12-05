@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/05 16:45:37 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:56:14 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,6 @@ void ft_execute_commands(t_cmd *cmds)
     int pipe_fd[2];    // Descriptores del pipe
     int input_fd = -1; // Entrada para el siguiente comando
 
-
     while (current)
     {
         // Crear un pipe si hay un próximo comando
@@ -226,10 +225,7 @@ void ft_execute_commands(t_cmd *cmds)
             // Ejecutar el comando
             if (execvp(current->argv[0], current->argv) == -1)
             {
-				printf("Command not found %s\n", current->argv[0]);
-				printf("Arguments: %s\n", current->argv[1]);
-
-                perror("Error ejecutando comando");
+                printf("%s: command not found\n", current->argv[0]);
                 exit(EXIT_FAILURE);
             }
         }
