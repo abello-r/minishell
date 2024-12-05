@@ -155,11 +155,14 @@ int ft_handle_redirections_and_pipes(t_data *data)
 
     return g_status;
 }
-void execute_commands(t_cmd *cmds)
+
+void ft_execute_commands(t_cmd *cmds)
 {
     t_cmd *current = cmds;
     int pipe_fd[2];    // Descriptores del pipe
     int input_fd = -1; // Entrada para el siguiente comando
+
+	print_commands(cmds);
 
     while (current)
     {
@@ -224,6 +227,9 @@ void execute_commands(t_cmd *cmds)
             // Ejecutar el comando
             if (execvp(current->argv[0], current->argv) == -1)
             {
+				printf("Command not found %s\n", current->argv[0]);
+				printf("Arguments: %s\n", current->argv[1]);
+
                 perror("Error ejecutando comando");
                 exit(EXIT_FAILURE);
             }

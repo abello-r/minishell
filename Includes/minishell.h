@@ -137,7 +137,7 @@ int			ft_redir_conditions_check(char *token);
 void		ft_check_type(t_data *data);
 char		*ft_assign_type(char *type);
 int			ft_handle_redirections_and_pipes(t_data *data);
-
+void		ft_execute_commands(t_cmd *cmds);
 
 t_cmd *parse_tokens_to_commands(t_token *tokens);
 void print_commands(t_cmd *commands);
