@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:27 by briveiro          #+#    #+#             */
-/*   Updated: 2024/12/05 15:08:54 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:33:27 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int			ft_loop(t_data *data);
 
 // Parser
 void		parser(t_data *data);
+char		*ft_assign_type(char *type);
 
 // Signals
 void		ft_signal_handler(int signum);
@@ -132,12 +133,11 @@ char		*ft_getenv(char *content, int i, char **envp);
 
 int			ft_redirection_check(t_data *data);
 int			ft_redir_conditions_check(char *token);
+void		ft_check_type(t_data *data);
 
 // identifiers
-void		ft_check_type(t_data *data);
-char		*ft_assign_type(char *type);
-int			ft_handle_redirections_and_pipes(t_data *data);
-void		ft_execute_commands(t_cmd *cmds);
+/* void		ft_execute_commands(t_cmd *cmds); */
+void ft_execute_commands(t_data *data);
 
 t_cmd *parse_tokens_to_commands(t_token *tokens);
 void print_commands(t_cmd *commands);
