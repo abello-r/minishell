@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/05 17:56:14 by pausanch         ###   ########.fr       */
+/*   Created: 2024/12/11 16:43:01 by pausanch          #+#    #+#             */
+/*   Updated: 2024/12/11 16:57:16 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../Includes/minishell.h"
 
@@ -17,240 +16,155 @@ int g_status = 0;
 
 void ft_execute_builtin(t_data *data)
 {
-    if (ft_strncmp(data->token->content, "pwd", ft_strlen("pwd")) == 1)
-        ft_pwd();
-    else if (ft_strncmp(data->token->content, "env", ft_strlen("env")) == 1)
-        ft_env(data);
-    else if (ft_strncmp(data->token->content, "unset", ft_strlen("unset")) == 1)
-        ft_unset(data);
-    else if (ft_strncmp(data->token->content, "export", ft_strlen("export")) == 1)
-        ft_export(data);
-    else if (ft_strncmp(data->token->content, "cd", ft_strlen("cd")) == 1)
-        ft_cd(data);
-    else if (ft_strncmp(data->token->content, "echo", ft_strlen("echo")) == 1)
-        ft_echo(data);
-    else if (ft_strncmp(data->token->content, "exit", ft_strlen("exit")) == 1)
-        ft_exit(data);
-    else
-        ft_check_cmd_on_path(data);
-}
-
-void child_process(t_data *data, t_token *current_token, int in_fd, int out_fd)
-{
-    signal(SIGINT, SIG_DFL);
-    signal(SIGQUIT, SIG_DFL);
-    (void)current_token;
-
-    if (in_fd != STDIN_FILENO) {
-        if (dup2(in_fd, STDIN_FILENO) == -1) {
-            perror("dup2");
-            exit(1);
-        }
-        close(in_fd);
-    }
-    if (out_fd != STDOUT_FILENO) {
-        if (dup2(out_fd, STDOUT_FILENO) == -1) {
-            perror("dup2");
-            exit(1);
-        }
-        close(out_fd);
-    }
-	ft_check_cmd_on_path(data);
-    exit(1);
-}
-
-int exec_fork(t_data *data, t_token *current_token, int in_fd, int out_fd)
-{
-    pid_t pid;
-
-    pid = fork();
-    if (pid < 0) {
-        perror("fork");
-        g_status = 1;
-        return -1;
-    } else if (pid == 0) {
-        child_process(data, current_token, in_fd, out_fd);
-    } else {
-    	waitpid(pid, &g_status, 0);
-	}
-    return g_status;
-}
-
-int handle_redirections(t_data *data, int *in_fd, int *out_fd)
-{
-    t_token *current_token = data->token;
-
-    while (current_token) {
-        if (!strcmp(current_token->type, "OUT") || !strcmp(current_token->type, "APPEND")) {
-            *out_fd = !strcmp(current_token->type, "OUT") ?
-                      open(current_token->next->content, O_WRONLY | O_CREAT | O_TRUNC, 0777) :
-                      open(current_token->next->content, O_WRONLY | O_CREAT | O_APPEND, 0777);
-        } else if (!strcmp(current_token->type, "INPUT")) {
-            *in_fd = open(current_token->next->content, O_RDONLY);
-        }
-
-        if (*out_fd < 0 || *in_fd < 0) {
-            perror("open");
-            g_status = 1;
-            return -1;
-        }
-
-        current_token = current_token->next;
-    }
-    return 0;
-}
-
-int handle_pipes(t_data *data, int *pipe_fds, int *has_pipe)
-{
-    t_token *current_token = data->token;
-
-    while (current_token) {
-        if (!strcmp(current_token->type, "PIPE")) {
-            *has_pipe = 1;
-        }
-        current_token = current_token->next;
-    }
-
-    if (*has_pipe && pipe(pipe_fds) < 0) {
-        perror("pipe");
-        g_status = 1;
-        return -1;
-    }
-
-    return 0;
-}
-
-/* int ft_handle_redirections_and_pipes(t_data *data)
-{
-    int in_fd = STDIN_FILENO;
-    int out_fd = STDOUT_FILENO;
-    int pipe_fds[2];
-    int has_pipe = 0;
-
-    if (is_builtin(data->token->content) && !strcmp(data->token->content, "exit")) {
-        ft_exit(data);
-        return g_status;
-    }
-    if (handle_redirections(data, &in_fd, &out_fd) < 0)
-        return g_status;
-    if (handle_pipes(data, pipe_fds, &has_pipe) < 0)
-        return g_status;
-
-	while(data->token)
+	if (ft_strncmp(data->cmds->argv[0], "pwd", ft_strlen("pwd")) == 0)
+		ft_pwd();
+	else if (ft_strncmp(data->cmds->argv[0], "env", ft_strlen("env")) == 0)
+		ft_env(data);
+	else if (ft_strncmp(data->cmds->argv[0], "unset", ft_strlen("unset")) == 0)
+		ft_unset(data);
+	else if (ft_strncmp(data->cmds->argv[0], "export", ft_strlen("export")) == 0)
+		ft_export(data);
+	else if (ft_strncmp(data->cmds->argv[0], "cd", ft_strlen("cd")) == 0)
+		ft_cd(data);
+	else if (ft_strncmp(data->cmds->argv[0], "echo", ft_strlen("echo")) == 0)
 	{
-		if (ft_strcmp(data->token->type, "BUILTIN") == 0) {
-			printf("Builtin command found: %s\n", data->token->content);
-			ft_execute_builtin(data);
-		}
-		else if (ft_strcmp(data->token->type, "CMD") == 0) {
-			g_status = exec_fork(data, data->token, in_fd, out_fd);
-		}
-		if (data->token->next)
-			data->token = data->token->next;
+		ft_echo(data);
+		exit(EXIT_SUCCESS);
 	}
+	else if (ft_strncmp(data->cmds->argv[0], "exit", ft_strlen("exit")) == 0)
+		ft_exit(data);	
+}
 
-    if (in_fd != STDIN_FILENO) close(in_fd);
-    if (out_fd != STDOUT_FILENO) close(out_fd);
-    if (has_pipe) close(pipe_fds[0]);
-
-    return g_status;
-} */
-
-void ft_execute_commands(t_cmd *cmds)
+void ft_execute_commands(t_data *data)
 {
-    t_cmd *current = cmds;
-    int pipe_fd[2];    // Descriptores del pipe
-    int input_fd = -1; // Entrada para el siguiente comando
+	t_cmd *current = data->cmds;
+	int pipe_fd[2];	   // Descriptores del pipe
+	int input_fd = -1; // Entrada para el siguiente comando
+	int status;
 
-    while (current)
-    {
-        // Crear un pipe si hay un próximo comando
-        if (current->next)
-        {
-            if (pipe(pipe_fd) == -1)
-            {
-                perror("Error creando pipe");
-                exit(EXIT_FAILURE);
-            }
-        }
+	while (current)
+	{
+		if (is_builtin(current->argv[0]) && strcmp(current->argv[0], "exit") == 0)
+		{
+			ft_exit(data);
+		}
 
-        pid_t pid = fork(); // Crear un proceso hijo
+		// Crear un pipe si hay un próximo comando
+		if (current->next)
+		{
+			if (pipe(pipe_fd) == -1)
+			{
+				perror("Error creando pipe");
+				exit(EXIT_FAILURE);
+			}
+		}
 
-        if (pid == 0) // Código del hijo
-        {
-            // Redirección de entrada
-            if (input_fd != -1)
-            {
-                dup2(input_fd, STDIN_FILENO); // Usar input_fd como entrada estándar
-                close(input_fd);
-            }
+		pid_t pid = fork();
 
-            // Redirección de salida
-            if (current->next)
-            {
-                dup2(pipe_fd[1], STDOUT_FILENO); // Redirigir salida al pipe
-                close(pipe_fd[0]);              // Cerrar extremo de lectura del pipe
-            }
+		if (pid == 0)
+		{
 
-            // Redirección de archivos
-            if (current->input_file)
-            {
-                int fd_in = open(current->input_file, O_RDONLY);
-                if (fd_in < 0)
-                {
-                    perror("Error al abrir archivo de entrada");
-                    exit(EXIT_FAILURE);
-                }
-                dup2(fd_in, STDIN_FILENO); // Redirigir entrada estándar
-                close(fd_in);
-            }
+			if (input_fd != -1)
+			{
+				dup2(input_fd, STDIN_FILENO);
+				close(input_fd);
+			}
+			if (current->next)
+			{
+				dup2(pipe_fd[1], STDOUT_FILENO);
+				close(pipe_fd[0]);
+			}
+			if (current->input_file)
+			{
+				int fd_in = open(current->input_file, O_RDONLY);
+				if (fd_in < 0)
+				{
+					perror("Error al abrir archivo de entrada");
+					exit(EXIT_FAILURE);
+				}
+				dup2(fd_in, STDIN_FILENO);
+				close(fd_in);
+			}
 
-            if (current->output_file)
-            {
-                int fd_out;
-                if (current->append)
-                    fd_out = open(current->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-                else
-                    fd_out = open(current->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (current->output_file)
+			{
+				int fd_out;
+				if (current->append)
+					fd_out = open(current->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				else
+					fd_out = open(current->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-                if (fd_out < 0)
-                {
-                    perror("Error al abrir archivo de salida");
-                    exit(EXIT_FAILURE);
-                }
-                dup2(fd_out, STDOUT_FILENO); // Redirigir salida estándar
-                close(fd_out);
-            }
+				if (fd_out < 0)
+				{
+					perror("Error al abrir archivo de salida");
+					exit(EXIT_FAILURE);
+				}
+				dup2(fd_out, STDOUT_FILENO);
+				close(fd_out);
+			}
 
-            // Ejecutar el comando
-            if (execvp(current->argv[0], current->argv) == -1)
-            {
-                printf("%s: command not found\n", current->argv[0]);
-                exit(EXIT_FAILURE);
-            }
-        }
-        else if (pid > 0) // Código del padre
-        {
-            int status;
-            waitpid(pid, &status, 0); // Esperar al proceso hijo
+			if (is_builtin(current->argv[0]))
+			{
+				ft_execute_builtin(data);
+				/* exit(EXIT_SUCCESS); */
+			}
+			else
+			{
+				// Construir el path absoluto para el comando
+				char *cmd_path = NULL;
+				int i = 0;
+				
+				while(data->path[i])
+				{
+					char *tmp;
+					char *temp_path;
+					tmp = ft_strjoin(data->path[i], "/");
+					temp_path = ft_strjoin(tmp, current->argv[0]);
+					free(tmp);
+					if (access(temp_path, X_OK) == 0)
+					{
+						cmd_path = temp_path;
+						break;
+					}
+					free(temp_path);
+					i++;
+				}
 
-            // Manejo de pipes
-            if (input_fd != -1)
-                close(input_fd); // Cerrar la entrada usada por el proceso anterior
+				if (!cmd_path)
+				{
+					printf("%s: command not found\n", current->argv[0]);
+					exit(EXIT_FAILURE);
+				}
+				else if (execve(cmd_path, current->argv, data->envp) == -1)
+				{
+					perror("Error ejecutando el comando");
+					free(cmd_path);
+					exit(EXIT_FAILURE);
+				}
+				free(cmd_path);
+			}
+		}
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0); // Esperar al proceso hijo
 
-            if (current->next)
-            {
-                close(pipe_fd[1]);     // Cerrar extremo de escritura del pipe
-                input_fd = pipe_fd[0]; // Usar extremo de lectura como entrada para el próximo comando
-            }
-        }
-        else // Error en fork
-        {
-            perror("Error creando proceso hijo");
-            exit(EXIT_FAILURE);
-        }
+			// Manejo de pipes
+			if (input_fd != -1)
+				close(input_fd); // Cerrar la entrada usada por el proceso anterior
 
-        // Avanzar al siguiente comando
-        current = current->next;
-    }
+			if (current->next)
+			{
+				close(pipe_fd[1]);	   // Cerrar extremo de escritura del pipe
+				input_fd = pipe_fd[0]; // Usar extremo de lectura como entrada para el próximo comando
+			}
+		}
+		else // Error en fork
+		{
+			perror("Error creando proceso hijo");
+			exit(EXIT_FAILURE);
+		}
+
+		// Avanzar al siguiente comando
+		current = current->next;
+	}
 }

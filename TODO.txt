@@ -10,14 +10,6 @@ Pruebas (En orden de importancia):
 	este caso da segfault y deberia dar un mensaje de error 
 	[cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory])
 
-4- En el EXPORT, gestionar multiples cargas con o sin comillas [OK??] - Al mover el executor del main falla, probablemente por como se refiere a data.
-	* export a=1 b=2 c=3
-	* export a="1" b="2" c="3"
-
-5- En el UNSET, cuando creas una variable con nombre "c" no es posible unsetearla [OK??]
-	* export a=1 b=2 c=3 ; unset a b c
-	* export c=10 ; unset c
-
 6- En el EXIT debería retornar el valor del proceso que ha salido [TODO]
 	0 - Éxito: Indica que el comando o el script se ejecutó correctamente sin errores.
 	1 - Error genérico: Se usa para indicar que ocurrió un error genérico. No especifica un tipo de error en particular.
@@ -30,32 +22,136 @@ Pruebas (En orden de importancia):
 
 7- Comprobar LEAKS [TODO]
 
-8- Redirecciones y Pipes [Ondoing] -> Paula
-	Testcases:
-		# Using pwd with redirection
-		pwd > current_directory.txt
-		
-		# Using pwd with a pipe
-		pwd | grep home
-		
-		# Using env with redirection
-		env > environment_variables.txt
-		
-		# Using env with a pipe
-		env | grep PATH
-
-		# Using echo with redirection
-		echo "This is a test" > test.txt
-
-		# Using echo with a pipe
-		echo "This is a test" | grep test
-
-
-
 COSAS QUE HAY QUE HACER
-1) Comprobar antes de ejecutar un comando si es tipo builtin
+1) Comprobar antes de ejecutar un comando si es tipo builtin -> OK
 2) Verificar comillas dobles y simples -> OK
 3) Limpiar codigo
 4) Hacer pruebas
 5) Tener en cuenta que una PIPE o redirecc. puede ir pegada al ARG (parseo)
-6) En la función void ft_execute_commands(t_cmd *cmds) se usa execvp para ejecutar los comandos, no se puede usar, hay que usar execve por lo que hay que modificar un poco el código
+6) En la función void ft_execute_commands(t_cmd *cmds) se usa execvp para ejecutar los comandos, no se puede usar,
+	hay que usar execve por lo que hay que modificar un poco el código -> OK
+
+
+echo hello world
+echo "hello world"
+echo 'hello world'
+echo hello'world' - KO
+echo hello""world - KO
+echo ''
+echo "$PWD" - KO
+echo '$PWD'
+echo "aspas ->'" - KO
+echo "aspas -> ' " - KO
+echo 'aspas ->"' - KO
+echo 'aspas -> " ' - KO
+echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"
+echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'
+echo "exit_code ->$? user ->$USER home -> $HOME" - KO
+echo 'exit_code ->$? user ->$USER home -> $HOME'
+echo "$"
+echo '$'
+echo $ - KO
+echo $? - KO
+echo $?HELLO -KO
+pwd
+pwd oi
+
+export hello
+export HELLO=123
+export A-
+export HELLO=123 A
+export HELLO="123 A-"
+export hello world
+export HELLO-=123
+export =
+export 123
+unset
+unset HELLO
+unset HELLO1 HELLO2
+unset HOME
+unset PATH
+unset SHELL
+
+cd $PWD
+cd $PWD hi 
+cd 123123
+
+# Prints without a new line
+echo -n hello
+
+# update env variable value
+export HELLO=123
+export HELLO="beautiful world"
+
+# keep track of OLDPWD
+cd obj
+echo $PWD $OLDPWD
+
+# invalid command, followed by empty input, should keep the exit code
+doesntexist
+
+echo $?
+
+#invalid command, followed by empty variable, should clear the exit code
+doesntexist
+$EMPTY
+echo $?
+
+# Check if there isn't a zombie process called `cat`
+echo "hi" | cat | cat | cat | cat | cat | cat | cat
+ps -a
+
+# Should skip the empty argument, and print hello after spaces
+echo - "" "  " hello
+
+# Neither of these unsets should break the shell, and you should still be able to call `/bin/ls`
+unset USER
+unset PATH
+unset PWD
+/bin/ls
+
+# This should not change the current directory
+cd .. hi
+
+# Empty `cd` moves to home
+cd
+
+CTRL+C
+CTRL+D
+CTRL+\
+CTRL+C, CTRL+C, CTRL+C, exit
+CTRL+C, CTRL+C, CTRL+C, Ctrl+D
+
+cat | ls # testar dando depois:
+#- Enter
+#- Ctrl+D
+#- Ctrl+\
+#- Ctrl+C
+
+grep oi | ls # testar dando depois:
+#- Enter + Ctrl+D
+#- Ctrl+D
+#- "oi" + Enter + Ctrl+D
+#- Ctrl+\
+#- Ctrl+C
+#- "oi" + Enter + Ctrl+\
+
+./test_files/loop.out # finalizar com:
+#- Ctrl+C
+#- Ctrl+\  -> workspaces: ^\Quit\n
+#- Ctrl+D  -> não faz nada
+
+./test_files/loop.out | ls
+# finalizar com:
+#- Ctrl+C
+#- Ctrl+\
+#- Ctrl+D
+
+ls | ./test_files/loop.out
+# finalizar com:
+#- Ctrl+C
+#- Ctrl+\
+#- Ctrl+D
+
+hello + Ctrl+C
+# Check that the new line is empty

@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by briveiro          #+#    #+#             */
-/*   Updated: 2024/12/05 17:08:12 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:27:28 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	fake_executor(t_data *data)
 {
 	if (ft_strlen(data->input) == 0)
 		return ;
-	ft_execute_commands(data->cmds);
+	ft_execute_commands(data);
 }
 
 int	ft_loop(t_data *data)
@@ -50,7 +50,7 @@ int	ft_loop(t_data *data)
 		if (ft_pair_quotation_check(data))
 		{
 			free(data->input);
-			continue;
+			continue ;
 		}
 		parser(data);
 		add_history(data->input);
@@ -68,7 +68,6 @@ int	ft_character_counter(char *str, char c)
 
 	count = 0;
 	total = 0;
-
 	while (str[count])
 	{
 		if (str[count] == c)
@@ -80,7 +79,7 @@ int	ft_character_counter(char *str, char c)
 
 int	is_builtin(char *content)
 {
-	int i;
+	int	i;
 
 	i = ft_strlen(content);
 	if ((content[0] == 'c' && ft_strlen(content) == 2)
