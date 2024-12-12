@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by briveiro          #+#    #+#             */
-/*   Updated: 2024/12/10 17:27:28 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:28:25 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	is_builtin(char *content)
 	int	i;
 
 	i = ft_strlen(content);
+	
 	if ((content[0] == 'c' && ft_strlen(content) == 2)
 		|| ft_strlen(content) >= 3)
 	{

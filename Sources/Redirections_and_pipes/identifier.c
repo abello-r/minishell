@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:43:01 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/11 16:57:16 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:44:13 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ void ft_execute_builtin(t_data *data)
 	else if (ft_strncmp(data->cmds->argv[0], "echo", ft_strlen("echo")) == 0)
 	{
 		ft_echo(data);
-		exit(EXIT_SUCCESS);
 	}
 	else if (ft_strncmp(data->cmds->argv[0], "exit", ft_strlen("exit")) == 0)
-		ft_exit(data);	
+		ft_exit(data);
 }
 
 void ft_execute_commands(t_data *data)
@@ -40,14 +39,30 @@ void ft_execute_commands(t_data *data)
 	t_cmd *current = data->cmds;
 	int pipe_fd[2];	   // Descriptores del pipe
 	int input_fd = -1; // Entrada para el siguiente comando
-	int status;
+	/* int status; */
 
 	while (current)
 	{
-		if (is_builtin(current->argv[0]) && strcmp(current->argv[0], "exit") == 0)
+		if (/* is_builtin(current->argv[0]) && */ strcmp(current->argv[0], "exit") == 0)
 		{
 			ft_exit(data);
+			return ;
 		}
+
+		if (strcmp(current->argv[0], "export") == 0 && !current->next && 
+            !current->input_file && !current->output_file)
+        {
+            ft_export(data);
+            return;
+        }
+
+		// Si es un builtin sin pipes ni redirecciones, ejecutar directamente
+        if (is_builtin(current->argv[0]) && !current->next && 
+            !current->input_file && !current->output_file)
+        {
+            ft_execute_builtin(data);
+            return;
+        }
 
 		// Crear un pipe si hay un próximo comando
 		if (current->next)
@@ -63,7 +78,6 @@ void ft_execute_commands(t_data *data)
 
 		if (pid == 0)
 		{
-
 			if (input_fd != -1)
 			{
 				dup2(input_fd, STDIN_FILENO);
@@ -106,15 +120,15 @@ void ft_execute_commands(t_data *data)
 			if (is_builtin(current->argv[0]))
 			{
 				ft_execute_builtin(data);
-				/* exit(EXIT_SUCCESS); */
+				exit(EXIT_SUCCESS);
 			}
 			else
 			{
 				// Construir el path absoluto para el comando
 				char *cmd_path = NULL;
 				int i = 0;
-				
-				while(data->path[i])
+
+				while (data->path[i])
 				{
 					char *tmp;
 					char *temp_path;
@@ -137,6 +151,9 @@ void ft_execute_commands(t_data *data)
 				}
 				else if (execve(cmd_path, current->argv, data->envp) == -1)
 				{
+					if (ft_strlen(current->argv[0]) <= 0) {
+						return ;
+					}
 					perror("Error ejecutando el comando");
 					free(cmd_path);
 					exit(EXIT_FAILURE);
@@ -146,7 +163,7 @@ void ft_execute_commands(t_data *data)
 		}
 		else if (pid > 0)
 		{
-			waitpid(pid, &status, 0); // Esperar al proceso hijo
+			waitpid(pid, &g_status, 0); // Esperar al proceso hijo
 
 			// Manejo de pipes
 			if (input_fd != -1)

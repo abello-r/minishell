@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/21 19:23:36 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:24:14 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ void	ft_cd(t_data *data)
 	token_counter = ft_count_tokens(data);
 	home_dir = ft_get_env_dir(data, "HOME");
 	desired_path = NULL;
+	if (token_counter >= 2)
+		printf("minishell: cd: too many arguments\n");
 	if (data->token->next)
 		desired_path = data->token->next->content;
-	if (token_counter > 2)
-		ft_print_exit("minishell: cd: too many arguments\n");
 	if (!desired_path)
 		ft_go_to(home_dir, data);
 	else if (desired_path[0] == '-' && !desired_path[1])

@@ -6,14 +6,128 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/11 17:22:25 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:17:54 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-// TODO: Solucionar join en caso de a=1 b=2 c=3
+/*
+* Propósito: Verifica si una cadena es un identificador válido para ser una variable de entorno.
+* Lógica:
+	- Comprueba que el primer carácter sea una letra (isalpha) o un guion bajo (_).
+	- Itera sobre el resto de los caracteres, asegurándose de que sean alfanuméricos o _.
+	- Detiene la verificación si encuentra un carácter = (indicando el final del nombre de la variable).
+*/
+static int is_valid_identifier(const char *str)
+{
+    if (!str || (!ft_isalpha(*str) && *str != '_'))
+        return 0;
+    while (*str && *str != '=')
+    {
+        if (!ft_isalnum(*str) && *str != '_' )
+            return 0;
+        str++;
+    }
+    return 1;
+}
 
+/*
+* Propósito: Libera la memoria de un arreglo de cadenas.
+* Lógica:
+	- Itera sobre el arreglo liberando cada cadena con free.
+	- Finalmente, libera el arreglo en sí.
+*/
+static void ft_free_array(char **array)
+{
+    int i;
+
+    if (!array)
+        return;
+    i = 0;
+    while (array[i])
+    {
+        free(array[i]);
+        i++;
+    }
+    free(array);
+}
+
+/*
+* Propósito: Hace una copia profunda del entorno actual (envp).
+* Lógica:
+	- Calcula el tamaño del entorno (envp).
+	- Reserva memoria para el nuevo arreglo de cadenas.
+	- Copia cada cadena de envp usando una función llamada ft_strdup.
+	- Si ocurre un error durante la copia, libera la memoria ya asignada con ft_free_array.
+*/
+char **ft_copy_env(char **envp)
+{
+    int i;
+    char **new_env;
+
+    i = 0;
+    while (envp[i])
+        i++;
+    new_env = malloc(sizeof(char *) * (i + 1));
+    if (!new_env)
+        return (NULL);
+    i = 0;
+    while (envp[i])
+    {
+        new_env[i] = ft_strdup(envp[i]);
+        if (!new_env[i])
+        {
+            ft_free_array(new_env);
+            return (NULL);
+        }
+        i++;
+    }
+    new_env[i] = NULL;
+    return (new_env);
+}
+
+/*
+* Propósito: Imprime las variables de entorno en un formato específico.
+* Formato de salida:
+	declare -x VAR="value"
+* Lógica:
+	- Si una variable contiene =, divide el nombre de la variable y el valor, imprimiéndolos con el formato especificado.
+	- Si no contiene =, imprime solo el nombre.
+*/
+static void print_formatted_env(char **env)
+{
+    int i;
+    char *equals;
+
+    for (i = 0; env[i]; i++)
+    {
+        equals = ft_strchr(env[i], '=');
+        write(1, "declare -x ", 11);
+        if (equals)
+        {
+            write(1, env[i], equals - env[i]);
+            write(1, "=\"", 2);
+            write(1, equals + 1, ft_strlen(equals + 1));
+            write(1, "\"", 1);
+        }
+        else
+        {
+            write(1, env[i], ft_strlen(env[i]));
+        }
+        write(1, "\n", 1);
+    }
+}
+
+/*
+* Propósito: Añade o reemplaza una variable en el entorno.
+* Lógica:
+	- Extrae el nombre de la variable (parte antes de =).
+	- Verifica si ya existe una variable con el mismo nombre.
+		- Si existe, la reemplaza.
+		- Si no existe, la añade al final.
+	- Crea un nuevo arreglo de variables con el nuevo contenido y lo retorna.
+*/
 static char **ft_add_new_env(char **envp, char *d_new_env, int i)
 {
 	int repeated;
@@ -43,139 +157,63 @@ static char **ft_add_new_env(char **envp, char *d_new_env, int i)
 	return (new_envp);
 }
 
-static void ft_add_quotes(int i, char **envp_copy)
+/*
+* Propósito: Procesa un argumento individual pasado a export.
+* Lógica:
+	- Valida que el argumento sea un identificador válido.
+	- Si contiene =, añade o actualiza la variable en el entorno.
+	- Si no contiene =, verifica si ya existe en el entorno:
+		- Si no existe, la añade sin valor.
+*/
+void ft_args_export_iterator(t_data *data, char *arg)
 {
-	int j;
-	int k;
+    char *equals;
+    char *var_name;
 
-	j = 0;
-	while (envp_copy[i][j] != '\0')
-	{
-		if (envp_copy[i][j] == '=')
-		{
-			k = ft_strlen(envp_copy[i]);
-			while (k > j)
-			{
-				envp_copy[i][k + 1] = envp_copy[i][k];
-				k--;
-			}
-			envp_copy[i][j + 1] = '"';
-			break;
-		}
-		j++;
-	}
+    if (!is_valid_identifier(arg))
+    {
+        ft_putstr_fd("minishell: export: `", 2);
+        ft_putstr_fd(arg, 2);
+        ft_putstr_fd("': not a valid identifier\n", 2);
+        return;
+    }
+    equals = ft_strchr(arg, '=');
+    if (equals)
+    {
+        var_name = ft_substr(arg, 0, equals - arg);
+        data->envp = ft_add_new_env(data->envp, arg, 1);
+        free(var_name);
+    }
+   	else
+    {
+		if (!arg)
+			return;
+		char *env_value = ft_get_env(data, arg);
+        if (!env_value)
+            data->envp = ft_add_new_env(data->envp, arg, 0);
+    }
 }
 
-static char **ft_copy_env(char **envp)
-{
-	int i;
-	int envp_len;
-	char **envp_copy;
-
-	envp_len = ft_envp_len(envp);
-	envp_copy = malloc(sizeof(char *) * (envp_len + 1));
-	if (!envp_copy)
-		ft_print_exit("Error: malloc failed\n");
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		envp_copy[i] = malloc(ft_strlen(envp[i]) + 14);
-		if (!envp_copy[i])
-			ft_print_exit("Error: malloc failed\n");
-		ft_strcpy(envp_copy[i], "declare -x ");
-		ft_strlcat(envp_copy[i], envp[i], ft_strlen(envp[i]) + 12);
-		ft_add_quotes(i, envp_copy);
-		if (ft_strchr(envp_copy[i], '='))
-			ft_strlcat(envp_copy[i], "\"", ft_strlen(envp_copy[i]) + 2);
-		i++;
-	}
-	envp_copy[envp_len] = NULL;
-	return (envp_copy);
-}
-
-/* void	ft_args_export_iterator(t_data *data, char *desired_new_env)
-{
-	char	*minus_error;
-	char	*equal_sign;
-
-	if (desired_new_env == NULL)
-		return;
-	printf("%s", desired_new_env);
-	minus_error = ft_strchr(desired_new_env, '-');
-	equal_sign = ft_strchr(desired_new_env, '=');
-	printf("minus_error: %s", minus_error);
-	printf("equal_error: %s", equal_sign);
-	if (minus_error && (!equal_sign || minus_error < equal_sign))
-	{
-		printf("minishell: export: `%s': not a valid identifier\n", desired_new_env);
-		return;
-	}
-	else if (ft_isalpha(desired_new_env[0]) == 0)
-	{
-		printf(
-			"minishell: export: `%s': not a valid identifier\n",
-			desired_new_env);
-		return;
-	}
-	else
-		data->envp = ft_add_new_env(data->envp, desired_new_env, 0);
-} */
-
-int		ft_strchr_turbo(char *str, int c)
-{
-	int i;
-
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
-	return i;
-}
-
-void	ft_args_export_iterator(t_data *data, char *desired_new_env)
-{
-	int		minus_error;
-	int		equal_sign;
-
-	if (desired_new_env == NULL)
-		return;
-
-	minus_error = ft_strchr_turbo(desired_new_env, '-');
-	equal_sign = ft_strchr_turbo(desired_new_env, '=');
-
-	printf("minus_error: %d\n", minus_error);
-	printf("equal_error: %d\n", equal_sign);
-
-	if (minus_error && (!equal_sign || minus_error < equal_sign))
-	{
-		printf("minishell: export: `%s': not a valid identifier\n", desired_new_env);
-		return;
-	}
-	else if (ft_isalpha(desired_new_env[0]) == 0)
-	{
-		printf(
-			"minishell: export: `%s': not a valid identifier\n",
-			desired_new_env);
-		return;
-	}
-	else
-		data->envp = ft_add_new_env(data->envp, desired_new_env, 0);
-}
-
+/*
+* Propósito: Implementa el comportamiento general del comando export.
+* Lógica:
+	- Si no hay argumentos (argv[1] es NULL), imprime todas las variables de entorno en formato ordenado.
+	- Si hay argumentos, procesa cada uno con ft_args_export_iterator
+*/
 void ft_export(t_data *data)
 {
-	int i;
-	char **envp_copy;
+    if (!data->cmds->argv[1])
+    {
+        char **envp_copy = ft_copy_env(data->envp);
+        print_formatted_env(envp_copy);
+        ft_free_array(envp_copy);
+        return;
+    }
 
-	i = 0;
-	envp_copy = ft_copy_env(data->envp);
-	if (data->token->next == NULL)
-	{
-		while (envp_copy[++i] != NULL)
-			printf("%s\n", envp_copy[i]);
-		return;
-	}
-	else
-	{
-		ft_process_export_args(data);
-	}
+    int i = 1;
+    while (data->cmds->argv[i])
+    {
+        ft_args_export_iterator(data, data->cmds->argv[i]);
+        i++;
+    }
 }

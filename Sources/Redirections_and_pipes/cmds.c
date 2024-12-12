@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:57:33 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/11 15:08:18 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:44:55 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ char **extract_arguments(t_token *tokens)
 	while (temp && strcmp(temp->type, "PIPE") != 0)
 	{
 		if (strcmp(temp->type, "ARG") == 0 || strcmp(temp->type, "BUILTIN") == 0
-			|| strcmp(temp->type, "DQUOTE") == 0 || strcmp(temp->type, "SQUOTE") == 0)
+			|| strcmp(temp->type, "DQUOTE") == 0 || strcmp(temp->type, "SQUOTE") == 0
+			|| strcmp(temp->type, "ENV") == 0)
 			count++;
 		temp = temp->next;
 	}
@@ -113,7 +114,8 @@ char **extract_arguments(t_token *tokens)
 	while (tokens && strcmp(tokens->type, "PIPE") != 0)
 	{
 		if (strcmp(tokens->type, "ARG") == 0 || strcmp(tokens->type, "BUILTIN") == 0
-			|| strcmp(tokens->type, "DQUOTE") == 0 || strcmp(tokens->type, "SQUOTE") == 0)
+			|| strcmp(tokens->type, "DQUOTE") == 0 || strcmp(tokens->type, "SQUOTE") == 0
+			|| strcmp(tokens->type, "ENV") == 0)
 			argv[i++] = strdup(tokens->content);
 		tokens = tokens->next;
 	}
