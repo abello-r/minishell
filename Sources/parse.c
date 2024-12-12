@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: briveiro <briveiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:34:15 by briveiro          #+#    #+#             */
-/*   Updated: 2024/07/21 22:57:03 by briveiro         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:11:21 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,13 @@ void	parser(t_data *data)
 
 	if (ft_is_empty(data->input) == 1)
 		printf("");
-
-	token_table = line_checker(data->input); // OK
-	ft_token_table_maker(token_table, data); // OK
-	ft_redirection_check(data); // OK
-	ft_check_type(data); // OK
-	ft_clean_quotes(data); // OK
-
-	//ft_check_dollar(data); // OnDoing
+	token_table = line_checker(data->input);
+	if (!token_table[0])
+		token_table[0] = ft_strdup("");
+	ft_token_table_maker(token_table, data);
+	ft_redirection_check(data);
+	ft_check_type(data);
+	ft_clean_quotes(data);
 }
 
 void	ft_token_table_maker(char **token_table, t_data *data)
@@ -82,11 +81,10 @@ char	*ft_assign_type(char *type)
 		return ("SQUOTE");
 	else if (type[0] == '\"')
 		return ("DQUOTE");
-	else if (type[0] == '$')
+	else if (type[0] == '$' && type[1])
 		return ("ENV");
-	else {
+	else
 		return ("ARG");
-	}
 }
 
 char	*ft_getenv(char *content, int i, char **envp)

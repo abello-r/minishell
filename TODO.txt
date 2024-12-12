@@ -23,14 +23,8 @@ Pruebas (En orden de importancia):
 7- Comprobar LEAKS [TODO]
 
 COSAS QUE HAY QUE HACER
-1) Comprobar antes de ejecutar un comando si es tipo builtin -> OK
-2) Verificar comillas dobles y simples -> OK
 3) Limpiar codigo
-4) Hacer pruebas
 5) Tener en cuenta que una PIPE o redirecc. puede ir pegada al ARG (parseo)
-6) En la función void ft_execute_commands(t_cmd *cmds) se usa execvp para ejecutar los comandos, no se puede usar,
-	hay que usar execve por lo que hay que modificar un poco el código -> OK
-
 
 echo hello world
 echo "hello world"
@@ -60,7 +54,7 @@ export hello
 export HELLO=123
 export A-
 export HELLO=123 A
-export HELLO="123 A-"
+export HELLO="123 A-" - KO
 export hello world
 export HELLO-=123
 export =
@@ -75,6 +69,7 @@ unset SHELL
 cd $PWD
 cd $PWD hi 
 cd 123123
+cd .. hi
 
 # Prints without a new line
 echo -n hello
