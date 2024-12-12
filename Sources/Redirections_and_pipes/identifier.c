@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:43:01 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/12 18:44:13 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:23:40 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,16 @@ void ft_execute_commands(t_data *data)
 
 				if (!cmd_path)
 				{
-					printf("%s: command not found\n", current->argv[0]);
+					if (current->argv[0][0] == '$' && current->argv[0][1] != '\0')
+					{
+						char *tmp = ft_substr(current->argv[0], 1, ft_strlen(current->argv[0]));
+						char *env = ft_get_env(data, tmp);
+						free(tmp);
+						if (env)
+							printf("%s: command not found\n", env);
+					}
+					else
+						printf("%s: command not found\n", current->argv[0]);
 					exit(EXIT_FAILURE);
 				}
 				else if (execve(cmd_path, current->argv, data->envp) == -1)
