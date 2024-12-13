@@ -6,13 +6,112 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:43:01 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/13 17:06:46 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/13 21:04:01 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
 int g_status = 0;
+
+void ft_heredoc(t_data *data)
+{
+    int i = 0;
+    char *outfile = NULL;
+    int pipe_fd[2];
+
+    // Buscar el heredoc y el archivo de salida
+    while (data->cmds->argv[i])
+    {
+        if (ft_strncmp(data->cmds->argv[i], "<<", 2) == 0)
+        {
+            if (data->cmds->argv[i + 1])
+                outfile = data->cmds->argv[i + 1];
+            break;
+        }
+        i++;
+    }
+
+    if (!data->cmds->argv[i])
+        return;
+
+    if (pipe(pipe_fd) < 0)
+    {
+        perror("Pipe error");
+        exit(EXIT_FAILURE);
+    }
+
+    char *delimiter = ft_substr(data->cmds->argv[i], 2, ft_strlen(data->cmds->argv[i]));
+    char *line = NULL;
+    char *heredoc = ft_strdup("");
+
+    // Leer las líneas del heredoc
+    while (1)
+    {
+        write(STDOUT_FILENO, "> ", 2);
+        line = readline("");
+
+        if (!line || ft_strcmp(line, delimiter) == 0)
+        {
+            free(line);
+            break;
+        }
+        char *temp = ft_strjoin(heredoc, line);
+        free(heredoc);
+        heredoc = ft_strjoin(temp, "\n");
+        free(temp);
+        free(line);
+    }
+
+    // Manejo del archivo de salida
+    if (outfile)
+    {
+        int fd_out;
+        if (data->cmds->append)
+            fd_out = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        else
+            fd_out = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+        if (fd_out < 0)
+        {
+            perror("Error al abrir archivo de salida");
+            exit(EXIT_FAILURE);
+        }
+
+        // Escribir el heredoc en el archivo de salida
+        ssize_t written = write(fd_out, heredoc, ft_strlen(heredoc));
+        printf("Written to file: %ld bytes\n", written);
+        if (written < 0)
+        {
+            perror("Error escribiendo en archivo");
+            exit(EXIT_FAILURE);
+        }
+        
+        // Asegúrate de cerrar el archivo después de escribir
+        close(fd_out);
+
+        // Si el archivo no se ha actualizado, asegúrate de hacer un "flush"
+        if (fsync(fd_out) < 0)
+        {
+            perror("Error al hacer flush en el archivo");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // Escribir el heredoc en el pipe
+    ssize_t written = write(pipe_fd[1], heredoc, ft_strlen(heredoc));
+    printf("Written to pipe: %ld bytes\n", written);
+    if (written < 0)
+    {
+        perror("Error escribiendo en pipe");
+        exit(EXIT_FAILURE);
+    }
+
+    // Cerrar el pipe después de escribir
+    close(pipe_fd[1]);
+    free(delimiter);
+    free(heredoc);
+}
 
 void ft_execute_builtin(t_data *data)
 {
@@ -27,11 +126,7 @@ void ft_execute_builtin(t_data *data)
 	else if (ft_strncmp(data->cmds->argv[0], "cd", ft_strlen("cd")) == 0)
 		ft_cd(data);
 	else if (ft_strncmp(data->cmds->argv[0], "echo", ft_strlen("echo")) == 0)
-	{
 		ft_echo(data);
-	}
-	/* else if (ft_strncmp(data->cmds->argv[0], "exit", ft_strlen("exit")) == 0)
-		ft_exit(data); */
 }
 
 void ft_execute_commands(t_data *data)
@@ -46,24 +141,24 @@ void ft_execute_commands(t_data *data)
 		if (/* is_builtin(current->argv[0]) && */ ft_strcmp(current->argv[0], "exit") == 0)
 		{
 			ft_exit(data);
-			return ;
+			return;
 		}
 
-		if (ft_strcmp(current->argv[0], "export") == 0 && !current->next && 
-            !current->input_file && !current->output_file)
-        {
-            ft_export(data);
-            return;
-        }
+		if (ft_strcmp(current->argv[0], "export") == 0 && !current->next &&
+			!current->input_file && !current->output_file)
+		{
+			ft_export(data);
+			return;
+		}
 
 		// Si es un builtin sin pipes ni redirecciones, ejecutar directamente
-        if (is_builtin(current->argv[0]) && !current->next && 
-            !current->input_file && !current->output_file)
-        {
-            ft_execute_builtin(data);
-			g_status = 0; //prueba
-            return;
-        }
+		if (is_builtin(current->argv[0]) && !current->next &&
+			!current->input_file && !current->output_file)
+		{
+			ft_execute_builtin(data);
+			g_status = 0; // prueba
+			return;
+		}
 
 		// Crear un pipe si hay un próximo comando
 		if (current->next)
@@ -79,6 +174,7 @@ void ft_execute_commands(t_data *data)
 
 		if (pid == 0)
 		{
+			ft_heredoc(data);
 			if (input_fd != -1)
 			{
 				dup2(input_fd, STDIN_FILENO);
@@ -161,8 +257,9 @@ void ft_execute_commands(t_data *data)
 				}
 				else if (execve(cmd_path, current->argv, data->envp) == -1)
 				{
-					if (ft_strlen(current->argv[0]) <= 0) {
-						return ;
+					if (ft_strlen(current->argv[0]) <= 0)
+					{
+						return;
 					}
 					perror("Error ejecutando el comando");
 					free(cmd_path);

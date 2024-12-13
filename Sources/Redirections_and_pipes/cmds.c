@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:57:33 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/13 17:04:49 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:24:18 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char **extract_arguments(t_token *tokens)
 	{
 		if (ft_strcmp(temp->type, "ARG") == 0 || ft_strcmp(temp->type, "BUILTIN") == 0
 			|| ft_strcmp(temp->type, "DQUOTE") == 0 || ft_strcmp(temp->type, "SQUOTE") == 0
-			|| ft_strcmp(temp->type, "ENV") == 0)
+			|| ft_strcmp(temp->type, "ENV") == 0 || ft_strcmp(temp->type, "HEREDOC") == 0)
 			count++;
 		temp = temp->next;
 	}
@@ -115,7 +115,7 @@ char **extract_arguments(t_token *tokens)
 	{
 		if (ft_strcmp(tokens->type, "ARG") == 0 || ft_strcmp(tokens->type, "BUILTIN") == 0
 			|| ft_strcmp(tokens->type, "DQUOTE") == 0 || ft_strcmp(tokens->type, "SQUOTE") == 0
-			|| ft_strcmp(tokens->type, "ENV") == 0)
+			|| ft_strcmp(tokens->type, "ENV") == 0 || ft_strcmp(tokens->type, "HEREDOC") == 0)
 			argv[i++] = strdup(tokens->content);
 		tokens = tokens->next;
 	}
