@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:43:01 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/12 19:23:40 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:06:46 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void ft_execute_builtin(t_data *data)
 	{
 		ft_echo(data);
 	}
-	else if (ft_strncmp(data->cmds->argv[0], "exit", ft_strlen("exit")) == 0)
-		ft_exit(data);
+	/* else if (ft_strncmp(data->cmds->argv[0], "exit", ft_strlen("exit")) == 0)
+		ft_exit(data); */
 }
 
 void ft_execute_commands(t_data *data)
@@ -43,13 +43,13 @@ void ft_execute_commands(t_data *data)
 
 	while (current)
 	{
-		if (/* is_builtin(current->argv[0]) && */ strcmp(current->argv[0], "exit") == 0)
+		if (/* is_builtin(current->argv[0]) && */ ft_strcmp(current->argv[0], "exit") == 0)
 		{
 			ft_exit(data);
 			return ;
 		}
 
-		if (strcmp(current->argv[0], "export") == 0 && !current->next && 
+		if (ft_strcmp(current->argv[0], "export") == 0 && !current->next && 
             !current->input_file && !current->output_file)
         {
             ft_export(data);
@@ -61,6 +61,7 @@ void ft_execute_commands(t_data *data)
             !current->input_file && !current->output_file)
         {
             ft_execute_builtin(data);
+			g_status = 0; //prueba
             return;
         }
 

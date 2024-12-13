@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:57:33 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/12 18:44:55 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:04:49 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_token *skip_to_next_command(t_token *tokens)
 {
 	while (tokens)
 	{
-		if (strcmp(tokens->type, "PIPE") == 0)
+		if (ft_strcmp(tokens->type, "PIPE") == 0)
 			return tokens->next;
 		tokens = tokens->next;
 	}
@@ -50,9 +50,9 @@ t_token *skip_to_next_command(t_token *tokens)
 
 int check_append(t_token *tokens)
 {
-	while (tokens && strcmp(tokens->type, "PIPE") != 0)
+	while (tokens && ft_strcmp(tokens->type, "PIPE") != 0)
 	{
-		if (strcmp(tokens->type, "APPEND") == 0)
+		if (ft_strcmp(tokens->type, "APPEND") == 0)
 			return 1;
 		tokens = tokens->next;
 	}
@@ -63,11 +63,11 @@ int check_append(t_token *tokens)
 */
 char *extract_output_file(t_token *tokens)
 {
-	while (tokens && strcmp(tokens->type, "PIPE") != 0)
+	while (tokens && ft_strcmp(tokens->type, "PIPE") != 0)
 	{
-		if (strcmp(tokens->type, "OUT") == 0 || strcmp(tokens->type, "APPEND") == 0)
+		if (ft_strcmp(tokens->type, "OUT") == 0 || ft_strcmp(tokens->type, "APPEND") == 0)
 		{
-			if (tokens->next && strcmp(tokens->next->type, "ARG") == 0)
+			if (tokens->next && ft_strcmp(tokens->next->type, "ARG") == 0)
 				return strdup(tokens->next->content);
 		}
 		tokens = tokens->next;
@@ -80,11 +80,11 @@ char *extract_output_file(t_token *tokens)
 */
 char *extract_input_file(t_token *tokens)
 {
-	while (tokens && strcmp(tokens->type, "PIPE") != 0)
+	while (tokens && ft_strcmp(tokens->type, "PIPE") != 0)
 	{
-		if (strcmp(tokens->type, "INPUT") == 0)
+		if (ft_strcmp(tokens->type, "INPUT") == 0)
 		{
-			if (tokens->next && strcmp(tokens->next->type, "ARG") == 0)
+			if (tokens->next && ft_strcmp(tokens->next->type, "ARG") == 0)
 				return strdup(tokens->next->content);
 		}
 		tokens = tokens->next;
@@ -100,22 +100,22 @@ char **extract_arguments(t_token *tokens)
 
 	count = 0;
 	i = 0;
-	while (temp && strcmp(temp->type, "PIPE") != 0)
+	while (temp && ft_strcmp(temp->type, "PIPE") != 0)
 	{
-		if (strcmp(temp->type, "ARG") == 0 || strcmp(temp->type, "BUILTIN") == 0
-			|| strcmp(temp->type, "DQUOTE") == 0 || strcmp(temp->type, "SQUOTE") == 0
-			|| strcmp(temp->type, "ENV") == 0)
+		if (ft_strcmp(temp->type, "ARG") == 0 || ft_strcmp(temp->type, "BUILTIN") == 0
+			|| ft_strcmp(temp->type, "DQUOTE") == 0 || ft_strcmp(temp->type, "SQUOTE") == 0
+			|| ft_strcmp(temp->type, "ENV") == 0)
 			count++;
 		temp = temp->next;
 	}
 	char **argv = malloc((count + 1) * sizeof(char *));
 	if (!argv)
 		return NULL;
-	while (tokens && strcmp(tokens->type, "PIPE") != 0)
+	while (tokens && ft_strcmp(tokens->type, "PIPE") != 0)
 	{
-		if (strcmp(tokens->type, "ARG") == 0 || strcmp(tokens->type, "BUILTIN") == 0
-			|| strcmp(tokens->type, "DQUOTE") == 0 || strcmp(tokens->type, "SQUOTE") == 0
-			|| strcmp(tokens->type, "ENV") == 0)
+		if (ft_strcmp(tokens->type, "ARG") == 0 || ft_strcmp(tokens->type, "BUILTIN") == 0
+			|| ft_strcmp(tokens->type, "DQUOTE") == 0 || ft_strcmp(tokens->type, "SQUOTE") == 0
+			|| ft_strcmp(tokens->type, "ENV") == 0)
 			argv[i++] = strdup(tokens->content);
 		tokens = tokens->next;
 	}

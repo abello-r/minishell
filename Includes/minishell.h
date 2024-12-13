@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 03:46:27 by briveiro          #+#    #+#             */
-/*   Updated: 2024/12/11 20:08:18 by pausanch         ###   ########.fr       */
+/*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
+/*   Updated: 2024/12/13 17:08:04 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		ft_export(t_data *data);
 void		ft_cd(t_data *data);
 void		ft_echo(t_data *data);
 void		ft_exit(t_data *data);
-//int ft_exit(t_data *data);
+//void ft_exit(t_data *data, int last_status);
 
 // Utils
 void		initializer(char **envp, t_data *data);
@@ -142,11 +142,6 @@ void ft_execute_commands(t_data *data);
 
 t_cmd *parse_tokens_to_commands(t_token *tokens);
 void print_commands(t_cmd *commands);
-
-
-
-
-
 
 void ft_args_export_iterator(t_data *data, char *arg);
 
