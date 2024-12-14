@@ -12,8 +12,6 @@
 
 #include "libft.h"
 
-// TODO: Please check if this shit work
-
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
 	t_list	*nueval;

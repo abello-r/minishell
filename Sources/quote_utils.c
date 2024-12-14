@@ -5,32 +5,34 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 03:45:33 by briveiro          #+#    #+#             */
+/*   Created: 2024/07/21 03:45:33 by abello-r          #+#    #+#             */
 /*   Updated: 2024/12/12 16:39:33 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/minishell.h"
 
-char *get_rest(char *input, int i)
+char	*get_rest(char *input, int i)
 {
-    int count;
-    int start;
-    char *temp;
+	int		count;
+	int		start;
+	char	*temp;
 
 	count = 0;
 	start = i;
-    while (input[i] != ' ' && input[i] != '\0') {
-        i++;
-        count++;
-    }
-    temp = malloc(sizeof(char) * (count + 1));
-    if (!temp) {
-        ft_print_exit("Error: malloc failed\n");
-    }
+	while (input[i] != ' ' && input[i] != '\0')
+	{
+		i++;
+		count++;
+	}
+	temp = malloc(sizeof(char) * (count + 1));
+	if (!temp)
+	{
+		ft_print_exit("Error: malloc failed\n");
+	}
 	temp = ft_substr(input, start, count);
-    temp[count] = '\0';
-    return temp;
+	temp[count] = '\0';
+	return (temp);
 }
 
 int	ft_is_empty(char *str)

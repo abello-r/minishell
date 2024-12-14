@@ -11,10 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-// B es hola
-// C es x
-// len es 3
-//
+
 void	*ft_memset(void *b, int c, size_t len)
 {
 	size_t	x;
@@ -27,5 +24,3 @@ void	*ft_memset(void *b, int c, size_t len)
 	}
 	return (b);
 }
-
-// ((type)arr)[i] == *((type)arr + i)

@@ -17,15 +17,15 @@
 # include "../Libft/libft.h"
 
 // System includes
-# include	<stdio.h>
-# include	<unistd.h>
-# include	<stdlib.h>
-# include	<signal.h>
-# include	<readline/readline.h>
-# include	<readline/history.h>
-# include	<sys/wait.h>
-# include	<sys/types.h>
-# include	<fcntl.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <fcntl.h>
 
 # define SIMPLE_QUOTE "[ERROR] Simple quote not closed\n"
 # define DOUBLE_QUOTE "[ERROR] Double quote not closed\n"
@@ -39,7 +39,7 @@ typedef struct s_token
 	struct s_token	*next;
 }			t_token;
 
-typedef struct s_cmd 
+typedef struct s_cmds
 {
 	char			**argv;
 	char			*input_file;
@@ -109,14 +109,12 @@ int			is_builtin(char *content);
 size_t		ft_envp_len(char **envp);
 char		*ft_get_env(t_data *data, char *env);
 int			ft_count_tokens(t_data *data);
-void		ft_check_cmd_on_path(t_data *data);
 void		ft_process_export_args(t_data *data);
 void		ft_args_export_iterator(t_data *data, char *desired_new_env);
 char		*ft_strtolower(char *str);
 void		ft_check_allocation(void *mem);
 void		clean_quotes_from_env(char *line);
 t_token		*ft_add_node(char *content, char *type);
-
 
 // Split
 char		**line_checker(char *input);
@@ -128,7 +126,6 @@ char		*split_quotes(char *input, int count, char flag);
 void		fill_data_envp(char **envp, t_data *data);
 void		fill_path(t_data *data);
 void		ft_check_dollar(t_data *data);
-char		*ft_getenv(char *content, int i, char **envp);
 
 // Redirections check
 
@@ -137,12 +134,9 @@ int			ft_redir_conditions_check(char *token);
 void		ft_check_type(t_data *data);
 
 // identifiers
-/* void		ft_execute_commands(t_cmd *cmds); */
-void ft_execute_commands(t_data *data);
-
-t_cmd *parse_tokens_to_commands(t_token *tokens);
-void print_commands(t_cmd *commands);
-
-void ft_args_export_iterator(t_data *data, char *arg);
+void		ft_execute_commands(t_data *data);
+t_cmd		*parse_tokens_to_commands(t_token *tokens);
+void		print_commands(t_cmd *commands);
+void		ft_args_export_iterator(t_data *data, char *arg);
 
 #endif

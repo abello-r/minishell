@@ -67,10 +67,10 @@ int	ft_pair_quotation_check(t_data *data)
 
 char	**line_checker(char *input)
 {
+	int		count;
+	int		token_counter;
 	char	**token_table;
 	char	*token;
-	int		count;
-	int 	token_counter;
 
 	token_table = ft_get_memory(input);
 	token_counter = 0;
@@ -98,22 +98,22 @@ char	**line_checker(char *input)
 	return (token_table);
 }
 
-void    ft_check_type(t_data *data)
+void	ft_check_type(t_data *data)
 {
-    while (data->token != NULL)
-    {
-        if (ft_strncmp(data->token->content, "/bin/", 5) == 0)
-        {
-            data->token->content = ft_substr(data->token->content, 5, \
-            ft_strlen(data->token->content));
-        }
-        if (is_builtin(data->token->content) == 1)
-        {
-            data->token->type = "BUILTIN";
-        }
-        else
-            data->token->type = ft_assign_type(data->token->content);
-        data->token = data->token->next;
-    }
-    data->token = data->head;
+	while (data->token != NULL)
+	{
+		if (ft_strncmp(data->token->content, "/bin/", 5) == 0)
+		{
+			data->token->content = ft_substr(data->token->content, 5, \
+			ft_strlen(data->token->content));
+		}
+		if (is_builtin(data->token->content) == 1)
+		{
+			data->token->type = "BUILTIN";
+		}
+		else
+			data->token->type = ft_assign_type(data->token->content);
+		data->token = data->token->next;
+	}
+	data->token = data->head;
 }

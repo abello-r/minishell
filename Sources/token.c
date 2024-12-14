@@ -15,7 +15,7 @@
 char	*ft_fill_token_table(char *token)
 {
 	int		x;
-	char 	*tmp_table;
+	char	*tmp_table;
 
 	x = 0;
 	tmp_table = malloc(sizeof(char) * ft_strlen(token) + 1);

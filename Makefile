@@ -10,10 +10,10 @@ SRC_DIR = Sources
 SRC_FILES = main.c \
             error.c parse.c envp_parser.c \
             signal_handler.c token.c structs.c \
-            check.c env_check.c quote_utils.c\
+            check.c quote_utils.c\
 			Builtins/pwd.c Builtins/env.c Builtins/unset.c \
             Builtins/export.c Builtins/cd.c Builtins/echo.c \
-			Builtins/exit.c check_cmd_on_path.c utils.c \
+			Builtins/exit.c utils.c \
 			Redirections_and_pipes/identifier.c Redirections_and_pipes/cmds.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

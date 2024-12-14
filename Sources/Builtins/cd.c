@@ -38,26 +38,26 @@ static int	find_oldpwd(char **envp)
 	return (i);
 }
 
-static char	*ft_go_to(char *directory_path, t_data *data)
+static char	*ft_go_to(char *dir_path, t_data *data)
 {
 	char	*current_dir;
 	char	buff[PATH_MAX];
 
-	if (ft_strncmp(directory_path, "OLDPWD", 6) == 0)
+	if (ft_strncmp(dir_path, "OLDPWD", 6) == 0)
 	{
-		directory_path = ft_get_env(data, "OLDPWD");
-		if (!directory_path)
+		dir_path = ft_get_env(data, "OLDPWD");
+		if (!dir_path)
 			return (NULL);
 	}
-    if (access(directory_path, F_OK) != 0)
-    {
-        printf("minishell: cd: %s: No such file or directory\n", directory_path);
-        return (NULL);
-    }
+	if (access(dir_path, F_OK) != 0)
+	{
+		printf("minishell: cd: %s: No such file or directory\n", dir_path);
+		return (NULL);
+	}
 	current_dir = getcwd(buff, PATH_MAX);
-	if (chdir(directory_path) == -1)
+	if (chdir(dir_path) == -1)
 		printf("minishell: cd: %s: No such file or directory\n", \
-			directory_path);
+			dir_path);
 	else
 	{
 		data->envp[find_oldpwd(data->envp)] = \

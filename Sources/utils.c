@@ -3,9 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 03:46:15 by briveiro          #+#    #+#             */
+/*   Created: 2024/07/21 03:46:15 by abello-r          #+#    #+#             */
 /*   Updated: 2024/12/11 20:09:10 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -54,7 +54,7 @@ void	ft_check_allocation(void *mem)
 		ft_print_exit("Error: malloc failed\n");
 }
 
-t_token		*ft_add_node(char *content, char *type)
+t_token	*ft_add_node(char *content, char *type)
 {
 	t_token	*new_node;
 
