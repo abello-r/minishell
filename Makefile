@@ -20,7 +20,7 @@ SRC_FILES = main.c \
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
-TEMP = *.tmp
+TEMP = *.tmp *.txt
 
 # Readline flags based on the OS
 USER = $(shell whoami)

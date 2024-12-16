@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:57:33 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/16 16:34:38 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/16 17:49:42 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void print_commands(t_cmd *commands)
 {
-	t_cmd *current = commands;
+	int		i;
+	t_cmd	*current = commands;
 
 	if (!current) {
 		printf("The command list is empty.\n");
@@ -23,10 +24,14 @@ void print_commands(t_cmd *commands)
 
 	while (current)
 	{
+		i = 0;
 		if (current->argv && current->argv[0]) {
 			printf("\n");
-			printf("Command: %s\n", current->argv[0]);
-			printf("Arguments: %s\n", current->argv[1]);
+			while (current->argv[i])
+			{
+				printf("Argument[%d]: %s\n", i, current->argv[i]);
+				i++;
+			}
 			printf("Input file: %s\n", current->input_file);
 			printf("Output file: %s\n", current->output_file);
 			printf("Append: %d\n", current->append);
