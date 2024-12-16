@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/13 17:08:04 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:39:08 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_token
 	struct s_token	*next;
 }			t_token;
 
-typedef struct s_cmds
+typedef struct s_cmd
 {
 	char			**argv;
 	char			*input_file;

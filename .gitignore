@@ -62,3 +62,4 @@ Mkfile.old
 dkms.conf
 tester
 *.txt
+*.tmp

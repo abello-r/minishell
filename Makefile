@@ -4,7 +4,8 @@ COLOR_RESET = \033[0m
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror 
+#-g3 -fsanitize=address
 
 SRC_DIR = Sources
 SRC_FILES = main.c \
@@ -19,6 +20,7 @@ SRC_FILES = main.c \
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+TEMP = *.tmp
 
 # Readline flags based on the OS
 USER = $(shell whoami)
@@ -53,7 +55,7 @@ all: $(NAME)
 clean:
 	@clear
 	@echo "$(COLOR_RED)[CLEAN]$(COLOR_RESET) Removing object files...$(COLOR_RESET)\n"
-	@$(RM) -rf $(OBJ_DIR)
+	@$(RM) -rf $(OBJ_DIR) $(TEMP)
 	@make clean -C Libft
 
 fclean: clean
