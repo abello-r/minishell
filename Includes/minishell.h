@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/16 16:39:08 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/16 21:50:24 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ char		*ft_strtolower(char *str);
 void		ft_check_allocation(void *mem);
 void		clean_quotes_from_env(char *line);
 t_token		*ft_add_node(char *content, char *type);
+void		ft_utils_free_double_pointer(char **ptr);
 
 // Split
 char		**line_checker(char *input);
@@ -138,5 +139,11 @@ void		ft_execute_commands(t_data *data);
 t_cmd		*parse_tokens_to_commands(t_token *tokens);
 void		print_commands(t_cmd *commands);
 void		ft_args_export_iterator(t_data *data, char *arg);
+
+// Heredoc
+void		ft_heredoc(t_data *data);
+char		*ft_utils_build_command_path(t_data *data, t_cmd *current);
+char		**ft_utils_strcpy_turbo(char **src, char *tmp_file);
+int			ft_utils_choose_fd_out(t_data *data, char *outfile);
 
 #endif

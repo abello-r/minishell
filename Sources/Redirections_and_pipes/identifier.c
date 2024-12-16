@@ -6,219 +6,13 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:43:01 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/16 20:40:24 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/16 22:04:41 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
 int g_status = 0;
-
-/* void	ft_utils_cmd_not_found(char *cmd_path, t_cmd *current)
-{
-	
-} */
-
-void ft_utils_free_double_pointer(char **ptr)
-{
-	int i;
-
-	i = 0;
-	while (ptr[i])
-	{
-		free(ptr[i]);
-		i++;
-	}
-	free(ptr);
-}
-
-char **ft_strcpy_turbo(char **src, char *tmp_file)
-{
-	int i;
-	int len;
-	char **dst;
-
-	i = 0;
-	len = 1;
-	if (!src)
-		return (NULL);
-	while (src[len] && ft_strncmp(src[len], "<<", 2) != 0)
-		len++;
-	dst = malloc(sizeof(char *) * (len + 2));
-	if (!dst)
-		return (NULL);
-	dst[0] = ft_strdup(src[0]);
-	while (i < len)
-	{
-		dst[i] = ft_strdup(src[i]);
-		i++;
-	}
-	dst[i] = ft_strdup(tmp_file);
-	dst[i + 1] = NULL;
-	return (dst);
-}
-
-char *ft_build_command_path(t_data *data, t_cmd *current)
-{
-	int i;
-	char *cmd_path;
-	char *tmp_path;
-	char *tmp;
-
-	i = 0;
-	cmd_path = NULL;
-	while (data->path[i])
-	{
-		tmp = ft_strjoin(data->path[i], "/");
-		tmp_path = ft_strjoin(tmp, current->argv[0]);
-		free(tmp);
-		if (access(tmp_path, X_OK) == 0)
-		{
-			cmd_path = tmp_path;
-			break;
-		}
-		free(tmp_path);
-		i++;
-	}
-
-	if (!cmd_path)
-	{
-		if (current->argv[0][0] == '$' && current->argv[0][1] != '\0')
-		{
-			char *tmp = ft_substr(current->argv[0], 1, ft_strlen(current->argv[0]));
-			char *env = ft_get_env(data, tmp);
-			free(tmp);
-			if (env)
-				printf("%s: command not found\n", env);
-		}
-		else
-			printf("%s: command not found\n", current->argv[0]);
-		exit(EXIT_FAILURE);
-	}
-	return (cmd_path);
-}
-
-char *ft_save_in_tmp_file(char *heredoc)
-{
-	ssize_t written;
-	int fd;
-	char *tmp_file;
-
-	tmp_file = ft_strdup("heredoc.tmp");
-	if (!tmp_file)
-		return (NULL);
-	fd = open(tmp_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-	{
-		free(tmp_file);
-		return (NULL);
-	}
-	written = write(fd, heredoc, ft_strlen(heredoc));
-	close(fd);
-	if (written < 0)
-	{
-		free(tmp_file);
-		return (NULL);
-	}
-	return (tmp_file);
-}
-
-int ft_exec_with_tmp_file(t_data *data, char *tmp_file, char *outfile)
-{
-	int		fd_out;
-	char	*path_cmd;
-	char	**tmp_argv;
-
-	path_cmd = ft_build_command_path(data, data->cmds);
-	if (!path_cmd)
-		return (1);
-	tmp_argv = ft_strcpy_turbo(data->cmds->argv, tmp_file);
-	
-	if (outfile)
-	{
-		if (data->cmds->append)
-			fd_out = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
-			fd_out = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
-		if (fd_out < 0)
-			return (1);
-		dup2(fd_out, STDOUT_FILENO);
-	}
-	else
-		fd_out = STDOUT_FILENO;
-
-	if (!tmp_argv)
-	{
-		free(path_cmd);
-		return (1);
-	}
-	else if (execve(path_cmd, tmp_argv, data->envp) == -1)
-	{
-		free(path_cmd);
-		ft_utils_free_double_pointer(tmp_argv);
-		exit(EXIT_FAILURE);
-	}
-	close(fd_out);
-	free(path_cmd);
-	ft_utils_free_double_pointer(tmp_argv);
-	return (0);
-}
-
-void ft_heredoc(t_data *data)
-{
-	int i = 0;
-	char *outfile = NULL;
-	int pipe_fd[2];
-
-	while (data->cmds->argv[i])
-	{
-		if (ft_strncmp(data->cmds->argv[i], "<<", 2) == 0)
-		{
-			if (data->cmds->argv[i + 1])
-				outfile = data->cmds->argv[i + 1];
-			break;
-		}
-		i++;
-	}
-
-	if (!data->cmds->argv[i])
-		return;
-
-	if (pipe(pipe_fd) < 0)
-	{
-		perror("Pipe error");
-		exit(EXIT_FAILURE);
-	}
-
-	char *delimiter = ft_substr(data->cmds->argv[i], 2, ft_strlen(data->cmds->argv[i]));
-	char *line = NULL;
-	char *heredoc = ft_strdup("");
-
-	while (1)
-	{
-		write(STDOUT_FILENO, "> ", 2);
-		line = readline("");
-
-		if (!line || ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break;
-		}
-		char *temp = ft_strjoin(heredoc, line);
-		free(heredoc);
-		heredoc = ft_strjoin(temp, "\n");
-		free(temp);
-		free(line);
-	}
-
-	char *tmp_file = ft_save_in_tmp_file(heredoc);
-	ft_exec_with_tmp_file(data, tmp_file, outfile);
-
-	close(pipe_fd[1]);
-	free(delimiter);
-	free(heredoc);
-}
 
 void ft_execute_builtin(t_data *data)
 {
@@ -278,6 +72,7 @@ void ft_execute_commands(t_data *data)
 				}
 				temp = temp->next;
 			}
+			char *cmd_path = ft_utils_build_command_path(data, current);
 
 			// Configurar redirecciones de entrada
 			if (input_fd != -1)
@@ -334,10 +129,9 @@ void ft_execute_commands(t_data *data)
 			{
 				// Buscar y ejecutar comando externo
 
-				char *cmd_path = ft_build_command_path(data, current);
 
 				// Expand $ vars and said command not found:
-				if (!cmd_path)
+				/* if (!cmd_path)
 				{
 					if (current->argv[0][0] == '$' && current->argv[0][1] != '\0')
 					{
@@ -350,7 +144,7 @@ void ft_execute_commands(t_data *data)
 					else
 						printf("%s: command not found\n", current->argv[0]);
 					exit(EXIT_FAILURE);
-				}
+				} */
 				if (execve(cmd_path, current->argv, data->envp) == -1)
 				{
 					perror("Error ejecutando el comando");
