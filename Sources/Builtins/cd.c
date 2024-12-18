@@ -6,12 +6,15 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 17:14:29 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:31:22 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 #include <linux/limits.h>
+#include <errno.h>
+
+extern int g_status;
 
 int	ft_count_tokens(t_data *data)
 {

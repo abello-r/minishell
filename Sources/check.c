@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:35:58 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/12 16:39:50 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:28:39 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	**line_checker(char *input)
 			count += ft_strlen(token);
 			token_counter++;
 		}
-		else
+		else if (input[count] != 0)
 		{
 			token = get_rest(input, count);
 			token_table[token_counter] = ft_fill_token_table(token);

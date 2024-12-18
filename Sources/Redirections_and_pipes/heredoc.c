@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:40:54 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/17 12:17:34 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:25:30 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	ft_exec_with_tmp_file(t_data *data, char *tmp_file, char *outfile)
 		return (1);
 	tmp_argv = ft_utils_strcpy_turbo(data->cmds->argv, tmp_file);
 	fd_out = ft_utils_choose_fd_out(data, outfile);
+	printf("ENTRA1\n");
 	if (fd_out < 0 || !tmp_argv)
 	{
 		free(path_cmd);

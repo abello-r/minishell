@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/18 13:26:46 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:25:02 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ void		initializer(char **envp, t_data *data);
 int			ft_character_counter(char *input, char c);
 int			ft_pair_quotation_check(t_data *data);
 void		ft_print_exit(char *str);
-void		ft_redirect_parse(t_data *data); //doing
-t_token		*ft_new_token(char *content); //making
+void		ft_redirect_parse(t_data *data);
+t_token		*ft_new_token(char *content);
 char		**all_the_path(char **path);
 char		*get_rest(char *input, int i);
 int			ft_is_empty(char *str);

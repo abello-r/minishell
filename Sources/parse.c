@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:02:10 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/13 17:02:12 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:41:21 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	parser(t_data *data)
 {
 	char	**token_table;
 
-	if (ft_is_empty(data->input) == 1)
-		printf("");
 	token_table = line_checker(data->input);
 	if (!token_table[0])
 		token_table[0] = ft_strdup("");

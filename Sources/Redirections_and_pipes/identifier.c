@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:43:01 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/18 16:57:57 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:37:56 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,6 @@ static void execute_external_command(t_data *data, t_cmd *current, int input_fd,
 			printf("%s: command not found\n", current->argv[0]);
 		exit(EXIT_FAILURE);
 	}
-
 	if (execve(cmd_path, current->argv, data->envp) == -1)
 	{
 		perror("Error ejecutando el comando");

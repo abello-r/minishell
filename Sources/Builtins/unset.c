@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:01 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 14:07:20 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:20:34 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static char	**ft_create_copy_without_key(t_data *data, char *key)
 	while (data->envp[i] != NULL)
 		i++;
 	copy = (char **)malloc(sizeof(char *) * i);
+	ft_check_allocation(copy);
 	i = 0;
 	while (data->envp[i] != NULL)
 	{
@@ -75,6 +76,8 @@ static void	ft_args_iterator(t_data *data)
 		key = ft_get_key(data->envp[i]);
 		if (ft_strcmp(key, data->token->next->content) == 0)
 		{
+			if (ft_strcmp("PATH", key) == 0)
+				data->path = NULL;
 			copy = ft_create_copy_without_key(data, key);
 			free(data->envp);
 			free(key);

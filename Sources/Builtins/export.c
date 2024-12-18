@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 13:26:20 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:03:28 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,33 +92,68 @@ static void	print_formatted_env(char **env)
 	}
 }
 
-static char	**ft_add_new_env(char **envp, char *d_new_env, int i)
+static char **ft_add_new_env(char **envp, char *d_new_env, int i)
 {
-	int		repeated;
-	char	*key;
-	char	**new_envp;
+    int     repeated;
+    char    *key;
+    char    **new_envp;
+    int     len;
 
-	i = -1;
-	repeated = 0;
-	key = ft_substr(d_new_env, 0, ft_strchr(d_new_env, '=') - d_new_env);
-	new_envp = malloc(sizeof(char *) * (ft_envp_len(envp) + 2));
-	ft_check_allocation(new_envp);
-	while (envp[++i] != NULL)
-	{
-		if (ft_strncmp(envp[i], key, ft_strlen(key)) == 0)
-		{
-			repeated = 1;
-			i++;
-			free(envp[i]);
-			new_envp[i] = ft_strdup(d_new_env);
-		}
-		else
-			new_envp[i] = ft_strdup(envp[i]);
-	}
-	if (repeated == 0)
-		new_envp[i] = ft_strdup(d_new_env);
-	new_envp[i + 1] = NULL;
-	return (new_envp);
+    if (!envp || !d_new_env)
+        return (NULL);
+        
+    char *equals = ft_strchr(d_new_env, '=');
+    if (!equals)
+        return (NULL);
+
+    i = 0;
+    repeated = 0;
+    key = ft_substr(d_new_env, 0, equals - d_new_env);
+    if (!key)
+        return (NULL);
+
+    len = ft_envp_len(envp);
+    new_envp = malloc(sizeof(char *) * (len + 2));
+    if (!new_envp)
+    {
+        free(key);
+        return (NULL);
+    }
+
+    while (envp[i] != NULL)
+    {
+        if (ft_strncmp(envp[i], key, ft_strlen(key)) == 0)
+        {
+            repeated = 1;
+            if (!(new_envp[i] = ft_strdup(d_new_env)))
+            {
+                free(key);
+                ft_free_array(new_envp);
+                return (NULL);
+            }
+        }
+        else if (!(new_envp[i] = ft_strdup(envp[i])))
+        {
+            free(key);
+            ft_free_array(new_envp);
+            return (NULL);
+        }
+        i++;
+    }
+    
+    if (repeated == 0)
+    {
+        if (!(new_envp[i] = ft_strdup(d_new_env)))
+        {
+            free(key);
+            ft_free_array(new_envp);
+            return (NULL);
+        }
+        i++;
+    }
+    new_envp[i] = NULL;
+    free(key);
+    return (new_envp);
 }
 
 void	ft_args_export_iterator(t_data *data, char *arg)

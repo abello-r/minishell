@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:22 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 17:03:43 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:21:41 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,86 @@ char	*ft_strncmp_turbo(const char *s1, const char *s2, size_t n)
 	return (NULL);
 }
 
-static char	*ft_expand_env(t_data *data, char *env)
+static	int	ft_search_env_in_dquote(char *content, int start, char c)
+{
+	int	pos;
+
+	pos = start;
+	while (content[pos] != c && content[pos] != '\0')
+		pos++;
+	if (c == ' ')
+		pos -= 1;
+	return (pos);
+}
+
+static char *ft_replace_content(char *src, char *obj, char *content)
+{
+    char    *result;
+    int     i;
+    int     j;
+    int     k;
+    int     len;
+
+    if (!src || !obj || !content)
+        return (NULL);
+    
+    len = ft_strlen(src) - ft_strlen(obj) + ft_strlen(content) + 1;
+    if (!(result = (char *)malloc(sizeof(char) * len)))
+        return (NULL);
+
+    i = 0;
+    j = 0;
+    while (src[i])
+    {
+        if (ft_strncmp(&src[i], obj, ft_strlen(obj)) == 0)
+        {
+            k = 0;
+            while (content[k])
+                result[j++] = content[k++];
+            i += ft_strlen(obj);
+        }
+        else
+            result[j++] = src[i++];
+    }
+    result[j] = '\0';
+    
+    return (result);
+}
+
+static char	*ft_expand_env(t_data *data, char *content)
 {
 	int		i;
+	int		d_end;
+	int		d_start;
 	char	*expanded_value;
+	char	*org_content;
+	char	*result;
 
 	i = 0;
-	
-	if (env[0] == '$' && env[1] == '?')
+	org_content = (char *)malloc(sizeof(char) * ft_strlen(content) + 1);
+	ft_check_allocation(org_content);
+	ft_strcpy(org_content, content);
+
+	d_start = ft_search_env_in_dquote(content, 0, '$');
+	d_end = ft_search_env_in_dquote(content, d_start, ' ');
+
+	if (content[d_start] == '$' && content[d_start + 1] == '?')
 	{
 		printf("%d", g_status);
 		return (ft_strdup(""));
 	}
-	else if (env[0] == '$')
-		env = env + 1;
+	else if (content[d_start] == '$')
+		content = ft_substr(content, d_start + 1, d_end - d_start);
 	while (data->envp[i])
 	{
-		expanded_value = ft_strncmp_turbo(data->envp[i], env, ft_strlen(env));
+		expanded_value = ft_strncmp_turbo(data->envp[i], content, ft_strlen(content));
 		if (expanded_value != NULL)
-			return (expanded_value);
+		{
+			content = ft_strjoin("$", content);
+			result = ft_replace_content(org_content, content, expanded_value);
+			free(content);
+			return (result);
+		}
 		i++;
 	}
 	return (ft_strdup(""));
@@ -69,7 +130,8 @@ static void	ft_print_echo_args(t_data *data, int dash_flag)
 			|| ft_strcmp(data->token->next->type, "SQUOTE") == 0 \
 			|| ft_strcmp(data->token->next->type, "ENV") == 0))
 	{
-		if (ft_strcmp(data->token->next->type, "ENV") == 0)
+
+		if (ft_strcmp(data->token->next->type, "ENV") == 0 || ft_strcmp(data->token->next->type, "DQUOTE") == 0)
 		{
 			expanded_var = ft_expand_env(data, data->token->next->content);
 			if (expanded_var)
