@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/16 21:50:24 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:26:46 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void		ft_export(t_data *data);
 void		ft_cd(t_data *data);
 void		ft_echo(t_data *data);
 void		ft_exit(t_data *data);
-//void ft_exit(t_data *data, int last_status);
 
 // Utils
 void		initializer(char **envp, t_data *data);

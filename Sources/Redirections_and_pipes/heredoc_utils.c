@@ -6,15 +6,15 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:46:49 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/16 21:56:32 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:50:55 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-int ft_utils_choose_fd_out(t_data *data, char *outfile)
+int	ft_utils_choose_fd_out(t_data *data, char *outfile)
 {
-	int fd_out;
+	int	fd_out;
 
 	if (outfile)
 	{
@@ -30,11 +30,11 @@ int ft_utils_choose_fd_out(t_data *data, char *outfile)
 	return (fd_out);
 }
 
-char **ft_utils_strcpy_turbo(char **src, char *tmp_file)
+char	**ft_utils_strcpy_turbo(char **src, char *tmp_file)
 {
-	int i;
-	int len;
-	char **dst;
+	int		i;
+	int		len;
+	char	**dst;
 
 	i = 0;
 	len = 1;
@@ -57,14 +57,17 @@ char **ft_utils_strcpy_turbo(char **src, char *tmp_file)
 }
 
 
-static void ft_utils_cmd_not_found(char *cmd_path, t_data *data, t_cmd *current)
+static void	ft_utils_cmd_not_found(char *cmd_path, t_data *data, t_cmd *current)
 {
+	char	*tmp;
+	char	*env;
+
 	if (!cmd_path)
 	{
 		if (current->argv[0][0] == '$' && current->argv[0][1] != '\0')
 		{
-			char *tmp = ft_substr(current->argv[0], 1, ft_strlen(current->argv[0]));
-			char *env = ft_get_env(data, tmp);
+			tmp = ft_substr(current->argv[0], 1, ft_strlen(current->argv[0]));
+			env = ft_get_env(data, tmp);
 			free(tmp);
 			if (env)
 				printf("%s: command not found\n", env);
@@ -75,12 +78,12 @@ static void ft_utils_cmd_not_found(char *cmd_path, t_data *data, t_cmd *current)
 	}
 }
 
-char *ft_utils_build_command_path(t_data *data, t_cmd *current)
+char	*ft_utils_build_command_path(t_data *data, t_cmd *current)
 {
-	int i;
-	char *cmd_path;
-	char *tmp_path;
-	char *tmp;
+	int		i;
+	char	*cmd_path;
+	char	*tmp_path;
+	char	*tmp;
 
 	i = 0;
 	cmd_path = NULL;
@@ -92,7 +95,7 @@ char *ft_utils_build_command_path(t_data *data, t_cmd *current)
 		if (access(tmp_path, X_OK) == 0)
 		{
 			cmd_path = tmp_path;
-			break;
+			break ;
 		}
 		free(tmp_path);
 		i++;

@@ -6,17 +6,17 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:40:54 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/16 21:48:59 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:17:34 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static int ft_exec_with_tmp_file(t_data *data, char *tmp_file, char *outfile)
+static int	ft_exec_with_tmp_file(t_data *data, char *tmp_file, char *outfile)
 {
-	int fd_out;
-	char *path_cmd;
-	char **tmp_argv;
+	int		fd_out;
+	char	*path_cmd;
+	char	**tmp_argv;
 
 	path_cmd = ft_utils_build_command_path(data, data->cmds);
 	if (!path_cmd)
@@ -40,11 +40,11 @@ static int ft_exec_with_tmp_file(t_data *data, char *tmp_file, char *outfile)
 	return (0);
 }
 
-static char *ft_save_in_tmp_file(char *heredoc)
+static char	*ft_save_in_tmp_file(char *heredoc)
 {
-	ssize_t written;
-	int fd;
-	char *tmp_file;
+	ssize_t	written;
+	int		fd;
+	char	*tmp_file;
 
 	tmp_file = ft_strdup("heredoc.tmp");
 	if (!tmp_file)
@@ -65,12 +65,12 @@ static char *ft_save_in_tmp_file(char *heredoc)
 	return (tmp_file);
 }
 
-static char *ft_get_heredoc_buffer(t_data *data, int i)
+static char	*ft_get_heredoc_buffer(t_data *data, int i)
 {
-	char *tmp;
-	char *line;
-	char *buffer;
-	char *delimiter;
+	char	*tmp;
+	char	*line;
+	char	*buffer;
+	char	*delimiter;
 
 	tmp = NULL;
 	line = NULL;
@@ -83,7 +83,7 @@ static char *ft_get_heredoc_buffer(t_data *data, int i)
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
 		tmp = ft_strjoin(buffer, line);
 		free(buffer);
@@ -94,7 +94,7 @@ static char *ft_get_heredoc_buffer(t_data *data, int i)
 	return (free(delimiter), buffer);
 }
 
-void ft_heredoc(t_data *data)
+void	ft_heredoc(t_data *data)
 {
 	int		i;
 	int		pipe_fd[2];
@@ -110,12 +110,12 @@ void ft_heredoc(t_data *data)
 		{
 			if (data->cmds->argv[i + 1])
 				outfile = data->cmds->argv[i + 1];
-			break;
+			break ;
 		}
 		i++;
 	}
 	if (pipe(pipe_fd) < 0)
-		return;
+		return ;
 	buffer = ft_get_heredoc_buffer(data, i);
 	tmp_file = ft_save_in_tmp_file(buffer);
 	ft_exec_with_tmp_file(data, tmp_file, outfile);

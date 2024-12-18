@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:22 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/21 12:43:39 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:03:43 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
+
+extern int g_status;
 
 char	*ft_strncmp_turbo(const char *s1, const char *s2, size_t n)
 {
@@ -32,7 +34,13 @@ static char	*ft_expand_env(t_data *data, char *env)
 	char	*expanded_value;
 
 	i = 0;
-	if (env[0] == '$')
+	
+	if (env[0] == '$' && env[1] == '?')
+	{
+		printf("%d", g_status);
+		return (ft_strdup(""));
+	}
+	else if (env[0] == '$')
 		env = env + 1;
 	while (data->envp[i])
 	{

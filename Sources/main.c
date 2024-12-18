@@ -6,11 +6,13 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/12 18:28:25 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:10:12 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/minishell.h"
+
+int g_status = 0;
 
 int	main(int argc, char **argv, char **envp)
 {

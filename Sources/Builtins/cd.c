@@ -6,12 +6,12 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/12 16:24:14 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:14:29 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
-#include <limits.h>
+#include <linux/limits.h>
 
 int	ft_count_tokens(t_data *data)
 {
@@ -95,7 +95,7 @@ void	ft_cd(t_data *data)
 	home_dir = ft_get_env_dir(data, "HOME");
 	desired_path = NULL;
 	if (token_counter >= 2)
-		printf("minishell: cd: too many arguments\n");
+		printf("minishell: cd: too many arguments \n");
 	if (data->token->next)
 		desired_path = data->token->next->content;
 	if (!desired_path)

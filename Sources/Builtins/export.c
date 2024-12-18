@@ -6,13 +6,13 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/12 16:17:54 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:26:20 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-static int	is_valid_identifier(const char *str)
+int	is_valid_identifier(const char *str)
 {
 	if (!str || (!ft_isalpha(*str) && *str != '_'))
 		return (0);
