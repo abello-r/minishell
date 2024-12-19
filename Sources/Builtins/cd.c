@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 21:31:22 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:47:26 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <linux/limits.h>
 #include <errno.h>
 
-extern int g_status;
+extern int	g_status;
 
 int	ft_count_tokens(t_data *data)
 {
@@ -54,13 +54,16 @@ static char	*ft_go_to(char *dir_path, t_data *data)
 	}
 	if (access(dir_path, F_OK) != 0)
 	{
-		printf("minishell: cd: %s: No such file or directory\n", dir_path);
+		perror("");
+		g_status = 1;
 		return (NULL);
 	}
 	current_dir = getcwd(buff, PATH_MAX);
-	if (chdir(dir_path) == -1)
-		printf("minishell: cd: %s: No such file or directory\n", \
-			dir_path);
+	if (chdir(dir_path) == -1) {
+		perror("");
+		g_status = 1;
+		return (NULL);
+	}
 	else
 	{
 		data->envp[find_oldpwd(data->envp)] = \
@@ -98,7 +101,11 @@ void	ft_cd(t_data *data)
 	home_dir = ft_get_env_dir(data, "HOME");
 	desired_path = NULL;
 	if (token_counter >= 2)
-		printf("minishell: cd: too many arguments \n");
+	{
+		printf("Too many arguments\n");
+		g_status = 1;
+		return ;
+	}
 	if (data->token->next)
 		desired_path = data->token->next->content;
 	if (!desired_path)

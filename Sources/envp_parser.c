@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:42:34 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/21 03:58:32 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:04:56 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ char	*ft_allocate_string(const char *str)
 
 void	fill_data_envp(char **envp, t_data *data)
 {
+	int		i;
 	int		num_env_vars;
 	int		max_env_vars;
 	char	**clean_environments;
-	int		i;
 
 	num_env_vars = 0;
 	max_env_vars = 100;
@@ -50,6 +50,7 @@ void	fill_data_envp(char **envp, t_data *data)
 	}
 	clean_environments[num_env_vars] = NULL;
 	data->envp = clean_environments;
+	//ft_utils_free_double_pointer(clean_environments);
 }
 
 void	fill_path(t_data *data)

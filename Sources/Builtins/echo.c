@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:22 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 21:21:41 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:21:17 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static	int	ft_search_env_in_dquote(char *content, int start, char c)
 	return (pos);
 }
 
-static char *ft_replace_content(char *src, char *obj, char *content)
+static char	*ft_replace_content(char *src, char *obj, char *content)
 {
     char    *result;
     int     i;

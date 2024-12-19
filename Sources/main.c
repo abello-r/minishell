@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 17:33:05 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:54:56 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 
 	initializer(envp, &data);
-
 	if (ft_loop(&data))
 		return (1);
 	else

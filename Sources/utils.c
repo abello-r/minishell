@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:15 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/16 21:49:56 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:02:59 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void ft_utils_free_double_pointer(char **ptr)
 	int i;
 
 	i = 0;
+	if (!ptr)
+		return ;
 	while (ptr[i])
 	{
 		free(ptr[i]);

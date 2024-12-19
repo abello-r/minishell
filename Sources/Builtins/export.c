@@ -6,65 +6,13 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 18:03:28 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:04:10 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-int	is_valid_identifier(const char *str)
-{
-	if (!str || (!ft_isalpha(*str) && *str != '_'))
-		return (0);
-	while (*str && *str != '=')
-	{
-		if (!ft_isalnum(*str) && *str != '_' )
-			return (0);
-		str++;
-	}
-	return (1);
-}
-
-static void	ft_free_array(char **array)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
-char	**ft_copy_env(char **envp)
-{
-	int		i;
-	char	**new_env;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	new_env = malloc(sizeof(char *) * (i + 1));
-	if (!new_env)
-		return (NULL);
-	i = 0;
-	while (envp[i])
-	{
-		new_env[i] = ft_strdup(envp[i]);
-		if (!new_env[i])
-		{
-			ft_free_array(new_env);
-			return (NULL);
-		}
-		i++;
-	}
-	new_env[i] = NULL;
-	return (new_env);
-}
+extern int g_status;
 
 static void	print_formatted_env(char **env)
 {
@@ -94,21 +42,23 @@ static void	print_formatted_env(char **env)
 
 static char **ft_add_new_env(char **envp, char *d_new_env, int i)
 {
-    int     repeated;
-    char    *key;
-    char    **new_envp;
     int     len;
+    int     repeated;
+    char	*equals;
+	char    *key;
+    char    **new_envp;
 
     if (!envp || !d_new_env)
-        return (NULL);
-        
-    char *equals = ft_strchr(d_new_env, '=');
-    if (!equals)
         return (NULL);
 
     i = 0;
     repeated = 0;
-    key = ft_substr(d_new_env, 0, equals - d_new_env);
+    equals = ft_strchr(d_new_env, '=');
+	if (equals)
+    	key = ft_substr(d_new_env, 0, equals - d_new_env);
+	else
+		key = ft_strdup(d_new_env);
+
     if (!key)
         return (NULL);
 
@@ -128,14 +78,14 @@ static char **ft_add_new_env(char **envp, char *d_new_env, int i)
             if (!(new_envp[i] = ft_strdup(d_new_env)))
             {
                 free(key);
-                ft_free_array(new_envp);
+                ft_utils_free_double_pointer(new_envp);
                 return (NULL);
             }
         }
         else if (!(new_envp[i] = ft_strdup(envp[i])))
         {
             free(key);
-            ft_free_array(new_envp);
+            ft_utils_free_double_pointer(new_envp);
             return (NULL);
         }
         i++;
@@ -146,7 +96,7 @@ static char **ft_add_new_env(char **envp, char *d_new_env, int i)
         if (!(new_envp[i] = ft_strdup(d_new_env)))
         {
             free(key);
-            ft_free_array(new_envp);
+            ft_utils_free_double_pointer(new_envp);
             return (NULL);
         }
         i++;
@@ -167,6 +117,7 @@ void	ft_args_export_iterator(t_data *data, char *arg)
 		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
+		g_status = 1;
 		return ;
 	}
 	equals = ft_strchr(arg, '=');
@@ -182,7 +133,7 @@ void	ft_args_export_iterator(t_data *data, char *arg)
 			return ;
 		env_value = ft_get_env(data, arg);
 		if (!env_value)
-			data->envp = ft_add_new_env(data->envp, arg, 0);
+			data->envp = ft_add_new_env(data->envp, arg, 0);	
 	}
 }
 
@@ -195,7 +146,7 @@ void	ft_export(t_data *data)
 	{
 		envp_copy = ft_copy_env(data->envp);
 		print_formatted_env(envp_copy);
-		ft_free_array(envp_copy);
+		ft_utils_free_double_pointer(envp_copy);
 		return ;
 	}
 	i = 1;

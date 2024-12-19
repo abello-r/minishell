@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/18 18:25:02 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:03:19 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,14 @@ void		ft_signal_handler(int signum);
 void		ft_pwd(void);
 void		ft_env(t_data *data);
 void		ft_unset(t_data *data);
-void		ft_export(t_data *data);
 void		ft_cd(t_data *data);
 void		ft_echo(t_data *data);
 void		ft_exit(t_data *data);
+
+// Export and utils
+void		ft_export(t_data *data);
+int			is_valid_identifier(const char *str);
+char		**ft_copy_env(char **envp);
 
 // Utils
 void		initializer(char **envp, t_data *data);

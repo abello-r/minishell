@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:46:49 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/18 13:50:55 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:31:37 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	ft_utils_choose_fd_out(t_data *data, char *outfile)
 			fd_out = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else
 			fd_out = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
 		dup2(fd_out, STDOUT_FILENO);
 	}
 	else
@@ -55,7 +54,6 @@ char	**ft_utils_strcpy_turbo(char **src, char *tmp_file)
 	dst[i + 1] = NULL;
 	return (dst);
 }
-
 
 static void	ft_utils_cmd_not_found(char *cmd_path, t_data *data, t_cmd *current)
 {

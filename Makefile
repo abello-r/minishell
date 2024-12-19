@@ -4,8 +4,7 @@ COLOR_RESET = \033[0m
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror 
-#-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 
 SRC_DIR = Sources
 SRC_FILES = main.c \
@@ -16,7 +15,8 @@ SRC_FILES = main.c \
             Builtins/export.c Builtins/cd.c Builtins/echo.c \
 			Builtins/exit.c utils.c \
 			Redirections_and_pipes/identifier.c Redirections_and_pipes/cmds.c \
-			Redirections_and_pipes/heredoc.c Redirections_and_pipes/heredoc_utils.c
+			Redirections_and_pipes/heredoc.c Redirections_and_pipes/heredoc_utils.c \
+			Builtins/utils_export.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
