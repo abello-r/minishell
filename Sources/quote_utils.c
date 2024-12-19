@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:45:33 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 17:19:03 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 22:42:00 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@ char	*get_rest(char *input, int i)
 	{
 		i++;
 		count++;
-	}
-	temp = malloc(sizeof(char) * (count + 1));
-	if (!temp)
-	{
-		ft_print_exit("Error: malloc failed\n");
 	}
 	temp = ft_substr(input, start, count);
 	temp[count] = '\0';
