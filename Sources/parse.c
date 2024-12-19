@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:02:10 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/18 18:41:21 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 22:20:20 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ void	ft_token_table_maker(char **token_table, t_data *data)
 			new_node->prev = current_node;
 		}
 		current_node = new_node;
+		free(token_table[i]);
 		i++;
 	}
+	free(token_table);
 	data->token = data->head;
 }
 

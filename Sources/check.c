@@ -6,25 +6,27 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:35:58 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/18 19:28:39 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 22:14:13 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/minishell.h"
 
-int	ft_redirection_check(t_data *data)
+int ft_redirection_check(t_data *data)
 {
-	while (data->token != NULL)
-	{
-		if (data->token->content[0] != '\'' && data->token->content[0] != '\"')
-		{
-			if (ft_redir_conditions_check(data->token->content))
-				ft_print_exit(REDIR);
-		}
-		data->token = data->token->next;
-	}
-	data->token = data->head;
-	return (0);
+    t_token *current;
+
+	current = data->token;
+    while (current != NULL)
+    {
+        if (current->content && current->content[0] != '\'' && current->content[0] != '\"')
+        {
+            if (ft_redir_conditions_check(current->content))
+                ft_print_exit(REDIR);
+        }
+        current = current->next;
+    }
+    return (0);
 }
 
 int	ft_redir_conditions_check(char *token)
