@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/19 19:03:19 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:50:56 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void		ft_check_allocation(void *mem);
 void		clean_quotes_from_env(char *line);
 t_token		*ft_add_node(char *content, char *type);
 void		ft_utils_free_double_pointer(char **ptr);
+void		ft_utils_copy_double_pointer(char **src, char ***dst);
 
 // Split
 char		**line_checker(char *input);

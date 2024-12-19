@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:42:34 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/19 19:04:56 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:23:48 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	fill_data_envp(char **envp, t_data *data)
 		i++;
 	}
 	clean_environments[num_env_vars] = NULL;
-	data->envp = clean_environments;
-	//ft_utils_free_double_pointer(clean_environments);
+	ft_utils_copy_double_pointer(clean_environments, &data->envp);
+	ft_utils_free_double_pointer(clean_environments);
 }
 
 void	fill_path(t_data *data)

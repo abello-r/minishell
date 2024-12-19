@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:01 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/18 18:20:34 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:11:15 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*ft_get_key(char *token)
 	char	*key;
 
 	i = 0;
-	while (token[i] != '=')
+	while (token[i] && token[i] != '=')
 		i++;
 	key = ft_substr(token, 0, i);
 	return (key);

@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:15 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/19 19:02:59 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:45:54 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,33 @@ void ft_utils_free_double_pointer(char **ptr)
 		i++;
 	}
 	free(ptr);
+}
+
+void	ft_utils_copy_double_pointer(char **src, char ***dst)
+{
+	int		array_len;
+	int		i;
+	char	**new_array;
+
+	if (!src || !dst)
+		return;
+	array_len = 0;
+	while (src[array_len])
+		array_len++;
+	new_array = (char **)malloc(sizeof(char *) * (array_len + 1));
+	if (!new_array)
+		return;
+	i = 0;
+	while (i < array_len)
+	{
+		new_array[i] = ft_strdup(src[i]);
+		if (!new_array[i])
+		{
+			ft_utils_free_double_pointer(new_array);
+			return;
+		}
+		i++;
+	}
+	new_array[i] = NULL;
+	*dst = new_array;
 }
