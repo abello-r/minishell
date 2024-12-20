@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#define CYAN	"\x1b[36m"
+#define YELLOW	"\x1b[33m"
+#define RESET	"\e[0m"
 #include "../Includes/minishell.h"
 
 int g_status = 0;
@@ -34,7 +37,7 @@ int	ft_loop(t_data *data)
 	while (1)
 	{
 		signal(SIGINT, ft_signal_handler);
-		data->input = readline("minishell$ ");
+		data->input = readline(YELLOW "M" CYAN "inishell" "\x1b[33mツ " RESET);
 		if (!data->input)
 		{
 			printf("\033[Fminishell$ exit\n");
