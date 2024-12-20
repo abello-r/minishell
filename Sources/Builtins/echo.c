@@ -98,6 +98,8 @@ static char	*ft_expand_env(t_data *data, char *content)
 	}
 	else if (content[d_start] == '$')
 		content = ft_substr(content, d_start + 1, d_end - d_start);
+	else
+		printf("%s", content);
 	while (data->envp[i])
 	{
 		expanded_value = ft_strncmp_turbo(data->envp[i], content, ft_strlen(content));

@@ -61,7 +61,7 @@ t_token	*ft_add_node(char *content, char *type)
     new_node = malloc(sizeof(t_token));
     if (!new_node)
         ft_print_exit("Error: malloc failed\n");
-    new_node->content = strdup(content);
+    new_node->content = ft_strdup(content);
     if (!new_node->content)
     {
         free(new_node);
