@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:34:46 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/18 13:19:52 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:33:09 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	ft_exit(t_data *data)
 	ft_putstr_fd("exit\n", 2);
 	if (!node->argv || !node->argv[1])
 	{
+		ft_utils_free_double_pointer(data->envp);
 		exit(g_status);
 	}
 	handle_numeric_arg(node, status);

@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/19 18:54:56 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:05:37 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,75 @@
 
 int g_status = 0;
 
+void	
+
+
+cleanup_data(t_data *data)
+{
+    if (data->envp)
+    {
+        ft_utils_free_double_pointer(data->envp);
+		data->envp = NULL;
+    }
+    if (data->path)
+    {
+		ft_utils_free_double_pointer(data->path);
+		data->path = NULL;
+    }
+}
+
 int	main(int argc, char **argv, char **envp)
 {
+	int		ret;
 	t_data	data;
 
-	(void) argv;
-	(void) argc;
-
+	(void)argv;
+	(void)argc;
 	initializer(envp, &data);
-	if (ft_loop(&data))
+	ret = ft_loop(&data);
+	cleanup_data(&data);
+	if (ret)
 		return (1);
 	else
 		return (0);
+}
+
+void	ft_free_commands(t_cmd *cmds)
+{
+	t_cmd	*current;
+	t_cmd	*next;
+
+	current = cmds;
+	while (current)
+	{
+		next = current->next;
+		if (current->argv)
+			ft_utils_free_double_pointer(current->argv);
+		if (current->input_file)
+			free(current->input_file);
+		if (current->output_file)
+			free(current->output_file);
+		free(current);
+		current = next;
+	}
+
+}
+
+void	ft_free_tokens(t_token *head)
+{
+	t_token	*current;
+	t_token	*next;
+
+	current = head;
+	while (current)
+	{
+		next = current->next;
+		if (current->content)
+			free(current->content);
+		free(current);
+		current = next;
+	}
+	free(current);
 }
 
 int	ft_loop(t_data *data)
@@ -41,7 +98,7 @@ int	ft_loop(t_data *data)
 		if (!data->input)
 		{
 			printf("\033[Fminishell$ exit\n");
-			break ;
+			exit(EXIT_FAILURE);
 		}
 		if (ft_pair_quotation_check(data))
 		{
@@ -54,6 +111,8 @@ int	ft_loop(t_data *data)
 			add_history(data->input);
 			data->cmds = parse_tokens_to_commands(data->token);
 			ft_execute_commands(data);
+			ft_free_commands(data->cmds);
+			ft_free_tokens(data->token);
 			free(data->input);
 		}
 	}

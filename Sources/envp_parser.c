@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:42:34 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/19 19:23:48 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:29:12 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	fill_data_envp(char **envp, t_data *data)
 	ft_utils_free_double_pointer(clean_environments);
 }
 
-void	fill_path(t_data *data)
+/* void	fill_path(t_data *data)
 {
 	int		i;
 	char	**path_blocks;
@@ -66,4 +66,26 @@ void	fill_path(t_data *data)
 		i++;
 	}
 	data->path = path_blocks;
+} */
+
+void fill_path(t_data *data)
+{
+    int     i;
+    char    **path_blocks;
+
+    i = 0;
+    path_blocks = NULL;
+    while (data->envp[i])
+    {
+        if (ft_strncmp(data->envp[i], "PATH=", 5) == 0)
+        {
+            path_blocks = ft_split(&data->envp[i][5], ':');
+            if (!path_blocks)
+                ft_print_exit("Error: malloc failed\n");
+            break;
+        }
+        i++;
+    }
+    data->path = path_blocks;
 }
+

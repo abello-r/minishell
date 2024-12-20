@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abello-r <abello-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:45:23 by abello-r          #+#    #+#             */
-/*   Updated: 2024/07/21 03:45:24 by abello-r         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:42:25 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	initializer(char **envp, t_data *data)
 	fill_path(data);
 	data->input = NULL;
 	data->token = malloc(sizeof(t_token));
-	data->head = data->token;
 	if (!data->token)
 		ft_print_exit("Error: malloc failed\n");
+	data->head = data->token;
 	data->token->content = NULL;
 	data->token->type = NULL;
 	data->token->prev = NULL;

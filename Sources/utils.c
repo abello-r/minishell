@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:46:15 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/19 22:19:36 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:03:59 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,26 @@ void	ft_check_allocation(void *mem)
 
 t_token	*ft_add_node(char *content, char *type)
 {
-    t_token	*new_node;
+	t_token	*new_node;
 
-    new_node = malloc(sizeof(t_token));
-    if (!new_node)
-        ft_print_exit("Error: malloc failed\n");
-    new_node->content = ft_strdup(content);
-    if (!new_node->content)
-    {
-        free(new_node);
-        ft_print_exit("Error: malloc failed\n");
-    }
-    new_node->type = type;
-    new_node->prev = NULL;
-    new_node->next = NULL;
-    return (new_node);
+	new_node = malloc(sizeof(t_token));
+	if (!new_node)
+		ft_print_exit("Error: malloc failed\n");
+	new_node->content = ft_strdup(content);
+	if (!new_node->content)
+	{
+		free(new_node);
+		ft_print_exit("Error: malloc failed\n");
+	}
+	new_node->type = type;
+	new_node->prev = NULL;
+	new_node->next = NULL;
+	return (new_node);
 }
 
-void ft_utils_free_double_pointer(char **ptr)
+void	ft_utils_free_double_pointer(char **ptr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!ptr)

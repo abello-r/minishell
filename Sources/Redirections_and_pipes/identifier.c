@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:43:01 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/19 17:34:26 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:49:40 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,12 @@ static void	execute_external_command(t_data *data, t_cmd *current, int input_fd,
 			env = ft_get_env(data, tmp);
 			free(tmp);
 			if (env)
-				printf("%s: command not found\n", env);
+				printf("%s: command not found3\n", env);
 		}
 		else
-			printf("%s: command not found\n", current->argv[0]);
+		{
+			printf("%s: command not found4\n", current->argv[0]);
+		}
 		exit(EXIT_FAILURE);
 	}
 	if (execve(cmd_path, current->argv, data->envp) == -1)

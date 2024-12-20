@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:22 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/19 11:21:17 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:59:54 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static char	*ft_expand_env(t_data *data, char *content)
 	if (content[d_start] == '$' && content[d_start + 1] == '?')
 	{
 		printf("%d", g_status);
+		free(org_content);
 		return (ft_strdup(""));
 	}
 	else if (content[d_start] == '$')
@@ -108,10 +109,12 @@ static char	*ft_expand_env(t_data *data, char *content)
 			content = ft_strjoin("$", content);
 			result = ft_replace_content(org_content, content, expanded_value);
 			free(content);
+			free(org_content);
 			return (result);
 		}
 		i++;
 	}
+	free(org_content);
 	return (ft_strdup(""));
 }
 

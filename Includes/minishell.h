@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/19 21:50:56 by pausanch         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:37:55 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,4 +150,6 @@ char		*ft_utils_build_command_path(t_data *data, t_cmd *current);
 char		**ft_utils_strcpy_turbo(char **src, char *tmp_file);
 int			ft_utils_choose_fd_out(t_data *data, char *outfile);
 
+
+void ft_free_tokens(t_token *head);
 #endif
