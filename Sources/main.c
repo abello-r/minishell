@@ -32,6 +32,12 @@ cleanup_data(t_data *data)
 		ft_utils_free_double_pointer(data->path);
 		data->path = NULL;
     }
+	if (data->token)
+	{
+		ft_free_tokens(data->head);
+		data->token = NULL;
+		data->head = NULL;
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -85,7 +91,7 @@ void	ft_free_tokens(t_token *head)
 		free(current);
 		current = next;
 	}
-	free(current);
+	//free(current);
 }
 
 int	ft_loop(t_data *data)
@@ -112,7 +118,7 @@ int	ft_loop(t_data *data)
 			data->cmds = parse_tokens_to_commands(data->token);
 			ft_execute_commands(data);
 			ft_free_commands(data->cmds);
-			ft_free_tokens(data->token);
+			ft_free_tokens(data->head);
 			free(data->input);
 		}
 	}
