@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/20 20:05:37 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 11:38:44 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,33 @@
 
 int g_status = 0;
 
-void	
-
-
-cleanup_data(t_data *data)
+void cleanup_data(t_data *data)
 {
-    if (data->envp)
+	t_token *current;
+	t_token *next;
+    if (!data)
+        return;
+    if (data->token && data->head)
+    {
+        current = data->head;
+        next = NULL;
+        
+        while (current)
+        {
+            next = current->next;
+            if (current->content && current->content != (char *)-1)
+            {
+                free(current->content);
+                current->content = NULL;
+            }
+            current->type = NULL;
+            free(current);
+            current = next;
+        }
+        data->token = NULL;
+        data->head = NULL;
+    }
+	if (data->envp)
     {
         ft_utils_free_double_pointer(data->envp);
 		data->envp = NULL;
@@ -32,12 +53,6 @@ cleanup_data(t_data *data)
 		ft_utils_free_double_pointer(data->path);
 		data->path = NULL;
     }
-	if (data->token)
-	{
-		ft_free_tokens(data->head);
-		data->token = NULL;
-		data->head = NULL;
-	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -49,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	initializer(envp, &data);
 	ret = ft_loop(&data);
-	cleanup_data(&data);
+	cleanup_data(&data); //esto no hace nada aqui
 	if (ret)
 		return (1);
 	else
@@ -91,7 +106,6 @@ void	ft_free_tokens(t_token *head)
 		free(current);
 		current = next;
 	}
-	//free(current);
 }
 
 int	ft_loop(t_data *data)
@@ -104,6 +118,7 @@ int	ft_loop(t_data *data)
 		if (!data->input)
 		{
 			printf("\033[Fminishell$ exit\n");
+			cleanup_data(data);
 			exit(EXIT_FAILURE);
 		}
 		if (ft_pair_quotation_check(data))
@@ -113,13 +128,18 @@ int	ft_loop(t_data *data)
 		}
 		if (ft_is_empty(data->input) != 1)
 		{
-			parser(data);
 			add_history(data->input);
+			parser(data);
 			data->cmds = parse_tokens_to_commands(data->token);
 			ft_execute_commands(data);
 			ft_free_commands(data->cmds);
 			ft_free_tokens(data->head);
 			free(data->input);
+		}
+		else
+		{
+			free(data->input);
+			data->input = NULL;
 		}
 	}
 	return (0);
