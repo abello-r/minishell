@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:45:33 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/19 22:42:00 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 12:30:21 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,43 @@ char	*split_quotes(char *input, int count, char flag)
 	return (single_line);
 }
 
-void	ft_clean_quotes(t_data *data)
+char *ft_remove_quotes(char *str)
 {
-	while (data->token != NULL)
-	{
-		if (data->token->content[0] == '\''
-			|| data->token->content[0] == '\"')
-		{
-			ft_cpy_clean(data->token, 1, ft_strlen(data->token->content) - 1);
-		}
-		data->token = data->token->next;
-	}
-	data->token = data->head;
+    char *result;
+    size_t len;
+
+    if (!str)
+        return (NULL);
+    len = strlen(str);
+    if (len < 2 || ((str[0] != '\'' && str[0] != '\"') || str[len - 1] != str[0]))
+        return (strdup(str));
+    result = malloc(len - 1);
+    if (!result)
+        return (NULL);
+    strncpy(result, str + 1, len - 2);
+    result[len - 2] = '\0';
+    return (result);
+}
+
+void ft_clean_quotes(t_data *data)
+{
+    t_token *current;
+	char *new_content;
+
+    current = data->head;
+    while (current)
+    {
+        if (current->type && (strcmp(current->type, "SQUOTE") == 0 || strcmp(current->type, "DQUOTE") == 0))
+        {
+            new_content = ft_remove_quotes(current->content);
+            if (new_content)
+            {
+                free(current->content); // Libera el contenido anterior
+                current->content = new_content; // Reemplaza por el nuevo contenido sin comillas
+            }
+        }
+        current = current->next;
+    }
 }
 
 void	ft_cpy_clean(t_token *token, int start, int end)

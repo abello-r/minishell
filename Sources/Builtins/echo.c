@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:52:22 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/20 19:59:54 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 11:32:16 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,6 @@ char	*ft_strncmp_turbo(const char *s1, const char *s2, size_t n)
 	if (s2[c] == '\0' && s1[c] == '=')
 		return (ft_strdup(s1 + c + 1));
 	return (NULL);
-}
-
-static	int	ft_search_env_in_dquote(char *content, int start, char c)
-{
-	int	pos;
-
-	pos = start;
-	while (content[pos] != c && content[pos] != '\0')
-		pos++;
-	if (c == ' ')
-		pos -= 1;
-	return (pos);
 }
 
 static char	*ft_replace_content(char *src, char *obj, char *content)
@@ -76,46 +64,58 @@ static char	*ft_replace_content(char *src, char *obj, char *content)
 
 static char	*ft_expand_env(t_data *data, char *content)
 {
-	int		i;
-	int		d_end;
-	int		d_start;
-	char	*expanded_value;
-	char	*org_content;
-	char	*result;
+    int i;
+    char *org_content;
+    char *expanded_value;
+    char *result;
+    char *tmp;
+    
+	i= 0;
+	org_content = NULL;
+	expanded_value = NULL;
+	result = NULL;
+	tmp = NULL;
+    if (!content)
+        return (NULL);  
+    org_content = ft_strdup(content);
+    if (!org_content)
+        return (NULL);
+    // Special case for $?
+    if (content[0] == '$' && content[1] == '?')
+    {
+        free(org_content);
+        char *status_str = ft_itoa(g_status);
+        printf("%s", status_str);
+        free(status_str);
+        return (ft_strdup(""));
+    }
 
-	i = 0;
-	org_content = (char *)malloc(sizeof(char) * ft_strlen(content) + 1);
-	ft_check_allocation(org_content);
-	ft_strcpy(org_content, content);
-
-	d_start = ft_search_env_in_dquote(content, 0, '$');
-	d_end = ft_search_env_in_dquote(content, d_start, ' ');
-
-	if (content[d_start] == '$' && content[d_start + 1] == '?')
-	{
-		printf("%d", g_status);
-		free(org_content);
-		return (ft_strdup(""));
-	}
-	else if (content[d_start] == '$')
-		content = ft_substr(content, d_start + 1, d_end - d_start);
-	else
-		printf("%s", content);
-	while (data->envp[i])
-	{
-		expanded_value = ft_strncmp_turbo(data->envp[i], content, ft_strlen(content));
-		if (expanded_value != NULL)
-		{
-			content = ft_strjoin("$", content);
-			result = ft_replace_content(org_content, content, expanded_value);
-			free(content);
-			free(org_content);
-			return (result);
-		}
-		i++;
-	}
-	free(org_content);
-	return (ft_strdup(""));
+    // Handle environment variable expansion
+    if (content[0] == '$')
+    {
+        tmp = ft_substr(content, 1, ft_strlen(content) - 1);
+        while (data->envp[i])
+        {
+            expanded_value = ft_strncmp_turbo(data->envp[i], tmp, ft_strlen(tmp));
+            if (expanded_value)
+            {
+                result = ft_replace_content(org_content, content, expanded_value);
+                free(expanded_value);
+                free(tmp);
+                free(org_content);
+                return (result);
+            }
+            i++;
+        }
+        free(tmp);
+    }
+    else
+    {
+        printf("%s", content);
+    }
+    
+    free(org_content);
+    return (ft_strdup(""));
 }
 
 static void	ft_print_echo_args(t_data *data, int dash_flag)

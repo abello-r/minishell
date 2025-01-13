@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/20 18:37:55 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:39:55 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@
 # include <sys/types.h>
 # include <fcntl.h>
 
-# define SIMPLE_QUOTE "[ERROR] Simple quote not closed\n"
-# define DOUBLE_QUOTE "[ERROR] Double quote not closed\n"
+# define NOT_CLOSED_QUOTE "[ERROR] Quote not closed\n"
 # define REDIR "[ERROR] Redirection not closed\n"
 
 typedef struct s_token
@@ -74,6 +73,7 @@ typedef enum s_enum
 
 // Main
 int			ft_loop(t_data *data);
+void		cleanup_data(t_data *data);
 
 // Parser
 void		parser(t_data *data);

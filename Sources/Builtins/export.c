@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 23:33:03 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/20 16:41:33 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 11:33:47 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 extern int g_status;
 
+//funcion modificada porque cuando hacias export a="10" en el export ponia luego a=""10""
 static void	print_formatted_env(char **env)
 {
 	int		i;
 	char	*equals;
+	char	*value;
 
 	i = 0;
 	while (env[i])
@@ -28,7 +30,16 @@ static void	print_formatted_env(char **env)
 		{
 			write(1, env[i], equals - env[i]);
 			write(1, "=\"", 2);
-			write(1, equals + 1, ft_strlen(equals + 1));
+			value = equals + 1;
+			if (value[0] == '"' && value[ft_strlen(value) - 1] == '"')
+			{
+				value++;
+				write(1, value, ft_strlen(value) - 1);
+			}
+			else
+			{
+				write(1, value, ft_strlen(value));
+			}
 			write(1, "\"", 1);
 		}
 		else

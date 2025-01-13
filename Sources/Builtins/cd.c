@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/20 16:23:49 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 12:11:16 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static char *ft_go_to(char *dir_path, t_data *data)
     current_dir = getcwd(buff, PATH_MAX);
     return (current_dir);
 }
+
 
 static char	*ft_get_env_dir(t_data *data, char *d_dir)
 {
