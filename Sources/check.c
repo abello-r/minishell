@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:35:58 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/20 16:43:48 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:40:03 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,32 @@ int	ft_redir_conditions_check(char *token)
 	return (0);
 }
 
-int	ft_pair_quotation_check(t_data *data)
+
+int ft_pair_quotation_check(t_data *data)
 {
-	if (ft_character_counter(data->input, '\'') % 2 != 0)
-	{
-		printf("%s", SIMPLE_QUOTE);
-		return (1);
-	}
-	else if (ft_character_counter(data->input, '\"') % 2 != 0)
-	{
-		printf("%s", DOUBLE_QUOTE);
-		return (1);
-	}
-	return (0);
+    int i;
+    int in_single_quotes;
+    int in_double_quotes;
+    char *str;
+
+    i = 0;
+    in_single_quotes = 0;
+    in_double_quotes = 0;
+    str = data->input;
+    while (str[i])
+    {
+        if (str[i] == '\'' && !in_double_quotes)
+            in_single_quotes = !in_single_quotes;
+        else if (str[i] == '\"' && !in_single_quotes)
+            in_double_quotes = !in_double_quotes;
+        i++;
+    }
+    if (in_single_quotes || in_double_quotes)
+    {
+        printf("%s", NOT_CLOSED_QUOTE);
+        return (1);
+    }
+    return (0);
 }
 
 char	**line_checker(char *input)

@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:45:33 by abello-r          #+#    #+#             */
-/*   Updated: 2025/01/13 11:42:00 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 12:30:21 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void ft_clean_quotes(t_data *data)
     {
         if (current->type && (strcmp(current->type, "SQUOTE") == 0 || strcmp(current->type, "DQUOTE") == 0))
         {
-            new_content = ft_remove_quotes(current->content); // Supongamos que quita las comillas
+            new_content = ft_remove_quotes(current->content);
             if (new_content)
             {
                 free(current->content); // Libera el contenido anterior

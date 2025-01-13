@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 04:02:10 by abello-r          #+#    #+#             */
-/*   Updated: 2025/01/13 11:38:44 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 13:34:20 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int	ft_character_counter(char *str, char c)
 
 	count = 0;
 	total = 0;
+	
+
 	while (str[count])
 	{
 		if (str[count] == c)
