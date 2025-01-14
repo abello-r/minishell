@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/14 17:19:19 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 18:10:09 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,4 +160,18 @@ int			ft_utils_choose_fd_out(t_data *data, char *outfile);
 
 
 void ft_free_tokens(t_token *head);
+
+// Redirections - utils_cmds
+t_token		*skip_to_next_command(t_token *tokens);
+int			check_append(t_token *tokens);
+char		*extract_output_file(t_token *tokens);
+char		*extract_input_file(t_token *tokens);
+
+void		ft_execute_builtin(t_data *data);
+char		*find_command_path(t_data *data, char *cmd);
+void		handle_command_not_found(char *cmd);
+void		setup_redirections(t_cmd *cmd);
+void		execute_child(t_data *data, t_cmd *cmd, int *prev_pipe, int *pipe_fd);
+void		execute_single_builtin(t_data *data, t_cmd *cmd);
+void		ft_check_fd(int fd, t_cmd *cmd);
 #endif
