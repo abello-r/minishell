@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:02:10 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/20 17:50:41 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:08:45 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ void	parser(t_data *data)
 	ft_redirection_check(data);
 	ft_check_type(data);
 	ft_clean_quotes(data);
+	/* printf("Token list:\n");
+	while (data->token)
+	{
+		printf("Content: %s\n", data->token->content);
+		printf("Type: %s\n", data->token->type);
+		data->token = data->token->next;
+	} */
 }
 
 void	ft_token_table_maker(char **token_table, t_data *data)

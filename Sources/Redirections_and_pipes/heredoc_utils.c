@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:46:49 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/20 18:46:26 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:20:57 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	ft_utils_cmd_not_found(char *cmd_path, t_data *data, t_cmd *current)
 			if (env)
 				printf("%s: command not found\n", env);
 		}
-		else
+		else if (current->argv[0][0] != '<' && current->argv[0][1] != '<')
 			printf("%s: command not found\n", current->argv[0]);
 		exit(EXIT_FAILURE);
 	}

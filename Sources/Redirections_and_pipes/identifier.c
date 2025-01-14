@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 17:49:40 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/13 11:36:03 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:21:17 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,9 @@ void ft_execute_commands(t_data *data)
     int prev_pipe[2] = {-1, -1};
     int curr_pipe[2];
     pid_t pid;
-
+	t_token *temp;
+	
+	temp = data->token;
     current = data->cmds;
 	//print_commands(current);
     while (current)
@@ -235,10 +237,19 @@ void ft_execute_commands(t_data *data)
                 return;
             }
             if (pid == 0)
-            {
-                execute_child(data, current, 
-                    prev_pipe[0] != -1 ? prev_pipe : NULL, // ESTO HAY QUE CAMBIARLO
-                    current->next ? curr_pipe : NULL);
+            {				
+				while (temp)
+				{
+					if (ft_strcmp(temp->type, "HEREDOC") == 0)
+					{
+						ft_heredoc(data);
+						int fd = open("heredoc.tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+						close(fd);
+						exit(EXIT_SUCCESS);
+					}
+					temp = temp->next;
+				}
+                execute_child(data, current, prev_pipe[0] != -1 ? prev_pipe : NULL, current->next ? curr_pipe : NULL);
             }
             // Parent process
             if (prev_pipe[0] != -1)
