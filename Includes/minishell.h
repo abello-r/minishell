@@ -74,6 +74,10 @@ typedef enum s_enum
 // Main
 int			ft_loop(t_data *data);
 void		cleanup_data(t_data *data);
+void		ft_free_commands(t_cmd *cmds);
+void		ft_free_tokens(t_token *head);
+int			is_builtin(char *content);
+int			ft_character_counter(char *str, char c);
 
 // Parser
 void		parser(t_data *data);
