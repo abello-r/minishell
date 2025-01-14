@@ -30,20 +30,6 @@ char	*get_rest(char *input, int i)
 	return (temp);
 }
 
-int	ft_is_empty(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 char	*split_quotes(char *input, int count, char flag)
 {
 	char	*single_line;
@@ -62,7 +48,6 @@ char	*split_quotes(char *input, int count, char flag)
 		count++;
 		i++;
 	}
-	
 	single_line[i] = '\0';
 	return (single_line);
 }
@@ -75,13 +60,13 @@ char	*ft_remove_quotes(char *str)
 	if (!str)
 		return (NULL);
 	len = strlen(str);
-	if (len < 2 || ((str[0] != '\'' && str[0] != '\"')
-			|| str[len - 1] != str[0]))
+	if (len < 2 || ((str[0] != '\''
+				&& str[0] != '\"') || str[len - 1] != str[0]))
 		return (strdup(str));
 	result = malloc(len - 1);
 	if (!result)
 		return (NULL);
-	strncpy(result, str + 1, len - 2); //TO DO: reemplazar por una funcion nueva
+	ft_strncpy(result, str + 1, len - 2);
 	result[len - 2] = '\0';
 	return (result);
 }

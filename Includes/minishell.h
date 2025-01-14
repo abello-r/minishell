@@ -108,6 +108,7 @@ int			is_valid_identifier(const char *str);
 char		**ft_copy_env(char **envp);
 
 // Utils
+char		*ft_strncpy(char *dest, const char *src, size_t n);
 void		initializer(char **envp, t_data *data);
 int			ft_character_counter(char *input, char c);
 int			ft_pair_quotation_check(t_data *data);

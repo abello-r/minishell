@@ -23,13 +23,6 @@ void	parser(t_data *data)
 	ft_redirection_check(data);
 	ft_check_type(data);
 	ft_clean_quotes(data);
-	/* printf("Token list:\n");
-	while (data->token)
-	{
-		printf("Content: %s\n", data->token->content);
-		printf("Type: %s\n", data->token->type);
-		data->token = data->token->next;
-	} */
 }
 
 void	ft_token_table_maker(char **token_table, t_data *data)
