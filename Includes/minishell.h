@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/14 14:58:21 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:19:19 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,16 @@ void		ft_pwd(void);
 void		ft_env(t_data *data);
 void		ft_unset(t_data *data);
 void		ft_cd(t_data *data);
+char 		*validate_directory(char *dir_path, t_data *data);
 void		ft_echo(t_data *data);
+void		ft_print_echo_args(t_data *data, int dash_flag);
+char		*ft_expand_env(t_data *data, char *content);
 void		ft_exit(t_data *data);
+char		*ft_replace_content(char *s, char *obj, char *c);
+char		*ft_strncmp_turbo(const char *s1, const char *s2, size_t n);
+void		print_formatted_env(char **env);
+char		**ft_init_env_array(char **envp, char *d_new_env, char **key, int *len);
+
 
 // Export and utils
 void		ft_export(t_data *data);

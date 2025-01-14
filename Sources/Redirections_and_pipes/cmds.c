@@ -6,43 +6,11 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 14:57:33 by pausanch          #+#    #+#             */
-/*   Updated: 2024/12/19 17:39:02 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:27:54 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
-
-void	print_commands(t_cmd *commands)
-{
-	int		i;
-	t_cmd	*current;
-
-	current = commands;
-	if (!current)
-	{
-		printf("The command list is empty.\n");
-		return ;
-	}
-	while (current)
-	{
-		i = 0;
-		if (current->argv && current->argv[0])
-		{
-			printf("\n");
-			while (current->argv[i])
-			{
-				printf("Argument[%d]: %s\n", i, current->argv[i]);
-				i++;
-			}
-			printf("Input file: %s\n", current->input_file);
-			printf("Output file: %s\n", current->output_file);
-			printf("Append: %d\n", current->append);
-		}
-		else
-			printf("Command: (no arguments or invalid structure)\n");
-		current = current->next;
-	}
-}
 
 t_token	*skip_to_next_command(t_token *tokens)
 {
@@ -65,9 +33,6 @@ int	check_append(t_token *tokens)
 	}
 	return (0);
 }
-/*
-	@return: Files after '>' o '>>'
-*/
 
 char	*extract_output_file(t_token *tokens)
 {
@@ -83,10 +48,6 @@ char	*extract_output_file(t_token *tokens)
 	}
 	return (NULL);
 }
-
-/*
-	@return: Files after '<'
-*/
 
 char	*extract_input_file(t_token *tokens)
 {

@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 16:34:46 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/13 11:40:16 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:40:28 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,11 @@ void	ft_exit(t_data *data)
 	long	status[2];
 
 	if (!data || !data->cmds)
-    {
-        if (data)
-            cleanup_data(data);
-        exit(g_status);
-    }
-
+	{
+		if (data)
+			cleanup_data(data);
+		exit(g_status);
+	}
 	node = data->cmds;
 	ft_putstr_fd("exit\n", 2);
 	if (!node->argv || !node->argv[1])

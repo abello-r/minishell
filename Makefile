@@ -16,7 +16,7 @@ SRC_FILES = main.c \
 			Builtins/exit.c utils.c \
 			Redirections_and_pipes/identifier.c Redirections_and_pipes/cmds.c \
 			Redirections_and_pipes/heredoc.c Redirections_and_pipes/heredoc_utils.c \
-			Builtins/utils_export.c
+			Builtins/utils_export.c Builtins/utils_cd.c Builtins/utils_echo.c \
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ_DIR = Objects
