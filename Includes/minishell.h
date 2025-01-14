@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/14 18:10:09 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 19:03:20 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,4 +178,6 @@ void		setup_redirections(t_cmd *cmd);
 void		execute_child(t_data *data, t_cmd *cmd, int *prev_pipe, int *pipe_fd);
 void		execute_single_builtin(t_data *data, t_cmd *cmd);
 void		ft_check_fd(int fd, t_cmd *cmd);
+int			setup_pipes(int *curr_pipe);
+void		ft_error_fork(int *curr_pipe);
 #endif

@@ -6,11 +6,13 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:09:06 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/14 18:13:00 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 19:04:52 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
+
+extern int	g_status;
 
 void	handle_command_not_found(char *cmd)
 {
@@ -55,4 +57,26 @@ void	setup_redirections(t_cmd *cmd)
 		}
 		ft_check_fd(fd, cmd);
 	}
+}
+
+int	setup_pipes(int *curr_pipe)
+{
+	if (pipe(curr_pipe) == -1)
+	{
+		perror("pipe");
+		g_status = 1;
+		return (0);
+	}
+	return (1);
+}
+
+void	ft_error_fork(int *curr_pipe)
+{
+	perror("fork");
+	if (curr_pipe[0] != -1)
+	{
+		close(curr_pipe[0]);
+		close(curr_pipe[1]);
+	}
+	g_status = 1;
 }

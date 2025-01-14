@@ -6,13 +6,13 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 17:37:52 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/14 18:10:50 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 19:05:57 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-extern int g_status;
+extern int	g_status;
 
 void	ft_execute_builtin(t_data *data)
 {
@@ -23,7 +23,7 @@ void	ft_execute_builtin(t_data *data)
 	else if (ft_strncmp(data->cmds->argv[0], "unset", ft_strlen("unset")) == 0)
 		ft_unset(data);
 	else if (ft_strncmp(data->cmds->argv[0], "export",
-						ft_strlen("export")) == 0)
+			ft_strlen("export")) == 0)
 		ft_export(data);
 	else if (ft_strncmp(data->cmds->argv[0], "cd", ft_strlen("cd")) == 0)
 		ft_cd(data);
@@ -59,12 +59,12 @@ char	*find_command_path(t_data *data, char *cmd)
 
 void	handle_redirections_and_pipes(int *prev_pipe, int *pipe_fd)
 {
-	if ((prev_pipe && dup2(prev_pipe[0], STDIN_FILENO) == -1) || (pipe_fd && dup2(pipe_fd[1], STDOUT_FILENO) == -1))
+	if ((prev_pipe && dup2(prev_pipe[0], STDIN_FILENO) == -1)
+		|| (pipe_fd && dup2(pipe_fd[1], STDOUT_FILENO) == -1))
 	{
 		perror("dup2");
 		exit(1);
 	}
-
 	if (prev_pipe)
 	{
 		close(prev_pipe[0]);
