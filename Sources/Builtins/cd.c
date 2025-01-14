@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2025/01/13 15:47:53 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:52:16 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,38 +41,31 @@ static int	find_oldpwd(char **envp)
 	return (i);
 }
 
-static char *ft_go_to(char *dir_path, t_data *data)
+static char	*ft_go_to(char *dir_path, t_data *data)
 {
-    char *current_dir;
-    char *old_pwd;
-    char buff[PATH_MAX];
+	char	*current_dir;
+	char	*old_pwd;
+	char	buff[PATH_MAX];
 
-    if (ft_strncmp(dir_path, "OLDPWD", 6) == 0)
-    {
-        dir_path = ft_get_env(data, "OLDPWD");
-        if (!dir_path)
-            return (NULL);
-    }
-    if (access(dir_path, F_OK) != 0)
-    {
-        perror("");
-        g_status = 1;
-        return (NULL);
-    }
-    current_dir = getcwd(buff, PATH_MAX);
-    if (chdir(dir_path) == -1) {
-        perror("");
-        g_status = 1;
-        return (NULL);
-    }
-    else
-    {
-        old_pwd = data->envp[find_oldpwd(data->envp)];
-        data->envp[find_oldpwd(data->envp)] = ft_strjoin("OLDPWD=", current_dir);
-        free(old_pwd);
-    }
-    current_dir = getcwd(buff, PATH_MAX);
-    return (current_dir);
+	dir_path = validate_directory(dir_path, data);
+	if (!dir_path)
+		return (NULL);
+	current_dir = getcwd(buff, PATH_MAX);
+	if (chdir(dir_path) == -1)
+	{
+		perror("");
+		g_status = 1;
+		return (NULL);
+	}
+	else
+	{
+		old_pwd = data->envp[find_oldpwd(data->envp)];
+		data->envp[find_oldpwd(data->envp)] = ft_strjoin("OLDPWD=",
+				current_dir);
+		free(old_pwd);
+	}
+	current_dir = getcwd(buff, PATH_MAX);
+	return (current_dir);
 }
 
 static char	*ft_get_env_dir(t_data *data, char *d_dir)
@@ -93,33 +86,31 @@ static char	*ft_get_env_dir(t_data *data, char *d_dir)
 	return (NULL);
 }
 
-void ft_cd(t_data *data)
+void	ft_cd(t_data *data)
 {
-    int     token_counter;
-    char    *desired_path;
-    char    *home_dir;
+	int		token_counter;
+	char	*desired_path;
+	char	*home_dir;
 
-    token_counter = ft_count_tokens(data);
-    home_dir = ft_get_env_dir(data, "HOME");
-    desired_path = NULL;
-    if (token_counter >= 2)
+	token_counter = ft_count_tokens(data);
+	home_dir = ft_get_env_dir(data, "HOME");
+	desired_path = NULL;
+	if (token_counter >= 2)
 	{
-        printf("Too many arguments\n");
-        g_status = 1;
-        if (home_dir)
-            free(home_dir);
-        return;
+		printf("Too many arguments\n");
+		g_status = 1;
+		if (home_dir)
+			free(home_dir);
+		return ;
 	}
-    if (data->token->next)
-        desired_path = data->token->next->content;
-    if (!desired_path)
-        ft_go_to(home_dir, data);
-    else if (desired_path[0] == '-' && !desired_path[1])
-        ft_go_to("OLDPWD", data);
-    else if (desired_path[0] == '~' && !desired_path[1])
-        ft_go_to(home_dir, data);
+	if (data->token->next)
+		desired_path = data->token->next->content;
+	if (!desired_path || (desired_path[0] == '~' && !desired_path[1]))
+		ft_go_to(home_dir, data);
+	else if (desired_path[0] == '-' && !desired_path[1])
+		ft_go_to("OLDPWD", data);
 	else
-        ft_go_to(desired_path, data);
-    if (home_dir)
-        free(home_dir);
+		ft_go_to(desired_path, data);
+	if (home_dir)
+		free(home_dir);
 }
