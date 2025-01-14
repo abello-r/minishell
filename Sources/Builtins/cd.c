@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 02:12:38 by abello-r          #+#    #+#             */
-/*   Updated: 2025/01/13 12:11:16 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:47:53 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,13 @@ static char *ft_go_to(char *dir_path, t_data *data)
     }
     else
     {
-        old_pwd = data->envp[find_oldpwd(data->envp)]; // Store old pointer
+        old_pwd = data->envp[find_oldpwd(data->envp)];
         data->envp[find_oldpwd(data->envp)] = ft_strjoin("OLDPWD=", current_dir);
-        free(old_pwd); // Free the old string
+        free(old_pwd);
     }
     current_dir = getcwd(buff, PATH_MAX);
     return (current_dir);
 }
-
 
 static char	*ft_get_env_dir(t_data *data, char *d_dir)
 {
@@ -104,13 +103,13 @@ void ft_cd(t_data *data)
     home_dir = ft_get_env_dir(data, "HOME");
     desired_path = NULL;
     if (token_counter >= 2)
-    {
+	{
         printf("Too many arguments\n");
         g_status = 1;
         if (home_dir)
             free(home_dir);
         return;
-    }
+	}
     if (data->token->next)
         desired_path = data->token->next->content;
     if (!desired_path)
@@ -119,7 +118,7 @@ void ft_cd(t_data *data)
         ft_go_to("OLDPWD", data);
     else if (desired_path[0] == '~' && !desired_path[1])
         ft_go_to(home_dir, data);
-    else
+	else
         ft_go_to(desired_path, data);
     if (home_dir)
         free(home_dir);

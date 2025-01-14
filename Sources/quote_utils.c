@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:45:33 by abello-r          #+#    #+#             */
-/*   Updated: 2025/01/13 12:30:21 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:27:23 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,63 +48,64 @@ char	*split_quotes(char *input, int count, char flag)
 {
 	char	*single_line;
 	int		start;
+	int		i;
 
-	start = 1;
-	count++;
+	(void)flag;
+	start = count;
+	i = 0;
 	single_line = malloc(sizeof(char) * (ft_strlen(input) + 1));
-	single_line[0] = flag;
 	if (!single_line)
 		ft_print_exit("Error: malloc failed\n");
-	while (input[count] != flag && input[count] != '\0')
+	while (input[count] != '\0')
 	{
-		single_line[start] = input[count];
-		if (input[count - 1] == '\0')
-			ft_print_exit("Error: missing double quote\n");
-		start++;
+		single_line[i] = input[count];
 		count++;
+		i++;
 	}
-	single_line[start] = flag;
-	single_line[start + 1] = '\0';
+	
+	single_line[i] = '\0';
 	return (single_line);
 }
 
-char *ft_remove_quotes(char *str)
+char	*ft_remove_quotes(char *str)
 {
-    char *result;
-    size_t len;
+	size_t	len;
+	char	*result;
 
-    if (!str)
-        return (NULL);
-    len = strlen(str);
-    if (len < 2 || ((str[0] != '\'' && str[0] != '\"') || str[len - 1] != str[0]))
-        return (strdup(str));
-    result = malloc(len - 1);
-    if (!result)
-        return (NULL);
-    strncpy(result, str + 1, len - 2);
-    result[len - 2] = '\0';
-    return (result);
+	if (!str)
+		return (NULL);
+	len = strlen(str);
+	if (len < 2 || ((str[0] != '\'' && str[0] != '\"')
+			|| str[len - 1] != str[0]))
+		return (strdup(str));
+	result = malloc(len - 1);
+	if (!result)
+		return (NULL);
+	strncpy(result, str + 1, len - 2); //TO DO: reemplazar por una funcion nueva
+	result[len - 2] = '\0';
+	return (result);
 }
 
-void ft_clean_quotes(t_data *data)
+void	ft_clean_quotes(t_data *data)
 {
-    t_token *current;
-	char *new_content;
+	t_token	*current;
+	char	*new_content;
 
-    current = data->head;
-    while (current)
-    {
-        if (current->type && (strcmp(current->type, "SQUOTE") == 0 || strcmp(current->type, "DQUOTE") == 0))
-        {
-            new_content = ft_remove_quotes(current->content);
-            if (new_content)
-            {
-                free(current->content); // Libera el contenido anterior
-                current->content = new_content; // Reemplaza por el nuevo contenido sin comillas
-            }
-        }
-        current = current->next;
-    }
+	current = data->head;
+	while (current)
+	{
+		if (current->type && (ft_strcmp(current->type, "SQUOTE") == 0
+				|| ft_strcmp(current->type, "DQUOTE") == 0))
+		{
+			new_content = ft_remove_quotes(current->content);
+			if (new_content)
+			{
+				free(current->content);
+				current->content = new_content;
+			}
+		}
+		current = current->next;
+	}
 }
 
 void	ft_cpy_clean(t_token *token, int start, int end)
