@@ -53,39 +53,23 @@ void	fill_data_envp(char **envp, t_data *data)
 	ft_utils_free_double_pointer(clean_environments);
 }
 
-/* void	fill_path(t_data *data)
+void	fill_path(t_data *data)
 {
 	int		i;
 	char	**path_blocks;
 
 	i = 0;
+	path_blocks = NULL;
 	while (data->envp[i])
 	{
 		if (ft_strncmp(data->envp[i], "PATH=", 5) == 0)
+		{
 			path_blocks = ft_split(&data->envp[i][5], ':');
+			if (!path_blocks)
+				ft_print_exit("Error: malloc failed\n");
+			break ;
+		}
 		i++;
 	}
 	data->path = path_blocks;
-} */
-
-void fill_path(t_data *data)
-{
-    int     i;
-    char    **path_blocks;
-
-    i = 0;
-    path_blocks = NULL;
-    while (data->envp[i])
-    {
-        if (ft_strncmp(data->envp[i], "PATH=", 5) == 0)
-        {
-            path_blocks = ft_split(&data->envp[i][5], ':');
-            if (!path_blocks)
-                ft_print_exit("Error: malloc failed\n");
-            break;
-        }
-        i++;
-    }
-    data->path = path_blocks;
 }
-
