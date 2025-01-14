@@ -10,49 +10,49 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#define CYAN	"\x1b[36m"
-#define YELLOW	"\x1b[33m"
-#define RESET	"\e[0m"
+#define C "\x1b[36m"
+#define Y "\x1b[33m"
+#define R "\e[0m"
 #include "../Includes/minishell.h"
 
-int g_status = 0;
+int	g_status = 0;
 
-void cleanup_data(t_data *data)
+void	ft_aux_cleanup(t_data *data)
 {
-	t_token *current;
-	t_token *next;
-    if (!data)
-        return;
-    if (data->token && data->head)
-    {
-        current = data->head;
-        next = NULL;
-        
-        while (current)
-        {
-            next = current->next;
-            if (current->content && current->content != (char *)-1)
-            {
-                free(current->content);
-                current->content = NULL;
-            }
-            current->type = NULL;
-            free(current);
-            current = next;
-        }
-        data->token = NULL;
-        data->head = NULL;
-    }
 	if (data->envp)
-    {
-        ft_utils_free_double_pointer(data->envp);
+	{
+		ft_utils_free_double_pointer(data->envp);
 		data->envp = NULL;
-    }
-    if (data->path)
-    {
+	}
+	if (data->path)
+	{
 		ft_utils_free_double_pointer(data->path);
 		data->path = NULL;
-    }
+	}
+}
+
+void	cleanup_data(t_data *data)
+{
+	t_token	*current;
+	t_token	*next;
+
+	if (!data)
+		return ;
+	if (data->head)
+	{
+		current = data->head;
+		while (current)
+		{
+			next = current->next;
+			if (current->content && current->content != (char *)-1)
+				free(current->content);
+			free(current);
+			current = next;
+		}
+		data->head = NULL;
+		data->token = NULL;
+	}
+	ft_aux_cleanup(data);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -64,48 +64,17 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	initializer(envp, &data);
 	ret = ft_loop(&data);
-	cleanup_data(&data); //esto no hace nada aqui
 	if (ret)
 		return (1);
 	else
 		return (0);
 }
 
-void	ft_free_commands(t_cmd *cmds)
+void	ft_control_input(t_data *data)
 {
-	t_cmd	*current;
-	t_cmd	*next;
-
-	current = cmds;
-	while (current)
-	{
-		next = current->next;
-		if (current->argv)
-			ft_utils_free_double_pointer(current->argv);
-		if (current->input_file)
-			free(current->input_file);
-		if (current->output_file)
-			free(current->output_file);
-		free(current);
-		current = next;
-	}
-
-}
-
-void	ft_free_tokens(t_token *head)
-{
-	t_token	*current;
-	t_token	*next;
-
-	current = head;
-	while (current)
-	{
-		next = current->next;
-		if (current->content)
-			free(current->content);
-		free(current);
-		current = next;
-	}
+	printf("\033[Fminishell$ exit\n");
+	cleanup_data(data);
+	exit(EXIT_FAILURE);
 }
 
 int	ft_loop(t_data *data)
@@ -114,13 +83,9 @@ int	ft_loop(t_data *data)
 	while (1)
 	{
 		signal(SIGINT, ft_signal_handler);
-		data->input = readline(YELLOW "M" CYAN "inishell" "\x1b[33mツ " RESET);
+		data->input = readline(Y "M" C "inishell" "\x1b[33mツ " R);
 		if (!data->input)
-		{
-			printf("\033[Fminishell$ exit\n");
-			cleanup_data(data);
-			exit(EXIT_FAILURE);
-		}
+			ft_control_input(data);
 		if (ft_pair_quotation_check(data))
 		{
 			free(data->input);
@@ -134,51 +99,9 @@ int	ft_loop(t_data *data)
 			ft_execute_commands(data);
 			ft_free_commands(data->cmds);
 			ft_free_tokens(data->head);
-			free(data->input);
 		}
-		else
-		{
-			free(data->input);
-			data->input = NULL;
-		}
-	}
-	return (0);
-}
-
-int	ft_character_counter(char *str, char c)
-{
-	int	count;
-	int	total;
-
-	count = 0;
-	total = 0;
-	while (str[count])
-	{
-		if (str[count] == c)
-			total++;
-		count++;
-	}
-	return (total);
-}
-
-int	is_builtin(char *content)
-{
-	int	i;
-
-	i = ft_strlen(content);
-	if ((content[0] == 'c' && ft_strlen(content) == 2)
-		|| ft_strlen(content) >= 3)
-	{
-		if (ft_strncmp(content, "pwd", i) == 0 \
-			|| ft_strncmp(content, "env", i) == 0 \
-			|| ft_strncmp(content, "unset", i) == 0 \
-			|| ft_strncmp(content, "export", i) == 0 \
-			|| ft_strncmp(content, "cd", i) == 0 \
-			|| ft_strncmp(content, "echo", i) == 0 \
-			|| ft_strncmp(content, "exit", i) == 0)
-		{
-			return (1);
-		}
+		free(data->input);
+		data->input = NULL;
 	}
 	return (0);
 }

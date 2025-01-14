@@ -12,21 +12,22 @@
 
 #include "../Includes/minishell.h"
 
-int ft_redirection_check(t_data *data)
+int	ft_redirection_check(t_data *data)
 {
-    t_token *current;
+	t_token	*current;
 
 	current = data->token;
-    while (current != NULL)
-    {
-        if (current->content && current->content[0] != '\'' && current->content[0] != '\"')
-        {
-            if (ft_redir_conditions_check(current->content))
-                ft_print_exit(REDIR);
-        }
-        current = current->next;
-    }
-    return (0);
+	while (current != NULL)
+	{
+		if (current->content && current->content[0] != '\''
+			&& current->content[0] != '\"')
+		{
+			if (ft_redir_conditions_check(current->content))
+				ft_print_exit(REDIR);
+		}
+		current = current->next;
+	}
+	return (0);
 }
 
 int	ft_redir_conditions_check(char *token)
@@ -52,32 +53,31 @@ int	ft_redir_conditions_check(char *token)
 	return (0);
 }
 
-
-int ft_pair_quotation_check(t_data *data)
+int	ft_pair_quotation_check(t_data *data)
 {
-    int i;
-    int in_single_quotes;
-    int in_double_quotes;
-    char *str;
+	int		i;
+	int		in_single_quotes;
+	int		in_double_quotes;
+	char	*str;
 
-    i = 0;
-    in_single_quotes = 0;
-    in_double_quotes = 0;
-    str = data->input;
-    while (str[i])
-    {
-        if (str[i] == '\'' && !in_double_quotes)
-            in_single_quotes = !in_single_quotes;
-        else if (str[i] == '\"' && !in_single_quotes)
-            in_double_quotes = !in_double_quotes;
-        i++;
-    }
-    if (in_single_quotes || in_double_quotes)
-    {
-        printf("%s", NOT_CLOSED_QUOTE);
-        return (1);
-    }
-    return (0);
+	i = 0;
+	in_single_quotes = 0;
+	in_double_quotes = 0;
+	str = data->input;
+	while (str[i])
+	{
+		if (str[i] == '\'' && !in_double_quotes)
+			in_single_quotes = !in_single_quotes;
+		else if (str[i] == '\"' && !in_single_quotes)
+			in_double_quotes = !in_double_quotes;
+		i++;
+	}
+	if (in_single_quotes || in_double_quotes)
+	{
+		printf("%s", NOT_CLOSED_QUOTE);
+		return (1);
+	}
+	return (0);
 }
 
 char	**line_checker(char *input)
@@ -87,29 +87,23 @@ char	**line_checker(char *input)
 	char	**token_table;
 	char	*token;
 
-	token_table = ft_get_memory(input);
-	token_counter = 0;
 	count = 0;
+	token_counter = 0;
+	token_table = ft_get_memory(input);
 	while (input[count] != '\0')
 	{
 		while (input[count] == ' ')
 			count++;
+		if (input[count] == '\0')
+			break ;
 		if (input[count] == '\"' || input[count] == '\'')
-		{
 			token = split_quotes(input, count, input[count]);
-			token_table[token_counter] = ft_fill_token_table(token);
-			count += ft_strlen(token);
-			free(token);
-			token_counter++;
-		}
-		else if (input[count] != 0)
-		{
+		else
 			token = get_rest(input, count);
-			token_table[token_counter] = ft_fill_token_table(token);
-			count += ft_strlen(token);
-			free(token);
-			token_counter++;
-		}
+		token_table[token_counter] = ft_fill_token_table(token);
+		count += ft_strlen(token);
+		free(token);
+		token_counter++;
 	}
 	token_table[token_counter] = NULL;
 	return (token_table);
@@ -121,8 +115,8 @@ void	ft_check_type(t_data *data)
 	{
 		if (ft_strncmp(data->token->content, "/bin/", 5) == 0)
 		{
-			data->token->content = ft_substr(data->token->content, 5, \
-			ft_strlen(data->token->content));
+			data->token->content = ft_substr(data->token->content, 5,
+					ft_strlen(data->token->content));
 		}
 		if (is_builtin(data->token->content) == 1)
 		{
