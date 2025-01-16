@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 17:49:40 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/15 17:39:14 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:46:47 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char *find_command_path(t_data *data, char *cmd)
 
     i = 0;
     if (access(cmd, X_OK) == 0)
-        return (ft_strdup(cmd));
+		return (ft_strdup(cmd));
     while (data->path && data->path[i])
     {
         tmp = ft_strjoin(data->path[i], "/");
@@ -143,7 +143,6 @@ static void execute_child(t_data *data, t_cmd *cmd, int *prev_pipe, int *pipe_fd
     else
     {
         cmd_path = find_command_path(data, cmd->argv[0]);
-		printf("CMD PATH: %s\n", cmd_path);
         if (!cmd_path)
             handle_command_not_found(cmd->argv[0]);
         if (execve(cmd_path, cmd->argv, data->envp) == -1)

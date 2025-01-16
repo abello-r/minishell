@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:02:10 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/14 15:08:45 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:24:21 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ void	ft_token_table_maker(char **token_table, t_data *data)
 	{
 		new_node = ft_add_node(token_table[i], ft_assign_type(token_table[i]));
 		if (i == 0)
-		{
 			data->head = new_node;
-		}
 		else
 		{
 			current_node->next = new_node;

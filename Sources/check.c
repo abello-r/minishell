@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:35:58 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/14 15:25:41 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:44:32 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,17 +111,20 @@ char	**line_checker(char *input)
 
 void	ft_check_type(t_data *data)
 {
+	char	*tmp;
+
+	tmp = NULL;
 	while (data->token != NULL)
 	{
 		if (ft_strncmp(data->token->content, "/bin/", 5) == 0)
 		{
-			data->token->content = ft_substr(data->token->content, 5,
-					ft_strlen(data->token->content));
+			tmp = ft_substr(data->token->content, 5, ft_strlen(data->token->content));
+			free(data->token->content);
+			data->token->content = tmp;
+			tmp = NULL;
 		}
 		if (is_builtin(data->token->content) == 1)
-		{
 			data->token->type = "BUILTIN";
-		}
 		else
 			data->token->type = ft_assign_type(data->token->content);
 		data->token = data->token->next;
