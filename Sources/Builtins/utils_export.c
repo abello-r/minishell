@@ -6,11 +6,13 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:22:14 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/14 17:19:26 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/15 19:36:09 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
+
+extern int	g_status;
 
 int	is_valid_identifier(const char *str)
 {
@@ -80,27 +82,31 @@ void	print_formatted_env(char **env)
 	}
 }
 
-char	**ft_init_env_array(char **envp,
-							char *d_new_env, char **key, int *len)
+void	ft_args_export_iterator(t_data *data, char *arg)
 {
-	char	*equals;
+	char	*var_name;
 	char	**new_envp;
 
-	if (!envp || !d_new_env)
-		return (NULL);
-	equals = ft_strchr(d_new_env, '=');
-	if (equals)
-		*key = ft_substr(d_new_env, 0, equals - d_new_env);
-	else
-		*key = ft_strdup(d_new_env);
-	if (!*key)
-		return (NULL);
-	*len = ft_envp_len(envp);
-	new_envp = malloc(sizeof(char *) * (*len + 2));
-	if (!new_envp)
+	new_envp = NULL;
+	if (!is_valid_identifier(arg))
 	{
-		free(*key);
-		return (NULL);
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		g_status = 1;
+		return ;
 	}
-	return (new_envp);
+	if (ft_strchr(arg, '='))
+	{
+		var_name = ft_substr(arg, 0, ft_strchr(arg, '=') - arg);
+		new_envp = ft_add_new_env(data->envp, arg);
+		if (new_envp)
+		{
+			ft_utils_free_double_pointer(data->envp);
+			data->envp = new_envp;
+		}
+		free(var_name);
+	}
+	else
+		ft_export_add_envp(data, arg, new_envp);
 }

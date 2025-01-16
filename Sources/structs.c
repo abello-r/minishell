@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 03:45:23 by abello-r          #+#    #+#             */
-/*   Updated: 2024/12/20 18:42:25 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:55:52 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,8 @@ void	initializer(char **envp, t_data *data)
 	fill_data_envp(envp, data);
 	fill_path(data);
 	data->input = NULL;
-	data->token = malloc(sizeof(t_token));
-	if (!data->token)
-		ft_print_exit("Error: malloc failed\n");
-	data->head = data->token;
-	data->token->content = NULL;
-	data->token->type = NULL;
-	data->token->prev = NULL;
-	data->token->next = NULL;
+	data->head = NULL;
+	data->token = NULL;
 	data->exit = 0;
 }
 
