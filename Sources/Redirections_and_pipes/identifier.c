@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 17:49:40 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/16 16:46:47 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:06:48 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,92 +14,38 @@
 
 extern int g_status;
 
-void ft_execute_builtin(t_data *data)
+static void setup_redirections_auxiliar(char *str, int code)
 {
-    if (ft_strncmp(data->cmds->argv[0], "pwd", ft_strlen("pwd")) == 0)
-        ft_pwd();
-    else if (ft_strncmp(data->cmds->argv[0], "env", ft_strlen("env")) == 0)
-        ft_env(data);
-    else if (ft_strncmp(data->cmds->argv[0], "unset", ft_strlen("unset")) == 0)
-        ft_unset(data);
-    else if (ft_strncmp(data->cmds->argv[0], "export", ft_strlen("export")) == 0)
-        ft_export(data);
-    else if (ft_strncmp(data->cmds->argv[0], "cd", ft_strlen("cd")) == 0)
-        ft_cd(data);
-    else if (ft_strncmp(data->cmds->argv[0], "echo", ft_strlen("echo")) == 0)
-        ft_echo(data);
+	perror(str);
+	exit(code);	
 }
 
-static char *find_command_path(t_data *data, char *cmd)
+/*
+	Here we established if the redir is for input or output,
+	Depends on that, we make the choice about how to handle it.
+*/
+static void	setup_redirections(t_cmd *cmd)
 {
-    char *cmd_path;
-    char *tmp;
-    int i;
+	int	fd;
 
-    i = 0;
-    if (access(cmd, X_OK) == 0)
-		return (ft_strdup(cmd));
-    while (data->path && data->path[i])
-    {
-        tmp = ft_strjoin(data->path[i], "/");
-        if (!tmp)
-            return (NULL);
-        cmd_path = ft_strjoin(tmp, cmd);
-        free(tmp);
-        if (!cmd_path)
-            return (NULL);
-        if (access(cmd_path, X_OK) == 0)
-            return (cmd_path);
-        free(cmd_path);
-        i++;
-    }
-    return (NULL);
-}
-
-static void handle_command_not_found(char *cmd)
-{
-    ft_putstr_fd(cmd, 2);
-    ft_putendl_fd(": command not found", 2);
-    exit(127);
-}
-
-static void setup_redirections(t_cmd *cmd)
-{
-    int fd;
-
-    // Handle input redirection
     if (cmd->input_file)
     {
         fd = open(cmd->input_file, O_RDONLY);
         if (fd == -1)
-        {
-            perror(cmd->input_file);
-            exit(1);
-        }
-        if (dup2(fd, STDIN_FILENO) == -1)
-        {
-            perror("dup2");
-            exit(1);
-        }
+            setup_redirections_auxiliar(cmd->input_file, 1);
+        else if (dup2(fd, STDIN_FILENO) == -1)
+            setup_redirections_auxiliar("dup2", 1);
         close(fd);
     }
-
-    // Handle output redirection
     if (cmd->output_file)
     {
         fd = open(cmd->output_file, 
             O_WRONLY | O_CREAT | (cmd->append ? O_APPEND : O_TRUNC), 
             0644);
         if (fd == -1)
-        {
-            perror(cmd->output_file);
-            exit(1);
-        }
+            setup_redirections_auxiliar(cmd->output_file, 1);
         if (dup2(fd, STDOUT_FILENO) == -1)
-        {
-            perror("dup2");
-            exit(1);
-        }
+            setup_redirections_auxiliar("dup2", 1);
         close(fd);
     }
 }

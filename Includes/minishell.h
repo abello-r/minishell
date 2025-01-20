@@ -6,7 +6,7 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:08:03 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/15 19:37:05 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:01:44 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,9 @@ void		ft_execute_commands(t_data *data);
 t_cmd		*parse_tokens_to_commands(t_token *tokens);
 void		print_commands(t_cmd *commands);
 void		ft_args_export_iterator(t_data *data, char *arg);
+void		handle_command_not_found(char *cmd);
+char		*find_command_path(t_data *data, char *cmd);
+void		ft_execute_builtin(t_data *data);
 
 // Heredoc
 void		ft_heredoc(t_data *data);
