@@ -6,15 +6,15 @@
 /*   By: pausanch <pausanch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 17:49:40 by pausanch          #+#    #+#             */
-/*   Updated: 2025/01/20 16:19:24 by pausanch         ###   ########.fr       */
+/*   Updated: 2025/01/20 18:52:19 by pausanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/minishell.h"
 
-extern int g_status;
+extern int	g_status;
 
-static void perror_auxiliar(char *str, int code)
+static void	perror_auxiliar(char *str, int code)
 {
 	perror(str);
 	exit(code);
@@ -24,9 +24,9 @@ static void perror_auxiliar(char *str, int code)
 	Here we established if the redir is for input or output,
 	Depends on that, we make the choice about how to handle it.
 */
-static void setup_redirections(t_cmd *cmd)
+static void	setup_redirections(t_cmd *cmd)
 {
-	int fd;
+	int	fd;
 
 	if (cmd->input_file)
 	{
@@ -39,9 +39,10 @@ static void setup_redirections(t_cmd *cmd)
 	}
 	if (cmd->output_file)
 	{
-		fd = open(cmd->output_file,
-				  O_WRONLY | O_CREAT | (cmd->append ? O_APPEND : O_TRUNC),
-				  0644);
+		if (cmd->append)
+			fd = open(cmd->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else
+			fd = open(cmd->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
 			perror_auxiliar(cmd->output_file, 1);
 		if (dup2(fd, STDOUT_FILENO) == -1)
@@ -55,7 +56,7 @@ static void setup_redirections(t_cmd *cmd)
    2. Sets up output redirection to next pipe if it exists
    3. Closes all pipe file descriptors to prevent leaks
 */
-void pipes_handler(int *prev_pipe, int *pipe_fd)
+void	pipes_handler(int *prev_pipe, int *pipe_fd)
 {
 	if (prev_pipe && dup2(prev_pipe[0], STDIN_FILENO) == -1)
 		perror_auxiliar("dup2", 1);
@@ -73,9 +74,9 @@ void pipes_handler(int *prev_pipe, int *pipe_fd)
 	}
 }
 
-static void execute_child(t_data *data, t_cmd *cmd, int *prev_pipe, int *pipe_fd)
+void	execute_child(t_data *data, t_cmd *cmd, int *prev_pipe, int *pipe_fd)
 {
-	char *cmd_path;
+	char	*cmd_path;
 
 	pipes_handler(prev_pipe, pipe_fd);
 	setup_redirections(cmd);
@@ -97,24 +98,20 @@ static void execute_child(t_data *data, t_cmd *cmd, int *prev_pipe, int *pipe_fd
 	}
 }
 
-static void execute_single_builtin(t_data *data, t_cmd *cmd)
+// TODO: ADD A COMMENT HERE
+static void	execute_single_builtin(t_data *data, t_cmd *cmd)
 {
-	int stdin_backup = -1;
-	int stdout_backup = -1;
+	int	stdin_backup;
+	int	stdout_backup;
 
-	// Backup standard fds if needed
+	stdin_backup = -1;
+	stdout_backup = -1;
 	if (cmd->input_file)
 		stdin_backup = dup(STDIN_FILENO);
 	if (cmd->output_file)
 		stdout_backup = dup(STDOUT_FILENO);
-
-	// Setup redirections
 	setup_redirections(cmd);
-
-	// Execute builtin
 	ft_execute_builtin(data);
-
-	// Restore standard fds
 	if (stdin_backup != -1)
 	{
 		dup2(stdin_backup, STDIN_FILENO);
@@ -127,95 +124,120 @@ static void execute_single_builtin(t_data *data, t_cmd *cmd)
 	}
 }
 
-static void close_pipe(int pipe_fd[2])
+void	pid_handler_aux(int *p_pipe, int *c_pipe, t_cmd *current, pid_t pid)
 {
-	if (pipe_fd)
+	int	status;
+
+	status = 0;
+	if (p_pipe[0] != -1)
 	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
+		close(p_pipe[0]);
+		close(p_pipe[1]);
+	}
+	if (current->next)
+	{
+		p_pipe[0] = c_pipe[0];
+		p_pipe[1] = c_pipe[1];
+	}
+	if (!current->next)
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_status = 128 + WTERMSIG(status);
 	}
 }
 
-void ft_execute_commands(t_data *data)
+pid_t	pid_creation(int *curr_pipe)
 {
-	t_cmd *current;
-	int prev_pipe[2] = {-1, -1};
-	int curr_pipe[2];
-	pid_t pid;
-	t_token *temp;
+	pid_t	pid;
 
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		if (curr_pipe)
+		{
+			close(curr_pipe[0]);
+			close(curr_pipe[1]);
+		}
+		g_status = 1;
+		return (-1);
+	}
+	return (pid);
+}
+
+void	heredoc_handler(t_token *temp, t_data *data)
+{
+	int		status;
+	int		fd;
+
+	status = 0;
+	fd = 0;
+	if (ft_strcmp(temp->type, "HEREDOC") == 0)
+	{
+		ft_heredoc(data);
+		fd = open("heredoc.tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		close(fd);
+		exit(EXIT_SUCCESS);
+	}
+}
+
+void	pid_handler(t_data *data, t_cmd *current, int *p_pipe, int *c_pipe)
+{
+	t_token	*temp;
+	int		*prev_pipe_ptr;
+	int		*curr_pipe_ptr;
+	pid_t	pid;
+
+	prev_pipe_ptr = NULL;
+	curr_pipe_ptr = NULL;
 	temp = data->token;
+	pid = pid_creation(c_pipe);
+	if (pid == -1)
+		return ;
+	else if (pid == 0)
+	{
+		while (temp)
+		{
+			heredoc_handler(temp, data);
+			temp = temp->next;
+		}
+		if (p_pipe[0] != -1)
+			prev_pipe_ptr = p_pipe;
+		if (current->next)
+			curr_pipe_ptr = c_pipe;
+		execute_child(data, current, prev_pipe_ptr, curr_pipe_ptr);
+	}
+	pid_handler_aux(p_pipe, c_pipe, current, pid);
+}
+
+void	ft_execute_commands(t_data *data)
+{
+	t_cmd	*current;
+	int		prev_pipe[2];
+	int		curr_pipe[2];
+
 	current = data->cmds;
-	// print_commands(current);
+	prev_pipe[0] = -1;
+	prev_pipe[1] = -1;
 	while (current)
 	{
-		// Handle exit command
 		if (ft_strcmp(current->argv[0], "exit") == 0)
-		{
-			ft_exit(data);
-			return;
-		}
-		// Create pipe if needed
+			return (ft_exit(data));
 		if (current->next && pipe(curr_pipe) == -1)
 		{
-			perror("pipe");
 			g_status = 1;
-			return;
+			return (perror("pipe"));
 		}
-		// For single builtin without pipes, execute directly
-		if (is_builtin(current->argv[0]) && !current->next && prev_pipe[0] == -1)
+		if (is_builtin(current->argv[0])
+			&& !current->next && prev_pipe[0] == -1)
 			execute_single_builtin(data, current);
 		else
-		{
-			// Fork and execute command
-			pid = fork();
-			if (pid == -1)
-			{
-				perror("fork");
-				close_pipe(curr_pipe);
-				g_status = 1;
-				return;
-			}
-			if (pid == 0)
-			{
-				while (temp)
-				{
-					if (ft_strcmp(temp->type, "HEREDOC") == 0)
-					{
-						ft_heredoc(data);
-						int fd = open("heredoc.tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-						close(fd);
-						exit(EXIT_SUCCESS);
-					}
-					temp = temp->next;
-				}
-				execute_child(data, current, prev_pipe[0] != -1 ? prev_pipe : NULL, current->next ? curr_pipe : NULL);
-			}
-			// Parent process
-			if (prev_pipe[0] != -1)
-			{
-				close(prev_pipe[0]);
-				close(prev_pipe[1]);
-			}
-			if (current->next)
-			{
-				prev_pipe[0] = curr_pipe[0];
-				prev_pipe[1] = curr_pipe[1];
-			}
-			// Wait for child if it's the last command
-			if (!current->next)
-			{
-				int status;
-				waitpid(pid, &status, 0);
-				if (WIFEXITED(status))
-					g_status = WEXITSTATUS(status);
-				else if (WIFSIGNALED(status))
-					g_status = 128 + WTERMSIG(status);
-			}
-		}
+			pid_handler(data, current, prev_pipe, curr_pipe);
 		current = current->next;
 	}
-	// Wait for all remaining child processes
 	while (wait(NULL) > 0)
-		;
+		continue ;
 }
